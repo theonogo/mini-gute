@@ -1,0 +1,539 @@
+/* Weights come from --bold, never a literal 700. Archivo ships a real 700
+   (--bold) and Roboto Mono a real 700 (--accent-bold); Bebas Neue has one
+   weight and it is the spine's. See the font-synthesis note in the base
+   stylesheet. */
+/* The Bootleg Tape.
+ *
+ * He was asked for a report and made a mixtape of it instead, dubbed off
+ * something that mattered less, and the receipt is what comes in the case.
+ *
+ * Three mastheads, rotated by date (data-variant), all carrying the same two
+ * narrated lines - today's tape title, and his one line on what today's one is
+ * ABOUT:
+ *
+ *   0 the cassette    the tape straight on, the title written on its label
+ *   1 the player      a media player skin of about 1999: seven-segment time,
+ *                     spectrum analyser, the title scrolling in the marquee,
+ *                     volume and balance, a seek bar. The filename above it is
+ *                     built from the date.
+ *   2 the disc        a record with the arm down on it, the title beside it
+ *                     over its own waveform
+ *
+ * Below that the document is the same one whatever the header: sections are
+ * cued by tape counter and a play triangle (0000, 0143, 0281 - a real counter,
+ * incremented in CSS), the itemization is the Side A tracklist with a track
+ * that did not make the tape at the foot of it and his reason why, and the
+ * coupon is ONE FOR THE ROAD - a bar, knocked out white, no notes.
+ *
+ * Signature trick: the track that fell off the tracklist rotates on the last
+ * digit of the receipt number, so the excuse is different ten days running -
+ * mp3 corrupted, fl studio crashed, the world's not ready.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 3px; --pad: 14px; --gap: 8px; --sec-end: 12px; }
+
+body { line-height: 1.34; }
+
+/* ---------- the tracks that did not make it ----------
+   Keyed off the last digit of the receipt number: ten reasons, and the one
+   printed today is whichever the number lands on. */
+.receipt { --lost: "mp3 corrupted"; --note-label: "what todays one is about"; }
+.receipt:has(.masthead[data-no$="1"]) { --lost: "fl studio crashed :("; }
+.receipt:has(.masthead[data-no$="2"]) { --lost: "cd scratched"; }
+.receipt:has(.masthead[data-no$="3"]) { --lost: "tape ran out"; }
+.receipt:has(.masthead[data-no$="4"]) { --lost: "worlds not ready"; }
+.receipt:has(.masthead[data-no$="5"]) { --lost: "sample copyrighted"; }
+.receipt:has(.masthead[data-no$="6"]) { --lost: "taped over by accident"; }
+.receipt:has(.masthead[data-no$="7"]) { --lost: "lost the hard drive. its fine"; }
+.receipt:has(.masthead[data-no$="8"]) { --lost: "label came off. no idea"; }
+.receipt:has(.masthead[data-no$="9"]) { --lost: "too hard. next time"; }
+
+/* The sleeve note's label, on the day of the month - so it is rarely the
+   same two days running, and never in step with the missing track. */
+.receipt:has(.masthead[data-dd$="0"]) { --note-label: "what todays one is about"; }
+.receipt:has(.masthead[data-dd$="1"]) { --note-label: "the artistic intent"; }
+.receipt:has(.masthead[data-dd$="2"]) { --note-label: "you see the vision right"; }
+.receipt:has(.masthead[data-dd$="3"]) { --note-label: "the concept, briefly"; }
+.receipt:has(.masthead[data-dd$="4"]) { --note-label: "where my heads at on this"; }
+.receipt:has(.masthead[data-dd$="5"]) { --note-label: "the thesis i guess"; }
+.receipt:has(.masthead[data-dd$="6"]) { --note-label: "what im going for here"; }
+.receipt:has(.masthead[data-dd$="7"]) { --note-label: "the vibe, explained"; }
+.receipt:has(.masthead[data-dd$="8"]) { --note-label: "directors note"; }
+.receipt:has(.masthead[data-dd$="9"]) { --note-label: "read this bit or dont"; }
+
+/* ---------- masthead ---------- */
+.masthead { position: relative; padding: 0;
+            display: flex; flex-direction: column; }
+.wordmark { order: 0; }
+.dateline { order: 1; }
+.mh-mix { order: 2; }
+
+/* The furniture, carried by the emptied wordmark - the persona is never named
+   on the page, so the wordmark is the drawing and nothing else. */
+.wordmark {
+  font-size: 0;
+  height: 286px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='286' viewBox='0 0 576 286'%3E%3Cg fill='none' stroke='black' stroke-width='5' stroke-linejoin='round'%3E%3Crect x='14' y='10' width='548' height='266' rx='16'/%3E%3Crect x='44' y='36' width='488' height='104' rx='4'/%3E%3Crect x='128' y='158' width='320' height='96' rx='6'/%3E%3C/g%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Ccircle cx='206' cy='206' r='44'/%3E%3Ccircle cx='370' cy='206' r='44'/%3E%3Ccircle cx='206' cy='206' r='30'/%3E%3Ccircle cx='370' cy='206' r='19'/%3E%3Cpath d='M128 206 H162 M414 206 H448'/%3E%3Ccircle cx='46' cy='36' r='7'/%3E%3Cpath d='M42 32 l8 8 M50 32 l-8 8'/%3E%3Ccircle cx='530' cy='36' r='7'/%3E%3Cpath d='M526 32 l8 8 M534 32 l-8 8'/%3E%3Ccircle cx='46' cy='250' r='7'/%3E%3Cpath d='M42 246 l8 8 M50 246 l-8 8'/%3E%3Ccircle cx='530' cy='250' r='7'/%3E%3Cpath d='M526 246 l8 8 M534 246 l-8 8'/%3E%3C/g%3E%3Cg fill='black'%3E%3Ccircle cx='206' cy='206' r='13'/%3E%3Ccircle cx='370' cy='206' r='13'/%3E%3Crect x='268' y='258' width='40' height='14'/%3E%3Crect x='78' y='260' width='30' height='10'/%3E%3Crect x='468' y='260' width='30' height='10'/%3E%3C/g%3E%3Cg stroke='black' stroke-width='3'%3E%3Cpath d='M198 193 h16 M198 219 h16 M193 200 v12 M219 200 v12'/%3E%3Cpath d='M362 199 h16 M362 213 h16'/%3E%3C/g%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Crect x='58' y='150' width='34' height='22'/%3E%3Crect x='484' y='150' width='34' height='22' fill='black'/%3E%3C/g%3E%3Cpath d='M54 15h8v2h-8zM52 17h2v2h-2zM52 19h2v2h-2zM54 21h6v2h-6zM60 23h2v2h-2zM60 25h2v2h-2zM52 27h8v2h-8zM64 15h10v2h-10zM68 17h2v2h-2zM68 19h2v2h-2zM68 21h2v2h-2zM68 23h2v2h-2zM68 25h2v2h-2zM68 27h2v2h-2zM76 15h10v2h-10zM76 17h2v2h-2zM76 19h2v2h-2zM76 21h8v2h-8zM76 23h2v2h-2zM76 25h2v2h-2zM76 27h10v2h-10zM88 15h8v2h-8zM88 17h2v2h-2zM96 17h2v2h-2zM88 19h2v2h-2zM96 19h2v2h-2zM88 21h8v2h-8zM88 23h2v2h-2zM92 23h2v2h-2zM88 25h2v2h-2zM94 25h2v2h-2zM88 27h2v2h-2zM96 27h2v2h-2zM100 15h10v2h-10zM100 17h2v2h-2zM100 19h2v2h-2zM100 21h8v2h-8zM100 23h2v2h-2zM100 25h2v2h-2zM100 27h10v2h-10zM114 15h6v2h-6zM112 17h2v2h-2zM120 17h2v2h-2zM112 19h2v2h-2zM120 19h2v2h-2zM112 21h2v2h-2zM120 21h2v2h-2zM112 23h2v2h-2zM120 23h2v2h-2zM112 25h2v2h-2zM120 25h2v2h-2zM114 27h6v2h-6z' fill='black'/%3E%3Cpath d='M166 15h2v2h-2zM166 17h2v2h-2zM166 19h2v2h-2zM166 21h2v2h-2zM166 23h2v2h-2zM166 25h2v2h-2zM166 27h10v2h-10zM180 15h6v2h-6zM178 17h2v2h-2zM186 17h2v2h-2zM178 19h2v2h-2zM186 19h2v2h-2zM178 21h2v2h-2zM186 21h2v2h-2zM178 23h2v2h-2zM186 23h2v2h-2zM178 25h2v2h-2zM186 25h2v2h-2zM180 27h6v2h-6zM190 15h2v2h-2zM198 15h2v2h-2zM190 17h2v2h-2zM198 17h2v2h-2zM190 19h2v2h-2zM198 19h2v2h-2zM190 21h2v2h-2zM194 21h2v2h-2zM198 21h2v2h-2zM190 23h2v2h-2zM194 23h2v2h-2zM198 23h2v2h-2zM190 25h4v2h-4zM196 25h4v2h-4zM190 27h2v2h-2zM198 27h2v2h-2zM214 15h2v2h-2zM222 15h2v2h-2zM214 17h4v2h-4zM222 17h2v2h-2zM214 19h4v2h-4zM222 19h2v2h-2zM214 21h2v2h-2zM218 21h2v2h-2zM222 21h2v2h-2zM214 23h2v2h-2zM220 23h4v2h-4zM214 25h2v2h-2zM220 25h4v2h-4zM214 27h2v2h-2zM222 27h2v2h-2zM228 15h6v2h-6zM226 17h2v2h-2zM234 17h2v2h-2zM226 19h2v2h-2zM234 19h2v2h-2zM226 21h2v2h-2zM234 21h2v2h-2zM226 23h2v2h-2zM234 23h2v2h-2zM226 25h2v2h-2zM234 25h2v2h-2zM228 27h6v2h-6zM240 15h6v2h-6zM242 17h2v2h-2zM242 19h2v2h-2zM242 21h2v2h-2zM242 23h2v2h-2zM242 25h2v2h-2zM240 27h6v2h-6zM252 15h8v2h-8zM250 17h2v2h-2zM250 19h2v2h-2zM252 21h6v2h-6zM258 23h2v2h-2zM258 25h2v2h-2zM250 27h8v2h-8zM262 15h10v2h-10zM262 17h2v2h-2zM262 19h2v2h-2zM262 21h8v2h-8zM262 23h2v2h-2zM262 25h2v2h-2zM262 27h10v2h-10zM286 15h2v2h-2zM294 15h2v2h-2zM286 17h2v2h-2zM294 17h2v2h-2zM286 19h2v2h-2zM294 19h2v2h-2zM286 21h10v2h-10zM286 23h2v2h-2zM294 23h2v2h-2zM286 25h2v2h-2zM294 25h2v2h-2zM286 27h2v2h-2zM294 27h2v2h-2zM300 15h6v2h-6zM302 17h2v2h-2zM302 19h2v2h-2zM302 21h2v2h-2zM302 23h2v2h-2zM302 25h2v2h-2zM300 27h6v2h-6zM312 15h6v2h-6zM310 17h2v2h-2zM318 17h2v2h-2zM310 19h2v2h-2zM310 21h2v2h-2zM314 21h6v2h-6zM310 23h2v2h-2zM318 23h2v2h-2zM310 25h2v2h-2zM318 25h2v2h-2zM312 27h8v2h-8zM322 15h2v2h-2zM330 15h2v2h-2zM322 17h2v2h-2zM330 17h2v2h-2zM322 19h2v2h-2zM330 19h2v2h-2zM322 21h10v2h-10zM322 23h2v2h-2zM330 23h2v2h-2zM322 25h2v2h-2zM330 25h2v2h-2zM322 27h2v2h-2zM330 27h2v2h-2zM348 15h6v2h-6zM346 17h2v2h-2zM354 17h2v2h-2zM346 19h2v2h-2zM354 19h2v2h-2zM346 21h2v2h-2zM354 21h2v2h-2zM346 23h2v2h-2zM354 23h2v2h-2zM346 25h2v2h-2zM354 25h2v2h-2zM348 27h6v2h-6zM358 15h2v2h-2zM366 15h2v2h-2zM358 17h2v2h-2zM366 17h2v2h-2zM358 19h2v2h-2zM366 19h2v2h-2zM358 21h2v2h-2zM366 21h2v2h-2zM358 23h2v2h-2zM366 23h2v2h-2zM358 25h2v2h-2zM366 25h2v2h-2zM360 27h6v2h-6zM370 15h10v2h-10zM374 17h2v2h-2zM374 19h2v2h-2zM374 21h2v2h-2zM374 23h2v2h-2zM374 25h2v2h-2zM374 27h2v2h-2zM382 15h8v2h-8zM382 17h2v2h-2zM390 17h2v2h-2zM382 19h2v2h-2zM390 19h2v2h-2zM382 21h8v2h-8zM382 23h2v2h-2zM382 25h2v2h-2zM382 27h2v2h-2zM394 15h2v2h-2zM402 15h2v2h-2zM394 17h2v2h-2zM402 17h2v2h-2zM394 19h2v2h-2zM402 19h2v2h-2zM394 21h2v2h-2zM402 21h2v2h-2zM394 23h2v2h-2zM402 23h2v2h-2zM394 25h2v2h-2zM402 25h2v2h-2zM396 27h6v2h-6zM406 15h10v2h-10zM410 17h2v2h-2zM410 19h2v2h-2zM410 21h2v2h-2zM410 23h2v2h-2zM410 25h2v2h-2zM410 27h2v2h-2z' fill='black'/%3E%3Cpath d='M440 15h6v2h-6zM440 17h2v2h-2zM446 17h2v2h-2zM440 19h2v2h-2zM448 19h2v2h-2zM440 21h2v2h-2zM448 21h2v2h-2zM440 23h2v2h-2zM448 23h2v2h-2zM440 25h2v2h-2zM446 25h2v2h-2zM440 27h6v2h-6zM454 15h6v2h-6zM452 17h2v2h-2zM460 17h2v2h-2zM452 19h2v2h-2zM460 19h2v2h-2zM452 21h2v2h-2zM460 21h2v2h-2zM452 23h2v2h-2zM460 23h2v2h-2zM452 25h2v2h-2zM460 25h2v2h-2zM454 27h6v2h-6zM464 15h2v2h-2zM464 17h2v2h-2zM464 19h2v2h-2zM464 21h2v2h-2zM464 23h2v2h-2zM464 25h2v2h-2zM464 27h10v2h-10zM476 15h8v2h-8zM476 17h2v2h-2zM484 17h2v2h-2zM476 19h2v2h-2zM484 19h2v2h-2zM476 21h8v2h-8zM476 23h2v2h-2zM484 23h2v2h-2zM476 25h2v2h-2zM484 25h2v2h-2zM476 27h8v2h-8zM488 15h2v2h-2zM496 15h2v2h-2zM488 17h2v2h-2zM496 17h2v2h-2zM490 19h2v2h-2zM494 19h2v2h-2zM492 21h2v2h-2zM492 23h2v2h-2zM492 25h2v2h-2zM492 27h2v2h-2zM512 15h8v2h-8zM512 17h2v2h-2zM520 17h2v2h-2zM512 19h2v2h-2zM520 19h2v2h-2zM512 21h8v2h-8zM512 23h2v2h-2zM520 23h2v2h-2zM512 25h2v2h-2zM520 25h2v2h-2zM512 27h8v2h-8z' fill='black'/%3E%3C/svg%3E") /* art:bt-cassette */
+              center top / 576px 286px no-repeat;
+}
+.masthead[data-variant="1"] .wordmark {
+  height: 244px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='244' viewBox='0 0 576 244'%3E%3Crect width='576' height='244' fill='black'/%3E%3Cg fill='none' stroke='white' stroke-width='2'%3E%3Crect x='8' y='6' width='560' height='30'/%3E%3Crect x='8' y='36' width='560' height='202'/%3E%3Crect x='212' y='44' width='348' height='54'/%3E%3Crect x='16' y='120' width='544' height='30'/%3E%3Crect x='66' y='160' width='300' height='16'/%3E%3Crect x='400' y='160' width='92' height='16'/%3E%3Crect x='500' y='158' width='28' height='20'/%3E%3Crect x='532' y='158' width='28' height='20'/%3E%3Crect x='16' y='188' width='544' height='20'/%3E%3C/g%3E%3Crect x='16' y='13' width='14' height='15' fill='none' stroke='white' stroke-width='2'/%3E%3Crect x='34' y='13' width='14' height='15' fill='none' stroke='white' stroke-width='2'/%3E%3Crect x='52' y='13' width='14' height='15' fill='none' stroke='white' stroke-width='2'/%3E%3Crect x='524' y='13' width='14' height='15' fill='none' stroke='white' stroke-width='2'/%3E%3Crect x='544' y='13' width='14' height='15' fill='none' stroke='white' stroke-width='2'/%3E%3Cg transform='translate%2822 52%29 scale%280.92%29'%3E%3Cpath d='M7 30 L13 25 H23 L29 30 L23 35 H13 Z' fill='white' transform='translate%280 0%29'/%3E%3Cpath d='M7 1 H29 L23 8 H13 Z' fill='white' transform='translate%2840 0%29'/%3E%3Cpath d='M31 3 V27 L24 22 V9 Z' fill='white' transform='translate%2840 0%29'/%3E%3Cpath d='M7 30 L13 25 H23 L29 30 L23 35 H13 Z' fill='white' transform='translate%2840 0%29'/%3E%3Cpath d='M5 33 V57 L12 51 V38 Z' fill='white' transform='translate%2840 0%29'/%3E%3Cpath d='M7 59 H29 L23 52 H13 Z' fill='white' transform='translate%2840 0%29'/%3E%3Ccircle cx='88' cy='20' r='4' fill='white'/%3E%3Ccircle cx='88' cy='40' r='4' fill='white'/%3E%3Cpath d='M5 3 V27 L12 22 V9 Z' fill='white' transform='translate%28100 0%29'/%3E%3Cpath d='M7 30 L13 25 H23 L29 30 L23 35 H13 Z' fill='white' transform='translate%28100 0%29'/%3E%3Cpath d='M31 3 V27 L24 22 V9 Z' fill='white' transform='translate%28100 0%29'/%3E%3Cpath d='M31 33 V57 L24 51 V38 Z' fill='white' transform='translate%28100 0%29'/%3E%3Cpath d='M31 3 V27 L24 22 V9 Z' fill='white' transform='translate%28140 0%29'/%3E%3Cpath d='M31 33 V57 L24 51 V38 Z' fill='white' transform='translate%28140 0%29'/%3E%3C/g%3E%3Crect x='222' y='84' width='13' height='8' fill='white'/%3E%3Crect x='222' y='76' width='13' height='3' fill='white'/%3E%3Crect x='241' y='71' width='13' height='21' fill='white'/%3E%3Crect x='241' y='63' width='13' height='3' fill='white'/%3E%3Crect x='260' y='79' width='13' height='13' fill='white'/%3E%3Crect x='260' y='71' width='13' height='3' fill='white'/%3E%3Crect x='279' y='60' width='13' height='32' fill='white'/%3E%3Crect x='279' y='52' width='13' height='3' fill='white'/%3E%3Crect x='298' y='54' width='13' height='38' fill='white'/%3E%3Crect x='298' y='48' width='13' height='3' fill='white'/%3E%3Crect x='317' y='67' width='13' height='25' fill='white'/%3E%3Crect x='317' y='59' width='13' height='3' fill='white'/%3E%3Crect x='336' y='81' width='13' height='11' fill='white'/%3E%3Crect x='336' y='73' width='13' height='3' fill='white'/%3E%3Crect x='355' y='64' width='13' height='28' fill='white'/%3E%3Crect x='355' y='56' width='13' height='3' fill='white'/%3E%3Crect x='374' y='50' width='13' height='42' fill='white'/%3E%3Crect x='374' y='48' width='13' height='3' fill='white'/%3E%3Crect x='393' y='75' width='13' height='17' fill='white'/%3E%3Crect x='393' y='67' width='13' height='3' fill='white'/%3E%3Crect x='412' y='83' width='13' height='9' fill='white'/%3E%3Crect x='412' y='75' width='13' height='3' fill='white'/%3E%3Crect x='431' y='69' width='13' height='23' fill='white'/%3E%3Crect x='431' y='61' width='13' height='3' fill='white'/%3E%3Crect x='450' y='57' width='13' height='35' fill='white'/%3E%3Crect x='450' y='49' width='13' height='3' fill='white'/%3E%3Crect x='469' y='73' width='13' height='19' fill='white'/%3E%3Crect x='469' y='65' width='13' height='3' fill='white'/%3E%3Crect x='488' y='82' width='13' height='10' fill='white'/%3E%3Crect x='488' y='74' width='13' height='3' fill='white'/%3E%3Crect x='507' y='65' width='13' height='27' fill='white'/%3E%3Crect x='507' y='57' width='13' height='3' fill='white'/%3E%3Crect x='526' y='78' width='13' height='14' fill='white'/%3E%3Crect x='526' y='70' width='13' height='3' fill='white'/%3E%3Crect x='288' y='157' width='13' height='22' fill='white'/%3E%3Crect x='438' y='157' width='13' height='22' fill='white'/%3E%3Crect x='186' y='186' width='26' height='24' fill='white'/%3E%3Cpath d='M22 216h8v2h-8zM20 218h2v2h-2zM20 220h2v2h-2zM22 222h6v2h-6zM28 224h2v2h-2zM28 226h2v2h-2zM20 228h8v2h-8zM32 216h2v2h-2zM40 216h2v2h-2zM32 218h2v2h-2zM40 218h2v2h-2zM32 220h2v2h-2zM40 220h2v2h-2zM32 222h10v2h-10zM32 224h2v2h-2zM40 224h2v2h-2zM32 226h2v2h-2zM40 226h2v2h-2zM32 228h2v2h-2zM40 228h2v2h-2zM44 216h2v2h-2zM52 216h2v2h-2zM44 218h2v2h-2zM52 218h2v2h-2zM44 220h2v2h-2zM52 220h2v2h-2zM44 222h2v2h-2zM52 222h2v2h-2zM44 224h2v2h-2zM52 224h2v2h-2zM44 226h2v2h-2zM52 226h2v2h-2zM46 228h6v2h-6zM56 216h10v2h-10zM56 218h2v2h-2zM56 220h2v2h-2zM56 222h8v2h-8zM56 224h2v2h-2zM56 226h2v2h-2zM56 228h2v2h-2zM68 216h10v2h-10zM68 218h2v2h-2zM68 220h2v2h-2zM68 222h8v2h-8zM68 224h2v2h-2zM68 226h2v2h-2zM68 228h2v2h-2zM80 216h2v2h-2zM80 218h2v2h-2zM80 220h2v2h-2zM80 222h2v2h-2zM80 224h2v2h-2zM80 226h2v2h-2zM80 228h10v2h-10zM92 216h10v2h-10zM92 218h2v2h-2zM92 220h2v2h-2zM92 222h8v2h-8zM92 224h2v2h-2zM92 226h2v2h-2zM92 228h10v2h-10z' fill='white'/%3E%3Cpath d='M128 216h8v2h-8zM128 218h2v2h-2zM136 218h2v2h-2zM128 220h2v2h-2zM136 220h2v2h-2zM128 222h8v2h-8zM128 224h2v2h-2zM132 224h2v2h-2zM128 226h2v2h-2zM134 226h2v2h-2zM128 228h2v2h-2zM136 228h2v2h-2zM140 216h10v2h-10zM140 218h2v2h-2zM140 220h2v2h-2zM140 222h8v2h-8zM140 224h2v2h-2zM140 226h2v2h-2zM140 228h10v2h-10zM152 216h8v2h-8zM152 218h2v2h-2zM160 218h2v2h-2zM152 220h2v2h-2zM160 220h2v2h-2zM152 222h8v2h-8zM152 224h2v2h-2zM152 226h2v2h-2zM152 228h2v2h-2zM164 216h10v2h-10zM164 218h2v2h-2zM164 220h2v2h-2zM164 222h8v2h-8zM164 224h2v2h-2zM164 226h2v2h-2zM164 228h10v2h-10zM178 216h6v2h-6zM176 218h2v2h-2zM184 218h2v2h-2zM176 220h2v2h-2zM184 220h2v2h-2zM176 222h10v2h-10zM176 224h2v2h-2zM184 224h2v2h-2zM176 226h2v2h-2zM184 226h2v2h-2zM176 228h2v2h-2zM184 228h2v2h-2zM188 216h10v2h-10zM192 218h2v2h-2zM192 220h2v2h-2zM192 222h2v2h-2zM192 224h2v2h-2zM192 226h2v2h-2zM192 228h2v2h-2z' fill='white'/%3E%3Cpath d='M252 216h6v2h-6zM250 218h2v2h-2zM258 218h2v2h-2zM250 220h2v2h-2zM256 220h4v2h-4zM250 222h2v2h-2zM254 222h2v2h-2zM258 222h2v2h-2zM250 224h4v2h-4zM258 224h2v2h-2zM250 226h2v2h-2zM258 226h2v2h-2zM252 228h6v2h-6zM264 218h4v2h-4zM264 220h4v2h-4zM264 224h4v2h-4zM264 226h4v2h-4zM276 216h6v2h-6zM274 218h2v2h-2zM282 218h2v2h-2zM274 220h2v2h-2zM280 220h4v2h-4zM274 222h2v2h-2zM278 222h2v2h-2zM282 222h2v2h-2zM274 224h4v2h-4zM282 224h2v2h-2zM274 226h2v2h-2zM282 226h2v2h-2zM276 228h6v2h-6zM288 216h6v2h-6zM286 218h2v2h-2zM294 218h2v2h-2zM286 220h2v2h-2zM292 220h4v2h-4zM286 222h2v2h-2zM290 222h2v2h-2zM294 222h2v2h-2zM286 224h4v2h-4zM294 224h2v2h-2zM286 226h2v2h-2zM294 226h2v2h-2zM288 228h6v2h-6zM318 216h2v2h-2zM318 218h2v2h-2zM316 220h2v2h-2zM314 222h2v2h-2zM312 224h2v2h-2zM310 226h2v2h-2zM310 228h2v2h-2zM340 216h2v2h-2zM338 218h4v2h-4zM336 220h2v2h-2zM340 220h2v2h-2zM334 222h2v2h-2zM340 222h2v2h-2zM334 224h10v2h-10zM340 226h2v2h-2zM340 228h2v2h-2zM346 216h10v2h-10zM346 218h2v2h-2zM346 220h8v2h-8zM354 222h2v2h-2zM354 224h2v2h-2zM346 226h2v2h-2zM354 226h2v2h-2zM348 228h6v2h-6zM360 218h4v2h-4zM360 220h4v2h-4zM360 224h4v2h-4zM360 226h4v2h-4zM372 216h6v2h-6zM370 218h2v2h-2zM378 218h2v2h-2zM370 220h2v2h-2zM376 220h4v2h-4zM370 222h2v2h-2zM374 222h2v2h-2zM378 222h2v2h-2zM370 224h4v2h-4zM378 224h2v2h-2zM370 226h2v2h-2zM378 226h2v2h-2zM372 228h6v2h-6zM384 216h6v2h-6zM382 218h2v2h-2zM390 218h2v2h-2zM382 220h2v2h-2zM388 220h4v2h-4zM382 222h2v2h-2zM386 222h2v2h-2zM390 222h2v2h-2zM382 224h4v2h-4zM390 224h2v2h-2zM382 226h2v2h-2zM390 226h2v2h-2zM384 228h6v2h-6z' fill='white'/%3E%3Cpath d='M412 216h6v2h-6zM410 218h2v2h-2zM418 218h2v2h-2zM410 220h2v2h-2zM418 220h2v2h-2zM410 222h2v2h-2zM418 222h2v2h-2zM410 224h2v2h-2zM418 224h2v2h-2zM410 226h2v2h-2zM418 226h2v2h-2zM412 228h6v2h-6zM422 216h2v2h-2zM430 216h2v2h-2zM422 218h2v2h-2zM430 218h2v2h-2zM422 220h2v2h-2zM430 220h2v2h-2zM422 222h2v2h-2zM430 222h2v2h-2zM422 224h2v2h-2zM430 224h2v2h-2zM422 226h2v2h-2zM430 226h2v2h-2zM424 228h6v2h-6zM434 216h10v2h-10zM438 218h2v2h-2zM438 220h2v2h-2zM438 222h2v2h-2zM438 224h2v2h-2zM438 226h2v2h-2zM438 228h2v2h-2zM448 218h4v2h-4zM448 220h4v2h-4zM448 224h4v2h-4zM448 226h4v2h-4zM470 216h2v2h-2zM470 218h2v2h-2zM470 220h2v2h-2zM470 222h2v2h-2zM470 224h2v2h-2zM470 226h2v2h-2zM470 228h10v2h-10zM484 216h6v2h-6zM486 218h2v2h-2zM486 220h2v2h-2zM486 222h2v2h-2zM486 224h2v2h-2zM486 226h2v2h-2zM484 228h6v2h-6zM494 216h2v2h-2zM502 216h2v2h-2zM494 218h4v2h-4zM502 218h2v2h-2zM494 220h4v2h-4zM502 220h2v2h-2zM494 222h2v2h-2zM498 222h2v2h-2zM502 222h2v2h-2zM494 224h2v2h-2zM500 224h4v2h-4zM494 226h2v2h-2zM500 226h4v2h-4zM494 228h2v2h-2zM502 228h2v2h-2zM506 216h10v2h-10zM506 218h2v2h-2zM506 220h2v2h-2zM506 222h8v2h-8zM506 224h2v2h-2zM506 226h2v2h-2zM506 228h10v2h-10z' fill='white'/%3E%3C/svg%3E") /* art:bt-player */;
+  background-size: 576px 244px;
+}
+.masthead[data-variant="2"] .wordmark {
+  height: 266px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='266' viewBox='0 0 576 266'%3E%3Ccircle cx='128' cy='126' r='112' fill='black'/%3E%3Cg fill='none' stroke='white' stroke-width='1.6'%3E%3Ccircle cx='128' cy='126' r='48'/%3E%3Ccircle cx='128' cy='126' r='55'/%3E%3Ccircle cx='128' cy='126' r='62'/%3E%3Ccircle cx='128' cy='126' r='69'/%3E%3Ccircle cx='128' cy='126' r='76'/%3E%3Ccircle cx='128' cy='126' r='83'/%3E%3Ccircle cx='128' cy='126' r='90'/%3E%3Ccircle cx='128' cy='126' r='97'/%3E%3Ccircle cx='128' cy='126' r='104'/%3E%3C/g%3E%3Ccircle cx='128' cy='126' r='42' fill='white'/%3E%3Cg fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M128 90 A36 36 0 0 1 156 104'/%3E%3Cpath d='M128 162 A36 36 0 0 1 100 148'/%3E%3C/g%3E%3Ccircle cx='128' cy='126' r='6' fill='black'/%3E%3Cg fill='none' stroke='black' stroke-width='5' stroke-linecap='round'%3E%3Cpath d='M262 30 L214 80'/%3E%3Cpath d='M214 80 l-13 12'/%3E%3C/g%3E%3Ccircle cx='262' cy='30' r='15' fill='white' stroke='black' stroke-width='5'/%3E%3Ccircle cx='262' cy='30' r='4' fill='black'/%3E%3Crect x='190' y='86' width='24' height='15' fill='black' transform='rotate%28-45 202 93%29'/%3E%3Crect x='286' y='218' width='6' height='6' fill='black'/%3E%3Crect x='297' y='207' width='6' height='17' fill='black'/%3E%3Crect x='308' y='215' width='6' height='9' fill='black'/%3E%3Crect x='319' y='199' width='6' height='25' fill='black'/%3E%3Crect x='330' y='192' width='6' height='32' fill='black'/%3E%3Crect x='341' y='206' width='6' height='18' fill='black'/%3E%3Crect x='352' y='196' width='6' height='28' fill='black'/%3E%3Crect x='363' y='213' width='6' height='11' fill='black'/%3E%3Crect x='374' y='201' width='6' height='23' fill='black'/%3E%3Crect x='385' y='188' width='6' height='36' fill='black'/%3E%3Crect x='396' y='210' width='6' height='14' fill='black'/%3E%3Crect x='407' y='216' width='6' height='8' fill='black'/%3E%3Crect x='418' y='203' width='6' height='21' fill='black'/%3E%3Crect x='429' y='195' width='6' height='29' fill='black'/%3E%3Crect x='440' y='214' width='6' height='10' fill='black'/%3E%3Crect x='451' y='206' width='6' height='18' fill='black'/%3E%3Crect x='462' y='198' width='6' height='26' fill='black'/%3E%3Crect x='473' y='215' width='6' height='9' fill='black'/%3E%3Crect x='484' y='211' width='6' height='13' fill='black'/%3E%3Crect x='495' y='193' width='6' height='31' fill='black'/%3E%3Crect x='506' y='217' width='6' height='7' fill='black'/%3E%3Crect x='517' y='205' width='6' height='19' fill='black'/%3E%3Crect x='528' y='197' width='6' height='27' fill='black'/%3E%3Crect x='539' y='212' width='6' height='12' fill='black'/%3E%3Cpath d='M286 228 H558' stroke='black' stroke-width='2'/%3E%3Crect x='500' y='14' width='60' height='26' fill='black'/%3E%3Cpath d='M106 116h6v2h-6zM104 118h2v2h-2zM112 118h2v2h-2zM104 120h2v2h-2zM112 120h2v2h-2zM104 122h10v2h-10zM104 124h2v2h-2zM112 124h2v2h-2zM104 126h2v2h-2zM112 126h2v2h-2zM104 128h2v2h-2zM112 128h2v2h-2z' fill='black'/%3E%3Cpath d='M288 234h8v2h-8zM286 236h2v2h-2zM286 238h2v2h-2zM288 240h6v2h-6zM294 242h2v2h-2zM294 244h2v2h-2zM286 246h8v2h-8zM298 234h10v2h-10zM302 236h2v2h-2zM302 238h2v2h-2zM302 240h2v2h-2zM302 242h2v2h-2zM302 244h2v2h-2zM302 246h2v2h-2zM310 234h10v2h-10zM310 236h2v2h-2zM310 238h2v2h-2zM310 240h8v2h-8zM310 242h2v2h-2zM310 244h2v2h-2zM310 246h10v2h-10zM322 234h8v2h-8zM322 236h2v2h-2zM330 236h2v2h-2zM322 238h2v2h-2zM330 238h2v2h-2zM322 240h8v2h-8zM322 242h2v2h-2zM326 242h2v2h-2zM322 244h2v2h-2zM328 244h2v2h-2zM322 246h2v2h-2zM330 246h2v2h-2zM334 234h10v2h-10zM334 236h2v2h-2zM334 238h2v2h-2zM334 240h8v2h-8zM334 242h2v2h-2zM334 244h2v2h-2zM334 246h10v2h-10zM348 234h6v2h-6zM346 236h2v2h-2zM354 236h2v2h-2zM346 238h2v2h-2zM354 238h2v2h-2zM346 240h2v2h-2zM354 240h2v2h-2zM346 242h2v2h-2zM354 242h2v2h-2zM346 244h2v2h-2zM354 244h2v2h-2zM348 246h6v2h-6z' fill='black'/%3E%3Cpath d='M390 234h2v2h-2zM390 236h2v2h-2zM390 238h2v2h-2zM390 240h2v2h-2zM390 242h2v2h-2zM390 244h2v2h-2zM390 246h10v2h-10zM404 234h6v2h-6zM402 236h2v2h-2zM410 236h2v2h-2zM402 238h2v2h-2zM410 238h2v2h-2zM402 240h2v2h-2zM410 240h2v2h-2zM402 242h2v2h-2zM410 242h2v2h-2zM402 244h2v2h-2zM410 244h2v2h-2zM404 246h6v2h-6zM414 234h2v2h-2zM422 234h2v2h-2zM414 236h4v2h-4zM422 236h2v2h-2zM414 238h4v2h-4zM422 238h2v2h-2zM414 240h2v2h-2zM418 240h2v2h-2zM422 240h2v2h-2zM414 242h2v2h-2zM420 242h4v2h-4zM414 244h2v2h-2zM420 244h4v2h-4zM414 246h2v2h-2zM422 246h2v2h-2zM428 234h6v2h-6zM426 236h2v2h-2zM434 236h2v2h-2zM426 238h2v2h-2zM426 240h2v2h-2zM430 240h6v2h-6zM426 242h2v2h-2zM434 242h2v2h-2zM426 244h2v2h-2zM434 244h2v2h-2zM428 246h8v2h-8zM450 234h8v2h-8zM450 236h2v2h-2zM458 236h2v2h-2zM450 238h2v2h-2zM458 238h2v2h-2zM450 240h8v2h-8zM450 242h2v2h-2zM450 244h2v2h-2zM450 246h2v2h-2zM462 234h2v2h-2zM462 236h2v2h-2zM462 238h2v2h-2zM462 240h2v2h-2zM462 242h2v2h-2zM462 244h2v2h-2zM462 246h10v2h-10zM476 234h6v2h-6zM474 236h2v2h-2zM482 236h2v2h-2zM474 238h2v2h-2zM482 238h2v2h-2zM474 240h10v2h-10zM474 242h2v2h-2zM482 242h2v2h-2zM474 244h2v2h-2zM482 244h2v2h-2zM474 246h2v2h-2zM482 246h2v2h-2zM486 234h2v2h-2zM494 234h2v2h-2zM486 236h2v2h-2zM494 236h2v2h-2zM488 238h2v2h-2zM492 238h2v2h-2zM490 240h2v2h-2zM490 242h2v2h-2zM490 244h2v2h-2zM490 246h2v2h-2z' fill='black'/%3E%3Cpath d='M44 246h2v2h-2zM52 246h2v2h-2zM44 248h2v2h-2zM52 248h2v2h-2zM44 250h2v2h-2zM52 250h2v2h-2zM44 252h10v2h-10zM44 254h2v2h-2zM52 254h2v2h-2zM44 256h2v2h-2zM52 256h2v2h-2zM44 258h2v2h-2zM52 258h2v2h-2zM58 246h6v2h-6zM56 248h2v2h-2zM64 248h2v2h-2zM56 250h2v2h-2zM64 250h2v2h-2zM56 252h2v2h-2zM64 252h2v2h-2zM56 254h2v2h-2zM64 254h2v2h-2zM56 256h2v2h-2zM64 256h2v2h-2zM58 258h6v2h-6zM68 246h2v2h-2zM76 246h2v2h-2zM68 248h4v2h-4zM74 248h4v2h-4zM68 250h2v2h-2zM72 250h2v2h-2zM76 250h2v2h-2zM68 252h2v2h-2zM72 252h2v2h-2zM76 252h2v2h-2zM68 254h2v2h-2zM76 254h2v2h-2zM68 256h2v2h-2zM76 256h2v2h-2zM68 258h2v2h-2zM76 258h2v2h-2zM80 246h10v2h-10zM80 248h2v2h-2zM80 250h2v2h-2zM80 252h8v2h-8zM80 254h2v2h-2zM80 256h2v2h-2zM80 258h10v2h-10zM104 246h8v2h-8zM104 248h2v2h-2zM112 248h2v2h-2zM104 250h2v2h-2zM112 250h2v2h-2zM104 252h8v2h-8zM104 254h2v2h-2zM104 256h2v2h-2zM104 258h2v2h-2zM116 246h8v2h-8zM116 248h2v2h-2zM124 248h2v2h-2zM116 250h2v2h-2zM124 250h2v2h-2zM116 252h8v2h-8zM116 254h2v2h-2zM120 254h2v2h-2zM116 256h2v2h-2zM122 256h2v2h-2zM116 258h2v2h-2zM124 258h2v2h-2zM128 246h10v2h-10zM128 248h2v2h-2zM128 250h2v2h-2zM128 252h8v2h-8zM128 254h2v2h-2zM128 256h2v2h-2zM128 258h10v2h-10zM142 246h8v2h-8zM140 248h2v2h-2zM140 250h2v2h-2zM142 252h6v2h-6zM148 254h2v2h-2zM148 256h2v2h-2zM140 258h8v2h-8zM154 246h8v2h-8zM152 248h2v2h-2zM152 250h2v2h-2zM154 252h6v2h-6zM160 254h2v2h-2zM160 256h2v2h-2zM152 258h8v2h-8zM166 246h6v2h-6zM168 248h2v2h-2zM168 250h2v2h-2zM168 252h2v2h-2zM168 254h2v2h-2zM168 256h2v2h-2zM166 258h6v2h-6zM176 246h2v2h-2zM184 246h2v2h-2zM176 248h4v2h-4zM184 248h2v2h-2zM176 250h4v2h-4zM184 250h2v2h-2zM176 252h2v2h-2zM180 252h2v2h-2zM184 252h2v2h-2zM176 254h2v2h-2zM182 254h4v2h-4zM176 256h2v2h-2zM182 256h4v2h-4zM176 258h2v2h-2zM184 258h2v2h-2zM190 246h6v2h-6zM188 248h2v2h-2zM196 248h2v2h-2zM188 250h2v2h-2zM188 252h2v2h-2zM192 252h6v2h-6zM188 254h2v2h-2zM196 254h2v2h-2zM188 256h2v2h-2zM196 256h2v2h-2zM190 258h8v2h-8z' fill='black'/%3E%3C/svg%3E") /* art:bt-disc */;
+  background-size: 576px 266px;
+}
+
+/* Today's title, written onto whatever the header is. */
+.mh-title {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+/* 0: on the cassette's own label, with a reversed A beside it. */
+.mh-title {
+  left: 108px; right: 52px; top: 44px; height: 88px;
+  display: flex; align-items: center;
+  font-size: calc(var(--size-body) * 1.85);
+}
+.mh-title::before {
+  content: "A";
+  position: absolute; left: -58px; top: 50%; transform: translateY(-50%);
+  background: #000; color: #fff; font-weight: var(--bold);
+  font-size: calc(var(--size-body) * 1.35);
+  line-height: 1; padding: 6px 11px 4px;
+}
+/* 1: scrolling in the player's marquee, in the mono face the panel is set in,
+   and cut off by the end of the window the way a marquee is. */
+.masthead[data-variant="1"] .mh-title {
+  left: 22px; right: 22px; top: 124px; height: 24px;
+  display: block;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.masthead[data-variant="1"] .mh-title::before {
+  content: "*** ";
+  position: static; transform: none;
+  background: none; color: #fff; padding: 0;
+  font-family: inherit; font-size: inherit;
+}
+.masthead[data-variant="1"] .mh-title::after { content: " *** side a *** press play, or dont ***"; }
+/* 2: beside the record, over its waveform. */
+.masthead[data-variant="2"] .mh-title {
+  left: 286px; right: 16px; top: 42px; height: 116px;
+  /* Centred in the column rather than hung from the top: a one-line title
+     otherwise left a hole between itself and the plate under it. */
+  display: flex; flex-direction: column; justify-content: center;
+  font-size: calc(var(--size-body) * 1.78);
+}
+.masthead[data-variant="2"] .mh-title::before {
+  content: "now playing \2014  side a";
+  position: static; transform: none;
+  display: block; background: none; color: #000; padding: 0 0 4px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.18em;
+}
+
+/* The plate: what the tape is, and when it was dubbed. On the player it is the
+   bitrate strip, so it says so. */
+.dateline {
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  margin: 8px var(--pad) 0;
+  padding: 4px 0 5px;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.dateline::before { content: "dubbed  \00B7  "; }
+.masthead[data-variant="1"] .dateline::before { content: "encoded  \00B7  "; }
+.masthead[data-variant="2"] .dateline::before { content: "pressed  \00B7  "; }
+/* The strips painted inside the art are short and fixed. The long date is not
+   one of them: a player panel has nowhere for a line to wrap to. */
+.masthead[data-variant="1"] .wordmark::before,
+.masthead[data-variant="1"] .wordmark::after { white-space: pre; }
+.masthead[data-variant="1"]::before { left: 76px; right: 76px; top: 10px; }
+.masthead[data-variant="1"]::after {
+  content: "128 kbps  \00B7  44 khz  \00B7  stereo";
+  position: absolute; left: 224px; right: 24px; top: 100px; height: 18px;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.masthead[data-variant="2"]::before { content: none; }
+.masthead[data-variant="2"]::after {
+  content: "33 1/3  \00B7  c-90  \00B7  home dub  \00B7  do not lend";
+  position: absolute; left: 286px; right: 16px; top: 162px; height: 18px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+/* The player's title bar holds the file, which is the date and a lie about
+   how finished it is. */
+.masthead::before { content: ""; display: none; }
+.masthead[data-variant="1"]::before {
+  content: attr(data-dd) "-" attr(data-mm) "-26_final_FINAL_v2.wav";
+  display: block;
+  position: absolute; left: 76px; right: 76px; top: 10px; height: 22px;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  line-height: 22px;
+  letter-spacing: 0.04em;
+}
+
+
+/* ---------- the small print on the case ----------
+   Every label here is a pseudo-element positioned against the masthead, which
+   is the only way to set type over the art in the page's own faces. */
+.wordmark::before, .wordmark::after {
+  position: absolute;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  /* Stamped small print, well clear of the 12px floor. --size-tiny is 17px on
+     Archivo, which is a caption rather than a marking. */
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: pre;
+}
+/* 0: stamped either side of the window. */
+.wordmark::before { content: "c-90\A home\A dub"; left: 54px; top: 178px; }
+.wordmark::after  { content: "type i\A normal\A bias"; left: 468px; top: 178px; }
+/* 0: along the bottom edge of the shell, where a tape carries its serial. */
+.masthead::before {
+  content: "no. " attr(data-no);
+  display: block;
+  position: absolute; left: 176px; top: 258px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.masthead::after {
+  content: attr(data-dd) "." attr(data-mm) ".26";
+  display: block;
+  position: absolute; right: 176px; top: 258px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+/* 0: the credit under the title, on the label itself. */
+.masthead[data-variant="0"] .mh-title::after {
+  content: "rec. by me, over something that mattered less";
+  position: absolute; left: 2px; top: 62px;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+/* 1: the labels screwed to the panel. */
+.masthead[data-variant="1"] .wordmark::before,
+.masthead[data-variant="1"] .wordmark::after {
+  color: #fff;
+  top: 160px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.masthead[data-variant="1"] .wordmark::before { content: "vol"; left: 24px; }
+.masthead[data-variant="1"] .wordmark::after  { content: "bal"; left: 372px; }
+.masthead[data-variant="1"] .dateline::after {
+  content: "eq  pl";
+  position: absolute; left: 502px; top: 160px;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+/* 2: the chip beside the arm, and nothing else - the disc says it in the art. */
+.masthead[data-variant="2"] .wordmark::before {
+  content: "rec";
+  left: 512px; top: 20px; font-size: 14px; line-height: 20px;
+  color: #fff;
+  letter-spacing: 0.14em;
+}
+.masthead[data-variant="2"] .wordmark::after { content: none; }
+
+/* What today's one is about: his sleeve note, in a box under the header. */
+.mh-mix {
+  margin: 10px var(--pad) 0;
+  padding: 26px 12px 11px;
+  border: 3px solid #000;
+  position: relative;
+  font-size: var(--size-small);
+  line-height: 1.32;
+}
+.mh-mix::before {
+  content: var(--note-label);
+  position: absolute; top: -3px; left: -3px;
+  background: #000; color: #fff; font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 3px 10px 4px;
+}
+.mh-mix::after {
+  content: "";
+  position: absolute; top: -3px; right: -3px; height: 22px; width: 40px;
+  background: repeating-linear-gradient(45deg, #000 0 3px, #fff 3px 8px);
+  border: 3px solid #000;
+}
+
+/* ---------- sections: cued off the tape counter ---------- */
+.receipt { counter-reset: cue 0; }
+section.sec.weather, section.sec.news, section.sec.slot { counter-increment: cue 143; }
+
+.sec-head {
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  margin: 10px 0 7px;
+  padding: 5px var(--pad) 6px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.sec-head::before {
+  content: "0" counter(cue);
+  display: inline-block;
+  margin-right: 10px;
+  padding-right: 20px;
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath d='M5 3 L21 12 L5 21 Z' fill='black'/%3E%3C/svg%3E")
+              right center / 13px 13px no-repeat;
+}
+/* Section rules are the levels between tracks, not a line. */
+.rule {
+  --lit: 62%;
+  height: 11px;
+  background:
+    repeating-linear-gradient(to right, #000 0 13px, #fff 13px 17px)
+      left center / var(--lit) 9px no-repeat,
+    repeating-linear-gradient(to right, #000 0 2px, #fff 2px 17px)
+      right center / calc(98% - var(--lit)) 9px no-repeat;
+  margin: 12px 0 0;
+}
+/* The needle does not sit still between tracks. */
+.rule:nth-of-type(5n+1) { --lit: 74%; }
+.rule:nth-of-type(5n+2) { --lit: 41%; }
+.rule:nth-of-type(5n+3) { --lit: 88%; }
+.rule:nth-of-type(5n+4) { --lit: 56%; }
+.rule:nth-of-type(5n+5) { --lit: 29%; }
+.rule + .rule { display: none; }
+
+/* ---------- weather ---------- */
+.verdict { margin-bottom: 8px; }
+.temps { border-top-width: 3px; border-bottom-width: 3px; }
+.temp-label { letter-spacing: 0.14em; font-family: var(--font-accent);
+              font-weight: var(--accent-bold); }
+.temp-value { font-family: var(--font-display); font-weight: var(--display-weight);
+              font-size: calc(var(--size-body) * 2); }
+.weather .meta { font-family: var(--font-mono); font-size: var(--size-tiny); }
+
+/* ---------- news ---------- */
+.news-item { display: flex; gap: 9px; margin-bottom: 6px; }
+.news-n {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  border: 2px solid #000;
+  padding: 0 5px;
+  height: 1.5em;
+}
+
+/* ---------- itemization: side A ---------- */
+.itemization { counter-reset: track; padding-top: 6px; }
+.itemization::before {
+  content: "side a";
+  display: block;
+  margin: 0 0 4px;
+  border-bottom: 4px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.7);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.item {
+  counter-increment: track;
+  border-bottom: 1px solid #000;
+  padding: 4px 0 3px;
+  text-transform: uppercase;
+}
+.item::before {
+  content: "A" counter(track);
+  flex: none;
+  width: 34px;
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+}
+/* The tier is what kind of track it turned out to be. */
+.item-tier { font-size: 0; }
+.item-tier::before { font-size: var(--size-tiny); font-family: var(--font-mono); }
+.tier-common .item-tier::before    { content: "filler"; }
+.tier-uncommon .item-tier::before  { content: "deep cut"; }
+.tier-rare .item-tier::before      { content: "the one"; }
+.tier-legendary .item-tier::before { content: "unreleased"; }
+.item-price { font-family: var(--font-mono); font-size: var(--size-small); }
+/* And the one that did not make the tape, with his reason. */
+.itemization::after {
+  counter-increment: track;
+  content: "A" counter(track) "  [" var(--lost) "]";
+  display: block;
+  padding: 5px 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- totals ---------- */
+.totals { padding-top: 6px; }
+.totals::before {
+  content: "runtime";
+  display: block;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-top: 3px solid #000;
+  padding-top: 5px;
+}
+.totals .stars { letter-spacing: 0.1em; }
+
+/* ---------- legalese: the back of the inlay card ----------
+   The two bits of small print every tape carried: the copyright line, under
+   the skull with two cassettes for crossbones off the old home-taping sticker,
+   which he starts reading and wanders out of; and the liner-note thank-yous. */
+.legalese {
+  border-top: 2px solid #000;
+  padding-top: 7px;
+  margin-top: 10px;
+  line-height: 1.35;
+}
+.legalese::before {
+  content: "\00A9  him  \00B7  all rights reserved (ish)";
+  display: flex; align-items: center;
+  min-height: 50px;
+  margin-bottom: 4px;
+  padding-left: 74px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='50' viewBox='0 0 64 50'%3E%3Cg fill='white' stroke='black' stroke-width='3'%3E%3Cg transform='rotate%2827 32 25%29'%3E%3Crect x='6' y='14' width='52' height='22' rx='3'/%3E%3C/g%3E%3Cg transform='rotate%28-27 32 25%29'%3E%3Crect x='6' y='14' width='52' height='22' rx='3'/%3E%3C/g%3E%3C/g%3E%3Cg fill='black'%3E%3Cg transform='rotate%2827 32 25%29'%3E%3Ccircle cx='14' cy='25' r='3.4'/%3E%3Ccircle cx='50' cy='25' r='3.4'/%3E%3C/g%3E%3Cg transform='rotate%28-27 32 25%29'%3E%3Ccircle cx='14' cy='25' r='3.4'/%3E%3Ccircle cx='50' cy='25' r='3.4'/%3E%3C/g%3E%3C/g%3E%3Cpath d='M32 5 C21.5 5 17 12.5 17 20 C17 25 19 28.5 23 30.5 V37 H41 V30.5 C45 28.5 47 25 47 20 C47 12.5 42.5 5 32 5 Z' fill='black' stroke='white' stroke-width='3'/%3E%3Ccircle cx='26.5' cy='20' r='4.2' fill='white'/%3E%3Ccircle cx='37.5' cy='20' r='4.2' fill='white'/%3E%3Cpath d='M32 24.5 L29.5 29 H34.5 Z' fill='white'/%3E%3Cpath d='M27.5 32.5 V37 M32 32.5 V37 M36.5 32.5 V37' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E") left center / 64px 50px no-repeat;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.legalese .footnote { margin-top: 6px; font-family: var(--font-mono);
+                      font-size: var(--size-tiny); }
+.legalese .footnote::before { content: "shouts out to: "; font-weight: var(--bold); }
+
+/* ---------- serial: the transport row, and the end of the tape ---------- */
+.serial { margin-top: 14px; }
+.serial::before {
+  content: "";
+  display: block;
+  height: 40px;
+  border-top: 3px solid #000;
+  padding-top: 8px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='330' height='30' viewBox='0 0 330 30'%3E%3Cg fill='none' stroke='black' stroke-width='3'%3E%3Crect x='1.5' y='1.5' width='51' height='27'/%3E%3Crect x='56.5' y='1.5' width='51' height='27'/%3E%3Crect x='111.5' y='1.5' width='51' height='27'/%3E%3Crect x='166.5' y='1.5' width='51' height='27'/%3E%3Crect x='221.5' y='1.5' width='51' height='27'/%3E%3Crect x='276.5' y='1.5' width='51' height='27'/%3E%3C/g%3E%3Cg fill='black'%3E%3Cpath d='M40 8 L28 15 L40 22 Z M28 8 L16 15 L28 22 Z'/%3E%3Cpath d='M72 7 L96 15 L72 23 Z'/%3E%3Cpath d='M124 7 h6 v16 h-6 z M138 7 h6 v16 h-6 z'/%3E%3Crect x='180' y='7' width='16' height='16'/%3E%3Cpath d='M234 8 L246 15 L234 22 Z M246 8 L258 15 L246 22 Z'/%3E%3Cpath d='M302 4 L312 14 H292 Z M292 18 h20 v5 h-20 z'/%3E%3C/g%3E%3C/svg%3E")
+              center top 8px / 330px 30px no-repeat;
+}
+.serial .row {
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-top: 2px solid #000;
+  padding-top: 5px;
+}
+.serial .row span:first-child::after { content: "  \00B7  auto reverse"; }
+.serial .row span:last-child::before { content: "tape end  \00B7  "; }
+
+/* ---------- coupon: one for the road ---------- */
+.tear {
+  border-top: 3px dashed #000;
+  margin-top: 14px;
+  padding-top: 7px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.coupon-inner {
+  background: #000;
+  color: #fff;
+  margin-top: 8px;
+  padding: 12px var(--pad) 16px;
+}
+.coupon-head {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+/* The bar itself: knocked out, big, and in the spine face - the one place on
+   the page where he is not pretending he does not care. */
+.coupon-body {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.6);
+  line-height: 1.04;
+  text-transform: uppercase;
+  margin: 8px 0 7px;
+}
+.coupon-terms {
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  font-weight: var(--bold);
+}
+
+/* ---------- puzzle answers: side B ---------- */
+.answers { border-top: 3px solid #000; padding-top: 8px; }
+.answers .answer-label { font-family: var(--font-accent);
+                         font-weight: var(--accent-bold);
+                         letter-spacing: 0.1em; text-transform: uppercase; }

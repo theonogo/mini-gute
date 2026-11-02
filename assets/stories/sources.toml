@@ -1,0 +1,57 @@
+# Public-domain short stories for slot 148 (three-part story) and slot 144 /
+# legendary format 9 (full short story). Read by tools/harveststories.py.
+#
+# Each book is a Project Gutenberg plain-text collection. Stories are split at
+# their all-caps title headings. `internal` lists all-caps lines inside a story
+# (section titles, letters, a signature) that must NOT be read as a boundary -
+# splitting at one would print half a story as if it were whole.
+#
+# To add a book: add its id, run `python tools/harveststories.py --list <id>`
+# to see where it would split, put any internal headings in `internal`, then
+# run the harvest.
+
+[[book]]
+id = 269
+author = "Saki"
+internal = ["AUTHOR'S NOTE", "H. H. M."]
+
+[[book]]
+id = 3688
+author = "Saki"
+internal = ["THE CHRONICLES OF CLOVIS", "\"SAKI\" (H. H. MUNRO)", "H. H. M.",
+            "INTRODUCTION", "A. A. MILNE."]
+
+[[book]]
+id = 1477
+author = "Saki"
+internal = ["R. R.", "HECTOR HUGH MUNRO", "ROTHAY REYNOLDS,"]
+
+[[book]]
+id = 2776
+author = "O. Henry"
+internal = ["JIMMY._", "\"DEAREST WALTER, WITH HARD-BOILED EGG.\""]
+
+[[book]]
+id = 2148
+author = "Edgar Allan Poe"
+internal = ["VOLUME II.", "MY DEAR P——,", "VALDEMAR"]
+
+[[book]]
+id = 160
+author = "Kate Chopin"
+internal = []
+
+[[book]]
+id = 4366
+author = "Ambrose Bierce"
+internal = ["JO. DUNFER.  DONE FOR."]
+
+[[book]]
+id = 13415
+author = "Anton Chekhov (tr. Constance Garnett)"
+internal = ["THE TALES OF CHEKHOV", "VOLUME 3", "BY", "ANTON TCHEKHOV"]
+
+[[book]]
+id = 11870
+author = "H. G. Wells"
+internal = ["H. G. WELLS", "H. G. WELLS.", "INTRODUCTION"]

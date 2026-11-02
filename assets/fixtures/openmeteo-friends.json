@@ -1,0 +1,174 @@
+{
+ "captured": "2026-10-20",
+ "zones": [
+  "America/Los_Angeles",
+  "America/New_York",
+  "America/Sao_Paulo",
+  "Europe/London",
+  "Europe/Berlin",
+  "Asia/Kolkata",
+  "Asia/Tokyo",
+  "Australia/Sydney"
+ ],
+ "response": [
+  {
+   "latitude": 34.060257,
+   "longitude": -118.23433,
+   "generationtime_ms": 0.0209808349609375,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 91.0,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 20.0
+   }
+  },
+  {
+   "latitude": 40.710335,
+   "longitude": -73.99308,
+   "generationtime_ms": 0.010132789611816406,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 51.0,
+   "location_id": 1,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 18.8
+   }
+  },
+  {
+   "latitude": -23.514938,
+   "longitude": -46.610504,
+   "generationtime_ms": 0.009775161743164062,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 745.0,
+   "location_id": 2,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 23.2
+   }
+  },
+  {
+   "latitude": 51.51147,
+   "longitude": -0.13078308,
+   "generationtime_ms": 0.010848045349121094,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 23.0,
+   "location_id": 3,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 11.7
+   }
+  },
+  {
+   "latitude": 52.528915,
+   "longitude": 13.423877,
+   "generationtime_ms": 0.02288818359375,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 46.0,
+   "location_id": 4,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 9.5
+   }
+  },
+  {
+   "latitude": 22.530754,
+   "longitude": 88.3195,
+   "generationtime_ms": 0.0073909759521484375,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 11.0,
+   "location_id": 5,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 26.1
+   }
+  },
+  {
+   "latitude": 35.7,
+   "longitude": 139.6875,
+   "generationtime_ms": 0.008463859558105469,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 40.0,
+   "location_id": 6,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 18.8
+   }
+  },
+  {
+   "latitude": -33.848858,
+   "longitude": 151.19551,
+   "generationtime_ms": 0.006318092346191406,
+   "utc_offset_seconds": 0,
+   "timezone": "GMT",
+   "timezone_abbreviation": "GMT",
+   "elevation": 51.0,
+   "location_id": 7,
+   "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C"
+   },
+   "current": {
+    "time": "2026-10-20T16:15",
+    "interval": 900,
+    "temperature_2m": 15.2
+   }
+  }
+ ]
+}

@@ -1,0 +1,545 @@
+/* Weights come from --bold, never a literal 700. Barlow and Barlow Condensed
+   ship real 700s (--bold, --display-weight 700); Alfa Slab One has one weight,
+   and it is the scoreboard's. See the font-synthesis note in the base
+   stylesheet. */
+/* The Commentary Box.
+ *
+ * Two old hands calling the reader's day live - and a different sport every morning,
+ * rotated by date (data-variant, and the matching brief in [persona]
+ * variant_briefs, so the commentators know what they are watching):
+ *
+ *   0 cricket       the pavilion roof; TOTAL / WKTS / OVERS; DRINKS, LUNCH, TEA
+ *   1 football      floodlights and the stand; HOME - AWAY; minutes in the game
+ *   2 rugby         the posts, a kick going over; PHASE; SCRUM, TMO REVIEW
+ *   3 basketball    the backboard, rim and shot clocks; Q1; TIMEOUT, HALFTIME
+ *   4 the wildcard  a striped marquee with a question mark on its flag, for a
+ *                   game nobody understands, played by rules that change when
+ *                   looked at - the points, the board and the stoppages with it
+ *
+ * Whatever the sport the document is the same one: a scoreboard with the date
+ * up as the score in white slab numerals and the receipt number on the second
+ * line, a broadcast lower-third (LIVE, and the reader's narrated state of play),
+ * transcript sections, the team sheet for an itemization, a raffle ticket for a
+ * coupon. Under the board, before any section, the two of them set the scene:
+ * a narrated exchange about the state of the game, in the same transcript
+ * columns as everything else. Everything that names the sport is a custom property set once per
+ * variant below and read everywhere else, so a sport is one block to add.
+ *
+ * Every section is a transcript. The narrator writes each turn as CLIVE: or
+ * DENNIS:, and main.dialogue() sets those as blocks, so the speaker's name
+ * stands in a condensed caps column on the left against a rule and the speech
+ * runs on the right. A body with no named turns - an unvoiced fallback, a
+ * verbatim slot - is left as it is.
+ *
+ * Signature trick: on a day with rain forecast (data-wet) the conditions line
+ * turns and a hatched tarpaulin band is pulled across the foot of the weather -
+ * RAIN STOPPED PLAY at the cricket, a pitch inspection at the football, the
+ * rugby saying they play on, the basketball pointing out it is indoors, and the
+ * wildcard awarding the rain three points.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 8px; --sec-end: 12px; }
+
+body { line-height: 1.36; }
+
+/* ---------- the sports ---------- */
+.receipt {
+  counter-reset: over;
+  /* 0: cricket, and the defaults for anything unset. */
+  --board-a: "TOTAL "; --board-b: "  WKTS "; --board-e: "";
+  --board-c: "OVERS "; --board-d: "     LAST WKT 0";
+  --head-pre: "OVER "; --head-post: "";
+  --r1: "DRINKS"; --r2: "LUNCH"; --r3: "TEA";
+  --dry: "CONDITIONS  \2014  COVERS OFF"; --wet: "CONDITIONS  \2014  COVERS ON";
+  --band: "RAIN STOPPED PLAY"; --band-w: 300px;
+  --card: "SCORECARD  \2014  BATTING ORDER";
+  --t-common: "not out"; --t-uncommon: "c Clive b Dennis";
+  --t-rare: "retired hurt"; --t-legendary: "a century";
+  --rules: "CLOSE OF PLAY  \2014  THE WRAP-UP";
+  --close: "CLOSE OF PLAY  \2014  RESUMES TOMORROW MORNING";
+  --tear: "- - - - -  STUMPS  - - - - -";
+  --prize-pre: "DRAWN AT TEA  \00B7  PRIZE: ";
+}
+.receipt:has(.masthead[data-variant="1"]) {
+  --board-a: "HOME "; --board-b: " - "; --board-e: " AWAY";
+  --board-c: "ATTENDANCE "; --board-d: "     +4";
+  --head-pre: ""; --head-post: "'";
+  --r1: "VAR CHECK"; --r2: "HALF TIME"; --r3: "ADDED TIME";
+  --dry: "PITCH  \2014  PLAYING WELL"; --wet: "PITCH  \2014  HEAVY";
+  --band: "PITCH INSPECTION AT NOON"; --band-w: 380px;
+  --card: "TEAM SHEET";
+  --t-common: "on the bench"; --t-uncommon: "starting XI";
+  --t-rare: "captain"; --t-legendary: "hat-trick";
+  --rules: "FULL TIME  \2014  THE ANALYSIS";
+  --close: "FULL TIME  \2014  SAME AGAIN TOMORROW";
+  --tear: "- - - - -  FULL TIME  - - - - -";
+  --prize-pre: "DRAWN AT HALF TIME  \00B7  PRIZE: ";
+}
+.receipt:has(.masthead[data-variant="2"]) {
+  --board-a: var(--reader-caps) " "; --board-b: " - "; --board-e: " DAY";
+  --board-c: "PHASE "; --board-d: "     PENS 0";
+  --head-pre: "PHASE "; --head-post: "";
+  --r1: "SCRUM"; --r2: "HALF TIME"; --r3: "TMO REVIEW";
+  --dry: "CONDITIONS  \2014  DRY BALL"; --wet: "CONDITIONS  \2014  GREASY BALL";
+  --band: "RAIN  \2014  THEY PLAY ON"; --band-w: 340px;
+  --card: "TEAM SHEET  \2014  " var(--reader-caps) " XV";
+  --t-common: "replacement"; --t-uncommon: "try";
+  --t-rare: "penalty try"; --t-legendary: "grand slam";
+  --rules: "NO SIDE  \2014  THE ANALYSIS";
+  --close: "NO SIDE  \2014  SAME AGAIN TOMORROW";
+  --tear: "- - - - -  NO SIDE  - - - - -";
+  --prize-pre: "DRAWN AT HALF TIME  \00B7  PRIZE: ";
+}
+.receipt:has(.masthead[data-variant="3"]) {
+  --board-a: var(--reader-caps) " "; --board-b: " - "; --board-e: " DAY";
+  --board-c: "POSS "; --board-d: "     SHOT CLOCK 24";
+  --head-pre: "Q"; --head-post: "";
+  --r1: "TIMEOUT"; --r2: "HALFTIME"; --r3: "COACH'S CHALLENGE";
+  --dry: "CONDITIONS  \2014  INDOORS"; --wet: "CONDITIONS  \2014  INDOORS (IT IS RAINING OUTSIDE)";
+  --band: "RAIN  \2014  IT'S INDOORS, CLIVE"; --band-w: 380px;
+  --card: "STARTING FIVE";
+  --t-common: "bench"; --t-uncommon: "starter";
+  --t-rare: "all-star"; --t-legendary: "MVP";
+  --rules: "FINAL  \2014  THE ANALYSIS";
+  --close: "FINAL  \2014  SAME TIME TOMORROW";
+  --tear: "- - - - -  BUZZER  - - - - -";
+  --prize-pre: "DRAWN AT HALFTIME  \00B7  PRIZE: ";
+}
+.receipt:has(.masthead[data-variant="4"]) {
+  --board-a: var(--reader-caps) " "; --board-b: " ? "; --board-e: " HUSH";
+  --board-c: "ROUND "; --board-d: " OF WHEN";
+  --r1: "THE HOUR THAT DOES NOT HAPPEN"; --r2: "SECOND WHISTLE (THE FIRST IS NEVER BLOWN)"; --r3: "THE FIELD REARRANGES";
+  --dry: "CONDITIONS  \2014  THE SKY IS BEING ALLOWED"; --wet: "CONDITIONS  \2014  WET. THE RAIN IS ON THE OTHER TEAM";
+  --band: "THE RAIN HAS BEEN AWARDED 3 POINTS"; --band-w: 470px;
+  --card: "LINE-UP  (SOME HAVE NOT YET BEEN BORN)";
+  --t-common: "points refunded"; --t-uncommon: "a hush";
+  --t-rare: "the goat's favour"; --t-legendary: "the Sequence";
+  --rules: "THE ANALYSIS (NOBODY AGREES)";
+  --close: "IT APPEARS TO BE OVER. IT IS NEVER OVER";
+  --tear: "- - -  DO NOT LOOK AT THE SCOREBOARD  - - -";
+  --prize-pre: "DRAWN WHEN THE GOAT DECIDES  \00B7  PRIZE: ";
+}
+
+/* ---------- masthead: the scoreboard ---------- */
+.masthead {
+  display: flex; flex-direction: column;
+  padding: 4px 0 0;
+}
+/* The ground over the board, carried by the emptied wordmark. */
+.wordmark {
+  order: 0;
+  height: 96px;
+  font-size: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='96' viewBox='0 0 576 96'%3E%3Cpath d='M16 96 L288 32 L560 96 Z' fill='white' stroke='black' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M50.0 93.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M84.0 85.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M118.0 77.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M152.0 69.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M186.0 61.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M220.0 53.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M254.0 45.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M288.0 37.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M322.0 45.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M356.0 53.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M390.0 61.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M424.0 69.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M458.0 77.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M492.0 85.0 V94' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M526.0 93.0 V94' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='288' cy='70' r='18' fill='white' stroke='black' stroke-width='3'/%3E%3Ccircle cx='301.5' cy='70.0' r='1.1' fill='black'/%3E%3Ccircle cx='299.7' cy='76.8' r='1.1' fill='black'/%3E%3Ccircle cx='294.8' cy='81.7' r='1.1' fill='black'/%3E%3Ccircle cx='288.0' cy='83.5' r='1.1' fill='black'/%3E%3Ccircle cx='281.2' cy='81.7' r='1.1' fill='black'/%3E%3Ccircle cx='276.3' cy='76.8' r='1.1' fill='black'/%3E%3Ccircle cx='274.5' cy='70.0' r='1.1' fill='black'/%3E%3Ccircle cx='276.3' cy='63.2' r='1.1' fill='black'/%3E%3Ccircle cx='281.2' cy='58.3' r='1.1' fill='black'/%3E%3Ccircle cx='288.0' cy='56.5' r='1.1' fill='black'/%3E%3Ccircle cx='294.8' cy='58.3' r='1.1' fill='black'/%3E%3Ccircle cx='299.7' cy='63.2' r='1.1' fill='black'/%3E%3Cpath d='M288 70 V59 M288 70 L296 74' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M288 32 V10 M266 18 H310 M310 18 L303 13 M310 18 L303 23 M266 18 L262 13 M266 18 L262 23' stroke='black' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='294' cy='3' r='3.4' fill='black'/%3E%3Cpath d='M293 7 L290 10 M293 7 L298 10 M291 5 L302 -1' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") /* art:cb-pavilion */ center bottom / 576px 96px no-repeat;
+}
+.masthead[data-variant="1"] .wordmark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='96' viewBox='0 0 576 96'%3E%3Cpath d='M30 96 L40 24 M58 96 L48 24' stroke='black' stroke-width='3'/%3E%3Cpath d='M30.0 96 L56.4 84 M58.0 96 L31.6 84' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M31.6 84 L54.8 72 M56.4 84 L33.2 72' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M33.2 72 L53.2 60 M54.8 72 L34.8 60' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M34.8 60 L51.6 48 M53.2 60 L36.4 48' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M36.4 48 L50.0 36 M51.6 48 L38.0 36' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M38.0 36 L48.4 24 M50.0 36 L39.6 24' stroke='black' stroke-width='1.4'/%3E%3Crect x='18' y='2' width='52' height='24' fill='black'/%3E%3Ccircle cx='26' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='38' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='50' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='62' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='26' cy='19' r='3.6' fill='white'/%3E%3Ccircle cx='38' cy='19' r='3.6' fill='white'/%3E%3Ccircle cx='50' cy='19' r='3.6' fill='white'/%3E%3Ccircle cx='62' cy='19' r='3.6' fill='white'/%3E%3Cpath d='M518 96 L528 24 M546 96 L536 24' stroke='black' stroke-width='3'/%3E%3Cpath d='M518.0 96 L544.4 84 M546.0 96 L519.6 84' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M519.6 84 L542.8 72 M544.4 84 L521.2 72' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M521.2 72 L541.2 60 M542.8 72 L522.8 60' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M522.8 60 L539.6 48 M541.2 60 L524.4 48' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M524.4 48 L538.0 36 M539.6 48 L526.0 36' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M526.0 36 L536.4 24 M538.0 36 L527.6 24' stroke='black' stroke-width='1.4'/%3E%3Crect x='506' y='2' width='52' height='24' fill='black'/%3E%3Ccircle cx='514' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='526' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='538' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='550' cy='9' r='3.6' fill='white'/%3E%3Ccircle cx='514' cy='19' r='3.6' fill='white'/%3E%3Ccircle cx='526' cy='19' r='3.6' fill='white'/%3E%3Ccircle cx='538' cy='19' r='3.6' fill='white'/%3E%3Ccircle cx='550' cy='19' r='3.6' fill='white'/%3E%3Cpath d='M92 86 L288 66 L484 86 V96 H92 Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M120 83.1 L134 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M148 80.3 L162 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M176 77.4 L190 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M204 74.6 L218 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M232 71.7 L246 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M260 68.9 L274 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M288 66.0 L302 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M316 68.9 L330 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M344 71.7 L358 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M372 74.6 L386 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M400 77.4 L414 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M428 80.3 L442 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M456 83.1 L470 96' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M288 66 V42 M288 42 H312 L306 48 L312 54 H288' stroke='black' stroke-width='2' fill='white'/%3E%3C/svg%3E") /* art:cb-floodlights */;
+}
+.masthead[data-variant="3"] .wordmark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='96' viewBox='0 0 576 96'%3E%3Cpath d='M0 6 H576 M0 20 H576' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M0 6 L12 20 L24 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M24 6 L36 20 L48 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M48 6 L60 20 L72 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M72 6 L84 20 L96 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M96 6 L108 20 L120 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M120 6 L132 20 L144 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M144 6 L156 20 L168 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M168 6 L180 20 L192 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M192 6 L204 20 L216 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M216 6 L228 20 L240 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M240 6 L252 20 L264 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M264 6 L276 20 L288 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M288 6 L300 20 L312 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M312 6 L324 20 L336 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M336 6 L348 20 L360 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M360 6 L372 20 L384 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M384 6 L396 20 L408 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M408 6 L420 20 L432 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M432 6 L444 20 L456 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M456 6 L468 20 L480 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M480 6 L492 20 L504 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M504 6 L516 20 L528 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M528 6 L540 20 L552 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M552 6 L564 20 L576 6' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M288 20 V30' stroke='black' stroke-width='4'/%3E%3Crect x='230' y='30' width='116' height='46' fill='white' stroke='black' stroke-width='4'/%3E%3Crect x='266' y='48' width='44' height='26' fill='none' stroke='black' stroke-width='3'/%3E%3Cellipse cx='288' cy='80' rx='26' ry='5' fill='none' stroke='black' stroke-width='4'/%3E%3Cpath d='M262 80 L270 96 L278 82 L288 96 L298 82 L306 96 L314 80 M270 96 H306' fill='none' stroke='black' stroke-width='1.8'/%3E%3Crect x='38' y='34' width='64' height='40' fill='black'/%3E%3Cpath d='M70 20 V34' stroke='black' stroke-width='3'/%3E%3Cpath d='M50 44 H64 V54 H50 V64 H64' fill='none' stroke='white' stroke-width='3.4'/%3E%3Cpath d='M74 44 V54 H88 M86 44 V64' fill='none' stroke='white' stroke-width='3.4'/%3E%3Crect x='474' y='34' width='64' height='40' fill='black'/%3E%3Cpath d='M506 20 V34' stroke='black' stroke-width='3'/%3E%3Cpath d='M486 44 H500 V54 H486 V64 H500' fill='none' stroke='white' stroke-width='3.4'/%3E%3Cpath d='M510 44 V54 H524 M522 44 V64' fill='none' stroke='white' stroke-width='3.4'/%3E%3C/svg%3E") /* art:cb-hoop */;
+}
+.masthead[data-variant="2"] .wordmark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='96' viewBox='0 0 576 96'%3E%3Cpath d='M22 0 V96 M58 0 V96' stroke='black' stroke-width='5'/%3E%3Cpath d='M22 58 H58' stroke='black' stroke-width='5'/%3E%3Crect x='14' y='80' width='52' height='16' fill='black'/%3E%3Cpath d='M14 88 H66' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M518 0 V96 M554 0 V96' stroke='black' stroke-width='5'/%3E%3Cpath d='M518 58 H554' stroke='black' stroke-width='5'/%3E%3Crect x='510' y='80' width='52' height='16' fill='black'/%3E%3Cpath d='M510 88 H562' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M120 90 Q288 -30 456 60' fill='none' stroke='black' stroke-width='2' stroke-dasharray='6 5'/%3E%3Cg transform='translate%28300 22%29 rotate%28-18%29'%3E%3Cellipse cx='0' cy='0' rx='22' ry='13' fill='white' stroke='black' stroke-width='3'/%3E%3Cpath d='M-8 0 H8 M-4 -4 V4 M0 -4 V4 M4 -4 V4' stroke='black' stroke-width='1.6'/%3E%3Cpath d='M-22 0 C-14 -10 14 -10 22 0' fill='none' stroke='black' stroke-width='1.2'/%3E%3C/g%3E%3Cpath d='M266 30 h-8' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M256 36 h-8' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M248 44 h-8' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") /* art:cb-posts */;
+}
+.masthead[data-variant="4"] .wordmark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='96' viewBox='0 0 576 96'%3E%3Cdefs%3E%3CclipPath id='tent'%3E%3Cpath d='M60 96 L96 56 L288 22 L480 56 L516 96 Z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d='M60 96 L96 56 L288 22 L480 56 L516 96 Z' fill='white' stroke='black' stroke-width='3.5' stroke-linejoin='round'/%3E%3Cg clip-path='url%28%23tent%29'%3E%3Cpath d='M288 22 L24 96 L60 96 Z' fill='black'/%3E%3Cpath d='M288 22 L96 96 L132 96 Z' fill='black'/%3E%3Cpath d='M288 22 L168 96 L204 96 Z' fill='black'/%3E%3Cpath d='M288 22 L240 96 L276 96 Z' fill='black'/%3E%3Cpath d='M288 22 L312 96 L348 96 Z' fill='black'/%3E%3Cpath d='M288 22 L384 96 L420 96 Z' fill='black'/%3E%3Cpath d='M288 22 L456 96 L492 96 Z' fill='black'/%3E%3Cpath d='M288 22 L528 96 L564 96 Z' fill='black'/%3E%3C/g%3E%3Cpath d='M288 22 V4' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M288 4 H318 L310 11 L318 18 H288 Z' fill='white' stroke='black' stroke-width='2'/%3E%3Cpath d='M300 8 C300 5 306 5 306 8 C306 10 303 10 303 13 M303 15.5 V16' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M8 50 Q148.0 58 288 30' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M8 50 V96' stroke='black' stroke-width='3'/%3E%3Cpath d='M37.0 51.4 L49.0 51.4 L43.0 63.4 Z' fill='black' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M72.0 51.8 L84.0 51.8 L78.0 63.8 Z' fill='white' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M568 50 Q428.0 58 288 30' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M568 50 V96' stroke='black' stroke-width='3'/%3E%3Cpath d='M527.0 51.4 L539.0 51.4 L533.0 63.4 Z' fill='black' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M492.0 51.8 L504.0 51.8 L498.0 63.8 Z' fill='white' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E") /* art:cb-marquee */;
+}
+/* The board: the day and the month, in slab numerals. */
+.masthead::before {
+  content: var(--board-a) attr(data-dd) var(--board-b) attr(data-mm) var(--board-e);
+  order: 1;
+  display: block;
+  margin: 0 20px;
+  padding: 18px 0 8px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.9);
+  line-height: 1;
+  letter-spacing: 0;
+  outline: 2px solid #fff;
+  outline-offset: -8px;
+}
+/* The second line: the receipt number. */
+.masthead::after {
+  content: var(--board-c) attr(data-no) var(--board-d);
+  order: 2;
+  display: block;
+  margin: 0 20px;
+  padding: 6px 0 4px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.25);
+  line-height: 1.1;
+}
+/* The date, painted along the board's bottom rail. */
+.dateline {
+  order: 3;
+  margin: 0 20px;
+  padding: 3px 0 8px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+/* The legs the board stands on. */
+.dateline::after {
+  content: "";
+  display: block;
+  height: 14px;
+  margin: 8px -20px -22px;
+  background:
+    linear-gradient(#000, #000) left 70px top / 14px 100% no-repeat,
+    linear-gradient(#000, #000) right 70px top / 14px 100% no-repeat,
+    #fff;
+}
+/* The lower third: LIVE, and the state of our man's game. */
+.mh-caption {
+  order: 4;
+  position: relative;
+  margin: 22px var(--pad) 10px;
+  padding: 5px 10px 6px 76px;
+  border: 3px solid #000;
+  box-shadow: 5px 5px 0 #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.mh-caption::before {
+  content: "LIVE";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 62px;
+  display: flex; align-items: center; justify-content: center;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  letter-spacing: 0.06em;
+}
+
+/* The two of them setting the scene before the first section. */
+.mh-opening {
+  order: 5;
+  margin: 0 var(--pad) 12px;
+  padding-top: 8px;
+  border-top: 2px solid #000;
+  font-size: var(--size-small);
+  line-height: 1.3;
+}
+.mh-opening .turn { margin-top: 0; }
+.mh-opening .turn + .turn { margin-top: 4px; }
+
+/* ---------- section breaks: the stoppages in play ---------- */
+.rule {
+  height: auto;
+  margin: 8px 0 2px;
+  background: linear-gradient(#000, #000) left center / 100% 2px no-repeat;
+}
+.rule::before {
+  content: var(--r1);
+  max-width: 80%;
+  text-align: center;
+  display: table;
+  margin: 0 auto;
+  padding: 0 12px;
+  background: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.24em;
+  line-height: 1.3;
+}
+.rule:nth-of-type(3n+2)::before { content: var(--r2); }
+.rule:nth-of-type(3n)::before   { content: var(--r3); }
+.rule + .rule { display: none; }
+
+/* ---------- headings: broadcast graphics, numbered through the game ---------- */
+section.sec.weather, section.sec.news, section.sec.slot { counter-increment: over; }
+/* Football counts minutes: nine or so a section, and the clock runs on. */
+.receipt:has(.masthead[data-variant="1"]) section.sec.weather,
+.receipt:has(.masthead[data-variant="1"]) section.sec.news,
+.receipt:has(.masthead[data-variant="1"]) section.sec.slot { counter-increment: over 9; }
+.sec-head {
+  display: flex; align-items: stretch;
+  margin: 0 var(--pad) 6px;
+  padding: 0 !important;
+  border-bottom: 3px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.2);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.sec-head::before {
+  content: var(--head-pre) counter(over) var(--head-post);
+  flex: none;
+  display: flex; align-items: center;
+  margin-right: 10px;
+  padding: 2px 8px 1px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  letter-spacing: 0;
+}
+/* Nobody knows how the wildcard is counted, least of all the scorer. */
+.receipt:has(.masthead[data-variant="4"]) .sec-head::before {
+  content: "PERIOD " counter(over, lower-roman) "\BD";
+}
+.receipt:has(.masthead[data-variant="4"]) .slot:nth-of-type(3n) .sec-head::before {
+  content: "PERIOD 0";
+}
+.receipt:has(.masthead[data-variant="4"]) .slot:nth-of-type(4n) .sec-head::before {
+  content: "PERIOD \2212" counter(over);
+}
+
+/* ---------- the transcript: speaker column, speech ---------- */
+.turn {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  column-gap: 10px;
+  margin-top: 3px;
+}
+.turn + .turn { margin-top: 5px; }
+.spk {
+  padding-top: 2px;
+  border-right: 3px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+/* ---------- weather: the pitch report ---------- */
+.weather { position: relative; }
+.verdict::before {
+  content: var(--dry);
+  display: block;
+  margin-bottom: 2px;
+  white-space: pre;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.14em;
+}
+.receipt:has(.masthead[data-wet="1"]) .verdict::before { content: var(--wet); }
+.temps {
+  border: 0;
+  column-gap: 10px;
+  margin: 8px var(--pad) 4px;
+}
+.temp-cell {
+  padding: 0;
+  gap: 0;
+  border: 3px solid #000;
+}
+.temp-cell + .temp-cell { border-left: 3px solid #000; }
+.temp-label {
+  align-self: stretch;
+  display: flex; align-items: center;
+  padding: 0 10px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: 0.1em;
+}
+.temp-value {
+  flex: 1;
+  padding: 2px 10px 0;
+  text-align: right;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+}
+/* The tarpaulin, pulled across the foot of the section on a wet day. */
+.receipt:has(.masthead[data-wet="1"]) .weather::after {
+  content: var(--band);
+  display: flex; align-items: center; justify-content: center;
+  height: 46px;
+  margin: 10px 0 0;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  white-space: pre;
+  background:
+    linear-gradient(#fff, #fff) center / var(--band-w) 30px no-repeat,
+    repeating-linear-gradient(135deg, #000 0 3px, #fff 3px 9px);
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- news: around the grounds ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: 8px;
+  margin-bottom: 5px;
+}
+.news-n {
+  align-self: start;
+  margin-top: 2px;
+  padding: 0 0 1px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+}
+
+/* ---------- itemization: the scorecard, or the team sheet ---------- */
+.itemization { padding-top: 4px; }
+.itemization::before {
+  content: var(--card);
+  display: block;
+  margin-bottom: 4px;
+  padding: 3px 8px 3px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.12em;
+}
+.item-name {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+/* How each one got on the sheet, by rarity. */
+.item-tier { font-size: 0; }
+.item-tier::before { font-size: var(--size-tiny); font-style: italic; }
+.tier-common .item-tier::before    { content: var(--t-common); }
+.tier-uncommon .item-tier::before  { content: var(--t-uncommon); }
+.tier-rare .item-tier::before      { content: var(--t-rare); }
+.tier-legendary .item-tier::before { content: var(--t-legendary); }
+.item-price { font-family: var(--font-accent); font-weight: var(--accent-bold); }
+.totals td { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: 0.04em; }
+
+/* ---------- legalese: the wrap-up at the end of the broadcast ---------- */
+.legalese {
+  margin: 10px var(--pad) 0;
+  padding: 6px 10px !important;
+  border: 2px solid #000;
+}
+.legalese::before {
+  content: var(--rules);
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: 0.14em;
+}
+
+.serial { margin-top: 12px; }
+.serial::before {
+  content: var(--close);
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+  white-space: pre;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.1em;
+}
+.serial .row { font-size: var(--size-tiny); }
+
+/* ---------- coupon: the match-day raffle ---------- */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-size: 0;
+}
+.tear::before {
+  content: var(--tear);
+  white-space: pre;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-body);
+  letter-spacing: 0.1em;
+}
+.coupon-inner {
+  position: relative;
+  margin: 12px var(--pad) 8px;
+  padding: 10px 14px 10px 104px !important;
+  min-height: 110px;
+  border: 3px solid #000;
+}
+/* The counterfoil, torn along its own perforation, with the ticket number -
+   the receipt's own, so it is a different ticket every morning. */
+.coupon-inner::before {
+  content: "No.\A " attr(data-no);
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 86px;
+  display: flex; align-items: center; justify-content: center;
+  border-right: 3px dashed #000;
+  white-space: pre;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.2);
+  line-height: 1.1;
+}
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.15);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.coupon-body { font-size: var(--size-small); }
+/* The prize, as the narrator named it on air, after the sport's own words. */
+.coupon-terms {
+  margin-top: 8px;
+  padding-top: 4px;
+  border-top: 1px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+.coupon-terms::before { content: var(--prize-pre); white-space: pre; }
+/* The morning this ticket is the one drawn (data-lucky, about one in twenty). */
+.coupon-inner[data-lucky="1"] { padding-top: 52px !important; }
+.coupon-inner[data-lucky="1"]::after {
+  content: "WINNER";
+  position: absolute; right: 14px; top: 10px;
+  padding: 2px 10px 0;
+  border: 3px solid #000;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+  background: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.3);
+  letter-spacing: 0.06em;
+  transform: rotate(-8deg);
+}

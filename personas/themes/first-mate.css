@@ -1,0 +1,306 @@
+/* Weights come from --bold, never a literal 700. IM Fell English ships a 400
+   and an italic and no bold, so --bold is 400 here: emphasis comes from the
+   ribbons, the rope and the heavier display face. See the font-synthesis note
+   in the base stylesheet. */
+/* The First Mate.
+ *
+ * The logbook of the Salt Widow, kept by a first mate with more tattoos than
+ * patience. The masthead is sailor flash - two swallows either side of an
+ * anchor, and the ship's name on a banner scroll with its tails folded behind
+ * (the persona's own name never prints), and under it today's one-line entry
+ * in the ship's log, written fresh by the narrator. Rope
+ * is twisted between the sections. Headings fly on black swallow-tail ribbons.
+ * The weather is entered in the deck log, ruled like a log page. The legalese
+ * becomes the day's shanty, under a scrap of stave. The foot of the page is a scrap of sea chart, a dotted course running
+ * to an X, and the coupon is the treasure hunt: one 25mm piece of a treasure
+ * map to cut out, beside the log of how the crew came by it.
+ *
+ * Salt stains are a sparse speckle in the masthead's empty corners - never
+ * behind a word.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 6px; --sec-end: 12px; }
+
+body { line-height: 1.36; }
+
+/* ---------- masthead: flash sheet ---------- */
+.masthead {
+  text-align: center;
+  padding: 10px var(--pad) 8px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='70'%3E%3Cg fill='black'%3E%3Ccircle cx='8' cy='9' r='1.6'/%3E%3Ccircle cx='19' cy='5' r='1'/%3E%3Ccircle cx='14' cy='21' r='1.3'/%3E%3Ccircle cx='31' cy='12' r='0.9'/%3E%3Ccircle cx='5' cy='34' r='1.2'/%3E%3Ccircle cx='24' cy='29' r='0.8'/%3E%3Ccircle cx='42' cy='6' r='1.1'/%3E%3Ccircle cx='11' cy='52' r='0.9'/%3E%3Ccircle cx='36' cy='24' r='1.4'/%3E%3Ccircle cx='55' cy='10' r='0.8'/%3E%3C/g%3E%3C/svg%3E") top left / 90px 70px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='70'%3E%3Cg fill='black'%3E%3Ccircle cx='82' cy='8' r='1.5'/%3E%3Ccircle cx='70' cy='4' r='1'/%3E%3Ccircle cx='76' cy='22' r='1.2'/%3E%3Ccircle cx='58' cy='13' r='0.9'/%3E%3Ccircle cx='86' cy='36' r='1.3'/%3E%3Ccircle cx='64' cy='30' r='0.8'/%3E%3Ccircle cx='47' cy='5' r='1'/%3E%3Ccircle cx='80' cy='55' r='0.9'/%3E%3C/g%3E%3C/svg%3E") top right / 90px 70px no-repeat;
+}
+/* Swallow, anchor, swallow. */
+.masthead::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='74' viewBox='0 0 300 74'%3E%3Cg id='sw'%3E%3Cpath d='M84 36 Q80 28 70 29 L62 30 L34 4 Q44 24 50 32 L12 22 L28 36 L6 48 L50 42 L36 64 Q56 48 66 42 Q78 42 84 36 Z' fill='black'/%3E%3Cpath d='M52 40 Q62 44 74 40' fill='none' stroke='white' stroke-width='1.8'/%3E%3Ccircle cx='76' cy='33' r='1.7' fill='white'/%3E%3C/g%3E%3Cg transform='translate(300 0) scale(-1 1)'%3E%3Cpath d='M84 36 Q80 28 70 29 L62 30 L34 4 Q44 24 50 32 L12 22 L28 36 L6 48 L50 42 L36 64 Q56 48 66 42 Q78 42 84 36 Z' fill='black'/%3E%3Cpath d='M52 40 Q62 44 74 40' fill='none' stroke='white' stroke-width='1.8'/%3E%3Ccircle cx='76' cy='33' r='1.7' fill='white'/%3E%3C/g%3E%3Cg fill='none' stroke='black' stroke-linecap='round'%3E%3Ccircle cx='150' cy='9' r='6' stroke-width='3.5'/%3E%3Cpath d='M150 15 V66' stroke-width='5'/%3E%3Cpath d='M134 25 H166' stroke-width='4.5'/%3E%3Cpath d='M122 44 Q124 68 150 68 Q176 68 178 44' stroke-width='4.5'/%3E%3C/g%3E%3Cpath d='M116 50 L122 38 L129 49 Z M184 50 L178 38 L171 49 Z' fill='black'/%3E%3C/svg%3E");
+  display: block;
+  line-height: 0;
+  margin: 0 0 2px;
+}
+/* The banner scroll carries the ship's name - never the persona's. The whole
+   scroll is drawn as layered backgrounds on one pseudo-element, band over
+   tails, so the emptied wordmark can hold its text. The box runs 9px past the
+   band so the tails, which hang lower, are not clipped. */
+.wordmark { display: table; margin: 0 auto; font-size: 0; line-height: 0; }
+.wordmark::before {
+  content: "The Salt Widow";
+  display: block;
+  padding: 3px 70px 9px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 2);
+  line-height: 52px;
+  white-space: nowrap;
+  background:
+    linear-gradient(#000, #000) 40px 0 / calc(100% - 80px) 3px no-repeat,
+    linear-gradient(#000, #000) 40px 52px / calc(100% - 80px) 3px no-repeat,
+    linear-gradient(#fff, #fff) 40px 0 / calc(100% - 80px) 55px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='58' viewBox='0 0 48 58'%3E%3Cpath d='M1.5 12 H40 V56 H1.5 L14 34 Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M30 12 L46.5 1.5 V46 L40 56 Z' fill='black'/%3E%3C/svg%3E") left 4px / 48px 58px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='58' viewBox='0 0 48 58'%3E%3Cg transform='translate(48 0) scale(-1 1)'%3E%3Cpath d='M1.5 12 H40 V56 H1.5 L14 34 Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M30 12 L46.5 1.5 V46 L40 56 Z' fill='black'/%3E%3C/g%3E%3C/svg%3E") right 4px / 48px 58px no-repeat;
+}
+/* Today's entry in the log, written by the narrator ([persona.masthead]). */
+.mh-log {
+  text-wrap: balance;
+  margin: 2px 24px 0;
+  line-height: 1.3;
+}
+.mh-log::before {
+  content: "Ship's Log:";
+  display: block;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+.dateline {
+  margin-top: 4px;
+  font-size: var(--size-small);
+}
+
+/* ---------- section breaks: twisted rope ---------- */
+.rule {
+  height: 12px;
+  margin: 2px 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='12' viewBox='0 0 14 12'%3E%3Cpath d='M0 1 H14 M0 11 H14' stroke='black' stroke-width='2'/%3E%3Cpath d='M-3 11 L4 1 M4 11 L11 1 M11 11 L18 1' stroke='black' stroke-width='3.2'/%3E%3C/svg%3E") left center / 14px 12px repeat-x;
+}
+.rule + .rule { display: none; }
+
+/* ---------- headings: black swallow-tail ribbons ----------
+   Reversed out in the display face, which is the heaviest thing on the page -
+   IM Fell has no bold to give (CLAUDE.md invariant 6). */
+.sec-head {
+  display: table;
+  margin: 4px auto 8px;
+  padding: 4px 32px 3px !important;
+  background: #000;
+  color: #fff;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 15px) 50%, 100% 100%, 0 100%, 15px 50%);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.12);
+  line-height: 1.1;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- weather: the deck log ---------- */
+.weather { margin-left: var(--pad); margin-right: var(--pad); }
+.weather .pad { padding-left: 0; padding-right: 0; }
+.verdict::before {
+  content: "Remarks: ";
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+}
+.temps {
+  margin-top: 8px;
+  border: 3px solid #000;
+}
+.temp-cell { padding: 3px 10px; }
+.temp-cell + .temp-cell { border-left: 3px solid #000; }
+.temp-label { font-family: var(--font-accent); font-weight: 400; letter-spacing: 0.06em; }
+.temp-value { font-weight: 400; }
+/* Log-page ruling under each entry. */
+.weather .meta {
+  border-bottom: 1px solid #000;
+  padding: 3px 2px;
+}
+.weather svg.chart { width: 100%; height: auto; margin-top: 2px; }
+
+/* ---------- news: word from other ports, each under a small anchor ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  column-gap: 10px;
+  margin-bottom: 4px;
+}
+.news-n {
+  width: 18px; height: 20px;
+  margin-top: 4px;
+  font-size: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='20' viewBox='0 0 18 20'%3E%3Cg fill='none' stroke='black' stroke-linecap='round'%3E%3Ccircle cx='9' cy='3' r='2' stroke-width='1.6'/%3E%3Cpath d='M9 5 V18 M5 8 H13' stroke-width='2'/%3E%3Cpath d='M2 12 Q3 18 9 18 Q15 18 16 12' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* ---------- itemization: the ship's stores ---------- */
+.itemization::before {
+  content: "Ship's Stores";
+  display: block;
+  text-align: center;
+  font-family: var(--font-accent);
+  margin: 2px 0 4px;
+}
+.item-tier { font-family: var(--font-accent); font-size: var(--size-tiny); }
+.totals { padding-top: 2px; padding-bottom: 4px; }
+
+/* ---------- legalese: the day's shanty ----------
+   A verse the crew sang today, under a scrap of stave with the tune roughly
+   noted on it, set centred and roomy because it is sung, not read. What the
+   crew did with it after goes under a short rule, the way a log notes it. */
+.legalese {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 10px var(--pad) 0;
+  padding: 58px 14px 10px !important;
+  border: 3px double #000;
+  border-width: 5px;
+  text-align: center;
+  font-size: var(--size-body);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='46' viewBox='0 0 300 46'%3E%3Cg stroke='black' stroke-width='1.6'%3E%3Cpath d='M2 7 H298'/%3E%3Cpath d='M2 15 H298'/%3E%3Cpath d='M2 23 H298'/%3E%3Cpath d='M2 31 H298'/%3E%3Cpath d='M2 39 H298'/%3E%3C/g%3E%3Cellipse cx='30' cy='31' rx='5.2' ry='3.8' transform='rotate%28-20 30 31%29' fill='black'/%3E%3Cpath d='M34.6 30 V9' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='58' cy='27' rx='5.2' ry='3.8' transform='rotate%28-20 58 27%29' fill='black'/%3E%3Cpath d='M62.6 26 V5' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='86' cy='23' rx='5.2' ry='3.8' transform='rotate%28-20 86 23%29' fill='black'/%3E%3Cpath d='M90.6 22 V1' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='114' cy='27' rx='5.2' ry='3.8' transform='rotate%28-20 114 27%29' fill='black'/%3E%3Cpath d='M118.6 26 V5' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='142' cy='19' rx='5.2' ry='3.8' transform='rotate%28-20 142 19%29' fill='black'/%3E%3Cpath d='M146.6 18 V-3' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='170' cy='23' rx='5.2' ry='3.8' transform='rotate%28-20 170 23%29' fill='black'/%3E%3Cpath d='M174.6 22 V1' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='198' cy='27' rx='5.2' ry='3.8' transform='rotate%28-20 198 27%29' fill='black'/%3E%3Cpath d='M202.6 26 V5' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='226' cy='31' rx='5.2' ry='3.8' transform='rotate%28-20 226 31%29' fill='black'/%3E%3Cpath d='M230.6 30 V9' stroke='black' stroke-width='1.8'/%3E%3Cellipse cx='254' cy='23' rx='5.2' ry='3.8' transform='rotate%28-20 254 23%29' fill='black'/%3E%3Cpath d='M258.6 22 V1' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M90.6 1 Q100 6 99 12' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M202.6 5 Q212 10 211 16' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M128 7 V39 M240 7 V39' stroke='black' stroke-width='1.6'/%3E%3Cpath d='M290 7 V39' stroke='black' stroke-width='1.6'/%3E%3Cpath d='M295 7 V39' stroke='black' stroke-width='4'/%3E%3C/svg%3E") center 8px / 300px 46px no-repeat;
+}
+.legalese::before {
+  order: 0;
+  content: "The Day's Shanty";
+  display: block;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  line-height: 1.1;
+}
+.legalese::after {
+  content: "tune: traditional, sung badly";
+  display: block;
+  order: 1;
+  margin: 0 0 8px;
+  font-size: var(--size-tiny);
+}
+.legalese .blk-lines { order: 2; margin-top: 2px; }
+.legalese .ln { line-height: 1.32; }
+.legalese .ln + .ln { margin-top: 0; }
+.legalese .ln:nth-child(2n) { padding-left: 1.6em; }
+.legalese .footnote {
+  order: 3;
+  margin: 10px auto 0;
+  padding-top: 6px;
+  max-width: 82%;
+  border-top: 1px solid #000;
+  font-size: var(--size-tiny);
+  line-height: 1.3;
+}
+
+/* ---------- footer: a scrap of sea chart ---------- */
+.serial { margin-top: 10px; }
+.serial::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='548' height='62' viewBox='0 0 548 62'%3E%3Cpath d='M6 44 C60 10 110 58 170 36 S270 8 320 30 S430 58 500 24' fill='none' stroke='black' stroke-width='2.2' stroke-dasharray='7 6' stroke-linecap='round'/%3E%3Cpath d='M494 12 L516 34 M516 12 L494 34' stroke='black' stroke-width='4.5' stroke-linecap='round'/%3E%3Cpath d='M236 50 q16 -12 34 -4 q14 4 22 12 q-26 6 -56 -8 Z' fill='white' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M246 50 l40 6 M250 46 l34 7' stroke='black' stroke-width='1'/%3E%3Cg fill='none' stroke='black' stroke-width='1.4'%3E%3Cpath d='M60 58 q6 -4 12 0 t12 0 M396 12 q6 -4 12 0 t12 0 M120 10 q6 -4 12 0 t12 0'/%3E%3C/g%3E%3Cg transform='translate(34 14)'%3E%3Cpath d='M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z' fill='black'/%3E%3Ccircle r='2' fill='white'/%3E%3C/g%3E%3C/svg%3E");
+  display: block;
+  line-height: 0;
+  padding: 0 var(--pad) 2px;
+}
+.serial .row { font-family: var(--font-accent); font-size: var(--size-tiny); }
+
+/* ---------- coupon: a scrap of the map ----------
+   The treasure hunt (render/treasure_map.py, the [persona.blocks.coupon]
+   drawing). The ship's log of how the crew came by today's scrap runs down
+   the left, a ruled log page, and the scrap itself sits on the right to be cut
+   out along its dashes and kept. The piece is set at exactly 200px - 200 dots,
+   25mm - and is never scaled or turned, because it has to meet its neighbours
+   from other mornings. What the last owner wrote on the back goes underneath. */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-family: var(--font-accent);
+}
+.coupon-inner {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  grid-template-areas:
+    "head label"
+    "log  map"
+    "back back";
+  align-items: start;
+  margin: 14px var(--pad) 10px;
+  padding: 10px 14px 12px !important;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+}
+/* The heading and the piece's number share one line, ruled under like a
+   log page's header. */
+.coupon-head, .coupon .blk-label {
+  align-self: end;
+  padding-bottom: 5px;
+  margin-bottom: 8px;
+  border-bottom: 3px solid #000;
+}
+.coupon-head {
+  grid-area: head;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  line-height: 1;
+}
+.coupon .blk-label {
+  grid-area: label;
+  text-align: right;
+  font-weight: 400;
+  font-size: var(--size-tiny);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+/* The log: one ruled entry per day, the day in the accent face over it. */
+.coupon .coupon-body { grid-area: log; padding-right: 14px; }
+.coupon .ln {
+  padding: 2px 0 5px;
+  border-bottom: 1px solid #000;
+  line-height: 1.22;
+}
+.coupon .ln + .ln { margin-top: 5px; }
+.coupon .ln-label {
+  display: block;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+}
+/* The scrap: 1:1, with the scissors under it. */
+.coupon .blk-drawing { grid-area: map; width: 200px; }
+.coupon .blk-drawing svg {
+  display: block;
+  width: 200px; height: 200px;
+  max-width: none;
+  margin: 0;
+}
+.coupon .blk-drawing::after {
+  content: "cut on the dashes, keep it dry";
+  display: block;
+  margin-top: 4px;
+  padding-left: 30px;
+  min-height: 16px;
+  font-size: var(--size-tiny);
+  line-height: 1.1;
+  text-align: left;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16' viewBox='0 0 24 16'%3E%3Cg fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='4' cy='4' r='3'/%3E%3Ccircle cx='4' cy='12' r='3'/%3E%3Cpath d='M6.5 5.5 L23 13 M6.5 10.5 L23 3'/%3E%3C/g%3E%3C/svg%3E") left center / 24px 16px no-repeat;
+}
+/* What is scrawled on the back, in the last owner's words: set apart in a
+   box rather than a slant, since IM Fell has no real italic. Solid, never
+   dashed - dashes on this coupon mean cut here. */
+.coupon-terms {
+  grid-area: back;
+  margin-top: 12px;
+  padding: 6px 10px 7px;
+  border: 2px solid #000;
+  line-height: 1.3;
+}
+.coupon-terms::before {
+  content: "On the back: ";
+  font-family: var(--font-accent);
+  letter-spacing: 0.04em;
+}

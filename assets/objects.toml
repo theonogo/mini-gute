@@ -1,0 +1,160 @@
+# Slot 151 - the persona's printed object.
+#
+# Each persona designs one small printed thing, from scratch, in its own voice
+# and style. One of its items below is drawn (no repeats until its list is used
+# up); `weight` makes an item more likely (default 1).
+#
+# Lean into the absurd - improbable and weird, most of the time but not every
+# time. The examples show the register: player stats for a dog, a formal
+# invitation to a coup d'etat, a treasure map to the kraken.
+
+[absurd]
+examples = [
+  "commentary-box player stats that are obviously for a dog",
+  "victorian-clerk formal invitation, and the event is a coup d'etat",
+  "first-mate review of an island that turned out to be a sleeping whale, three stars",
+  "a museum label treating a USB stick as a sacred relic",
+]
+# Share of objects that go fully improbable; the rest are played nearly
+# straight, with one detail wrong.
+share = 0.75
+
+[persona.victorian-clerk]
+items = [
+  { item = "Certificate of achievement, for something trivial, heavily sealed" },
+  { item = "Notice of visit from a distinguished visitor" },
+  { item = "Calling card, with the corner turned down" },
+  { item = "Subscription renewal notice for something never subscribed to" },
+  { item = "Invitation to a very formal event" },
+]
+
+[persona.ops-officer]
+items = [
+  { item = "Military dog tag for someone very improbable" },
+  { item = "Mission debrief, with the plan" },
+  { item = "Declassified intel, still heavy with black redaction bars" },
+  { item = "Equipment checkout tag" },
+  { item = "Medal, with citation, for a ridiculous achievement in the field" },
+]
+
+[persona.oracle]
+items = [
+  { item = "Fortune slip, folded, no explanation" },
+  { item = "Seed packet, with sowing instructions that are also a warning" },
+  { item = "Pressed-flower / specimen label" },
+  { item = "Handwritten remedy card" },
+  { item = "Missing poster for an abstract noun (\"LOST: an afternoon\")" },
+  { item = "Abstract drawing of an emotion, titled" },
+]
+
+[persona.accounts-receivable]
+items = [
+  { item = "Cheque made out for nothing" },
+  { item = "Invoice for a service you did not request" },
+  { item = "Stock ticker and share-price graph, with earnings-call bullet points" },
+  { item = "Business card, with a job title nobody has" },
+  { item = "All-staff email announcing a new policy" },
+]
+
+[persona.first-mate]
+items = [
+  { item = "Island review: the last island the ship put in at, rated 0 to 5 stars - edible cotton-candy shores, a cursed island out of the Odyssey, a sentient island that voted them off, and everything between - with a crew member's note on the review at the end" },
+  { item = "Sea creature field card: a sighting of something that followed the ship - its name, size, temperament and what it wanted - stamped by the lookout" },
+  { item = "Wanted poster, with a reward in doubloons" },
+  { item = "Short report or interview with a crew member" },
+  { item = "One item of looted treasure, catalogued" },
+]
+
+[persona.noir-detective]
+items = [
+  { item = "Matchbook cover from a bar that closed" },
+  { item = "Case file label, stamped" },
+  { item = "Labelled evidence from the crime, with noir one-liners" },
+  { item = "Photo of a person of interest, half burned away (drawn, not a photo)" },
+  { item = "Lipstick-stained message from a dame" },
+]
+
+[persona.bootleg-tape]
+items = [
+  { item = "Scratch pad of \"fire\" rap bars, some crossed out" },
+  { item = "Review of the latest tape - a fan, a hater, a baffled one, a local paper blurb, a forum post", weight = 3 },
+  { item = "Review of the latest tape from an academic journal of bootleg studies - peer reviewed, accession number, footnotes" },
+  { item = "A crazy beat visualizer" },
+  { item = "Album cover for the latest EP" },
+]
+
+[persona.all-nite-diner]
+items = [
+  { item = "Menu for one dish, priced - an impossible dish" },
+  { item = "Drawing of a dish" },
+  { item = "Mint wrapper with a thank-you-for-eating-with-us note" },
+  { item = "Review from a customer" },
+  { item = "Table reservation card" },
+]
+
+[persona.stage-manager]
+items = [
+  { item = "Playbill / cast list" },
+  { item = "Ticket with a tear-off stub, seat and row" },
+  { item = "Text message from a cast member about the DRAMA backstage" },
+  { item = "Teaser blurb selling the play - all 'sensational', almost no plot" },
+]
+
+[persona.commentary-box]
+items = [
+  { item = "Match programme, teams and line-ups" },
+  { item = "Player analysis with stats" },
+  { item = "The team mascot, drawn" },
+  { item = "Team logos / crests, drawn" },
+  { item = "Pundit's play-by-play of one CRAZY play, with a diagram" },
+]
+
+[persona.monkey-astronaut]
+items = [
+  { item = "Mission patch, drawn as line art" },
+  { item = "Pre-flight checklist" },
+  { item = "Ration pack label" },
+  { item = "Space flight route map" },
+  { item = "Postcard home, already written on" },
+]
+
+[persona.daily-roll]
+items = [
+  { item = "Newspaper ad" },
+  { item = "Competition entry form (\"WIN A DAY\")" },
+  { item = "CELEBRITY SCOOP, with a drawn 'photo'" },
+  { item = "Complaint letter from a reader" },
+]
+
+[persona.the-machine]
+items = [
+  { item = "Calibration sheet for this printer, with the machine's comments" },
+  { item = "Warranty card, expiring, with the machine's comments" },
+  { item = "Service log entry, with the machine's comments" },
+  { item = "Parts label with a barcode, with the machine's comments" },
+  { item = "Self-test result sheet, with the machine's comments" },
+]
+
+[persona.time-traveller]
+items = [
+  { item = "Museum label, from the future, for an object from now - confidently wrong" },
+  { item = "Museum label, from the future, for an object from the past - confidently wrong" },
+  { item = "Museum label or news clipping for a future object we would never actually make" },
+  { item = "Tourist information card for the present day" },
+  { item = "Souvenir stamp" },
+]
+
+[persona.mimic]
+items = [
+  { item = "Membership card for a club it has misunderstood" },
+  { item = "Field notes on another persona - quite wrong", weight = 3 },
+  { item = "Transcript of a normal human behaviour or greeting, annotated" },
+]
+
+[persona.revolutionary]
+items = [
+  { item = "Handbill / agitprop poster" },
+  { item = "A strange key item, 'you will know when to use it'" },
+  { item = "Cryptogram or coded transcription" },
+  { item = "Elaborate operation plan, so scrambled with codenames it is incomprehensible" },
+]

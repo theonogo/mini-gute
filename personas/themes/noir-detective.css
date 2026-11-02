@@ -1,0 +1,408 @@
+/* Weights come from --bold, never a literal 700. Special Elite ships a 400
+   alone, so here --bold IS 400 and every piece of emphasis below comes from a
+   box, a rule, a stamp or letter-spacing. See the font-synthesis note in the
+   base stylesheet. */
+/* The Detective.
+ *
+ * Film noir, typed up into a case file. The top of the page is the opening
+ * shot: a black room, light falling through a venetian blind in slanted bars,
+ * and the detective's silhouette standing in it - fedora, trench coat, smoke
+ * curling up into the dark - with today's case set white across the shadows
+ * like a 1940s title card, named by the narrator every morning (THE MALTESE
+ * TEASPOON), its tagline beneath. Then the film cuts hard to paper: a typed
+ * strip with the filing date and STATUS: OPEN.
+ *
+ * Below that it is the file. Headings are rubber stamps, landed crooked. Every
+ * rotating slot is filed as an exhibit. The weather is a witness statement, the
+ * news a clipping pasted in with its photograph missing, the itemization an
+ * evidence log with UNSOLVED stamped across the totals. The film gets the last
+ * frame too - THE END?, because the case never closes - and the coupon, below
+ * the tear, is a business card.
+ *
+ * Three rules keep the drama from costing the facts:
+ *   - Nothing decorative crosses body text. The coffee ring sits on the chart,
+ *     the stamp in the gap between SUBTOTAL and its figure.
+ *   - White type on the black scene is set large, in the heaviest face on the
+ *     page; the small reversed lines are the typewriter face at its only
+ *     weight, which paper showed survives.
+ *   - All texture is drawn - SVG and hard-stop gradients. No greys, no opacity.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 10px; --sec-end: 14px; }
+
+body { line-height: 1.42; }
+
+.receipt { counter-reset: exhibit; }
+
+/* ---------- masthead: the opening shot ----------
+   The scene is the masthead's background, drawn once (576x236): black, light
+   through the blind, the silhouette in the light. The title and tagline sit in
+   the dark on the left, where no slat reaches.
+
+   The persona's name never prints. The title card is today's case, named fresh
+   by the narrator with a tagline under it ([persona.masthead] title and
+   subtitle), under the real receipt number as CASE No. The masthead is a flex
+   column so a long title pushes the strip down rather than under the slats. */
+.masthead {
+  position: relative;
+  display: flex; flex-direction: column;
+  min-height: 272px;
+  box-sizing: border-box;
+  padding: 26px var(--pad) 0;
+  background: #000 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='236' viewBox='0 0 576 236'%3E%3Crect width='576' height='236' fill='black'/%3E%3Cpath d='M342 16.8 L576 -30 V-16 L342 30.8 Z' fill='white'/%3E%3Cpath d='M326 45.0 L576 -5 V9 L326 59.0 Z' fill='white'/%3E%3Cpath d='M318 71.6 L576 20 V34 L318 85.6 Z' fill='white'/%3E%3Cpath d='M332 93.8 L576 45 V59 L332 107.8 Z' fill='white'/%3E%3Cpath d='M314 122.4 L576 70 V84 L314 136.4 Z' fill='white'/%3E%3Cpath d='M324 145.4 L576 95 V109 L324 159.4 Z' fill='white'/%3E%3Cpath d='M336 168.0 L576 120 V134 L336 182.0 Z' fill='white'/%3E%3Cpath d='M320 196.2 L576 145 V159 L320 210.2 Z' fill='white'/%3E%3Cpath d='M328 219.6 L576 170 V184 L328 233.6 Z' fill='white'/%3E%3Cpath d='M340 242.2 L576 195 V209 L340 256.2 Z' fill='white'/%3E%3Cpath d='M348 265.6 L576 220 V234 L348 279.6 Z' fill='white'/%3E%3Cpath d='M500 0 H512 L496 236 H484 Z' fill='black'/%3E%3Cpath d='M376 70 Q392 62 410 60 L413 44 Q423 35 435 40 Q447 35 457 43 L460 60 Q480 58 490 63 Q486 69 474 68 L460 69 L457 90 Q476 98 484 118 L492 176 L488 236 L372 236 L378 176 L386 118 Q390 102 406 96 L409 92 L402 90 Q396 88 400 84 L396 80 L401 77 L394 73 L403 71 Q392 72 376 70 Z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M376 70 Q392 62 410 60 L413 44 Q423 35 435 40 Q447 35 457 43 L460 60 Q480 58 490 63 Q486 69 474 68 L460 69 L457 90 Q476 98 484 118 L492 176 L488 236 L372 236 L378 176 L386 118 Q390 102 406 96 L409 92 L402 90 Q396 88 400 84 L396 80 L401 77 L394 73 L403 71 Q392 72 376 70 Z' fill='black'/%3E%3Cpath d='M384 80 L397 79' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M382 77 C368 71 378 57 364 49 C352 42 362 31 350 23 C342 18 348 10 340 5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") /* art:noir-blind */ left top / 576px 236px no-repeat;
+  color: #fff;
+  border-bottom: 3px solid #000;
+}
+.wordmark { display: none; }
+/* The kicker: the real receipt number, typed small above the title card. */
+.masthead::before {
+  content: "CASE No. " attr(data-no);
+  display: block;
+  width: 300px;
+  margin-bottom: 7px;
+  font-size: var(--size-small);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+/* The title card: today's case, named by the narrator ([persona.masthead]). */
+.mh-title {
+  text-wrap: balance;
+  width: 296px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.9);
+  line-height: 0.98;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  overflow-wrap: break-word;
+}
+/* The tagline, under a thin white rule, the way a poster sets its line. */
+.mh-subtitle {
+  text-wrap: balance;
+  width: 236px;
+  margin-top: 10px;
+  padding-top: 5px;
+  border-top: 2px solid #fff;
+  font-size: var(--size-small);
+  line-height: 1.25;
+}
+/* The other two opening shots, rotated by date (data-variant): rain on a street
+   under one lamp with a man waiting in its light, and the city from a high window
+   - the moon, rooftops, a water tower, a neon HOTEL sign. Both keep the left 300px
+   dark for the title. Drawn by a script, as flat 1-bit shapes; never grey. */
+.masthead[data-variant="1"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='236' viewBox='0 0 576 236'%3E%3Cdefs%3E%3CclipPath id='cone'%3E%3Cpath d='M452 46 L480 46 L572 236 L360 236 Z'/%3E%3C/clipPath%3E%3CclipPath id='right'%3E%3Crect x='300' y='0' width='276' height='236'/%3E%3C/clipPath%3E%3C/defs%3E%3Crect width='576' height='236' fill='black'/%3E%3Cg clip-path='url%28%23right%29'%3E%3Cpath d='M397 10 l-5.9 19.8 M314 113 l-4.9 16.4 M309 105 l-3.7 12.4 M433 -11 l-3.9 13.1 M430 190 l-4.0 13.5 M364 137 l-7.0 23.4 M480 76 l-7.1 23.7 M305 198 l-4.6 15.5 M338 1 l-4.7 15.7 M559 18 l-5.7 19.0 M501 69 l-5.6 18.6 M311 -14 l-4.3 14.5 M515 84 l-4.7 15.8 M483 91 l-4.7 15.6 M552 156 l-4.5 14.9 M480 110 l-6.8 22.5 M531 47 l-7.1 23.8 M329 81 l-6.3 21.1 M340 100 l-3.7 12.5 M511 173 l-5.7 18.9 M579 53 l-6.1 20.3 M486 124 l-5.2 17.5 M567 221 l-5.3 17.7 M509 -14 l-6.1 20.4 M504 234 l-6.6 21.9 M384 73 l-6.0 20.0 M297 93 l-4.2 14.0 M329 -14 l-6.4 21.2 M333 36 l-5.0 16.7 M578 -9 l-5.2 17.4 M471 205 l-6.5 21.8 M575 44 l-5.1 17.0 M408 205 l-7.0 23.5 M340 17 l-4.4 14.8 M367 99 l-5.7 19.1 M377 -29 l-5.1 17.0 M412 121 l-7.0 23.4 M518 107 l-5.8 19.4 M513 -16 l-6.8 22.8 M547 203 l-6.5 21.6 M419 76 l-4.0 13.2 M499 -13 l-3.8 12.8 M359 13 l-4.8 16.1 M307 -30 l-4.1 13.8 M323 67 l-3.7 12.3 M579 133 l-4.1 13.8 M373 62 l-4.9 16.4 M331 196 l-7.2 23.9 M444 99 l-3.9 13.0 M324 61 l-4.6 15.2 M564 13 l-3.7 12.3 M604 111 l-4.1 13.8 M469 -23 l-5.5 18.3 M613 200 l-6.1 20.4 M376 68 l-4.2 14.0 M545 112 l-6.4 21.3 M399 29 l-6.5 21.7 M615 197 l-6.5 21.7 M560 167 l-4.4 14.7 M461 65 l-3.7 12.3 M299 44 l-4.5 15.1 M519 224 l-5.2 17.4 M599 233 l-7.0 23.5 M410 29 l-4.4 14.7 M355 24 l-5.8 19.5 M587 194 l-5.3 17.8 M505 183 l-3.9 13.0 M508 212 l-6.4 21.4 M538 97 l-4.2 14.1 M550 58 l-6.5 21.6 M611 75 l-5.0 16.8 M602 163 l-4.2 14.0 M332 10 l-6.9 22.9 M556 9 l-6.6 21.9 M614 145 l-4.9 16.2 M471 5 l-3.7 12.2 M610 143 l-5.5 18.3 M598 85 l-6.7 22.5 M563 26 l-4.5 15.0 M387 34 l-5.7 19.0 M376 81 l-4.1 13.6 M590 64 l-5.2 17.5 M483 211 l-5.1 17.0 M593 103 l-5.5 18.4 M463 -25 l-5.2 17.3 M350 -29 l-6.5 21.6 M347 96 l-6.2 20.7 M474 57 l-5.5 18.2 M473 179 l-4.0 13.3 M475 36 l-4.6 15.3 M545 105 l-5.6 18.7 M541 213 l-5.2 17.3 M492 104 l-5.4 18.1 M519 90 l-5.5 18.4 M448 220 l-6.1 20.4 M579 221 l-4.5 15.1 M475 221 l-6.6 22.1 M335 2 l-5.2 17.3 M314 34 l-3.9 12.9 M511 179 l-6.8 22.8 M341 160 l-6.0 19.9 M337 205 l-7.1 23.6 M362 223 l-5.0 16.8 M451 233 l-6.6 22.0 M343 85 l-5.5 18.2 M402 22 l-4.7 15.8 M528 -25 l-5.6 18.6 M435 -25 l-4.8 16.0 M496 106 l-3.8 12.8 M615 180 l-7.1 23.7 M325 41 l-3.7 12.5 M547 42 l-4.1 13.6 M429 212 l-6.5 21.8 M375 10 l-6.9 23.0 M478 156 l-3.9 13.1 M309 153 l-5.1 17.1 M314 220 l-5.9 19.6 M555 -8 l-6.7 22.3 M312 199 l-5.2 17.4 M402 117 l-6.9 23.1 M378 4 l-5.5 18.3 M369 -1 l-4.2 13.9 M307 24 l-4.7 15.7 M391 172 l-4.6 15.5 M455 17 l-4.8 16.2 M296 37 l-3.7 12.2 M532 117 l-4.3 14.3 M447 219 l-4.0 13.3 M560 85 l-5.4 17.9 M565 75 l-5.4 18.1 M517 231 l-4.8 16.1 M565 158 l-5.9 19.6 M424 62 l-3.8 12.7 M333 -11 l-6.3 20.9 M374 13 l-3.9 13.0 M568 202 l-6.0 20.0 M383 34 l-4.7 15.5 M442 12 l-5.2 17.3 M377 226 l-7.1 23.7 M471 35 l-7.1 23.6 M392 65 l-3.6 12.0 M416 96 l-5.4 18.0 M356 104 l-3.6 12.1 M377 -6 l-5.0 16.8 M304 -24 l-4.7 15.7 M367 126 l-5.5 18.4 M538 145 l-6.2 20.6 M580 74 l-4.8 15.9 M615 10 l-6.2 20.7 M502 -18 l-6.6 22.0 M584 137 l-6.2 20.8 M558 7 l-5.5 18.3 M456 192 l-6.5 21.7 M563 125 l-6.8 22.7 M515 154 l-4.4 14.8 M300 5 l-4.9 16.3 M325 192 l-5.6 18.7 M497 137 l-6.1 20.2 M451 -29 l-6.5 21.6 M537 104 l-5.5 18.4 M508 -12 l-6.3 20.8 M373 -10 l-4.6 15.2 M531 25 l-6.3 20.9 M612 101 l-5.0 16.6 M448 152 l-6.4 21.2 M494 141 l-3.9 12.9 M339 38 l-6.3 20.9 M390 121 l-3.6 12.1 M310 41 l-6.0 20.1 M518 150 l-4.6 15.5 M460 94 l-5.3 17.6 M329 208 l-4.3 14.4 M613 219 l-3.7 12.2 M441 188 l-7.1 23.6 M438 41 l-4.4 14.5 M602 26 l-5.7 19.0 M337 109 l-7.0 23.4 M334 188 l-5.4 18.1 M583 157 l-4.4 14.8 M586 99 l-3.7 12.3 M291 101 l-5.2 17.4 M390 7 l-4.8 16.1 M394 194 l-3.6 12.0 M538 193 l-4.0 13.4 M596 160 l-6.8 22.8 M386 69 l-5.0 16.7 M620 127 l-4.9 16.3 M431 43 l-3.8 12.6 M324 192 l-4.6 15.4 M599 36 l-4.6 15.2 M459 20 l-4.9 16.5 M606 205 l-6.5 21.7 M498 213 l-7.0 23.3 M471 161 l-3.8 12.6 M532 90 l-6.3 21.0 M503 46 l-3.8 12.6 M596 4 l-5.3 17.7 M403 49 l-6.3 20.9 M612 39 l-6.0 19.9 M389 118 l-5.0 16.7 M345 13 l-4.3 14.5 M589 102 l-4.4 14.6 M589 235 l-5.2 17.4 M336 21 l-3.9 13.1 M403 -6 l-4.5 14.9 M375 122 l-6.8 22.6 M537 80 l-5.1 17.0 M463 70 l-4.8 16.1 M310 44 l-7.1 23.6 M332 104 l-5.9 19.6 M575 27 l-4.6 15.3 M372 76 l-5.2 17.4 M605 196 l-6.7 22.5 M297 -21 l-6.2 20.5 M586 96 l-5.7 19.0 M290 74 l-6.9 23.1 M562 198 l-7.1 23.7 M372 -1 l-4.2 13.9 M462 151 l-7.0 23.3 M528 142 l-6.4 21.2 M441 117 l-3.7 12.5 M548 32 l-6.9 23.0 M503 51 l-4.1 13.5 M373 139 l-6.1 20.4 M327 -11 l-5.5 18.3 M482 73 l-4.4 14.7 M488 -27 l-4.7 15.6 M442 225 l-5.9 19.7 M582 96 l-4.4 14.8 M372 226 l-6.1 20.5' stroke='white' stroke-width='1.3'/%3E%3C/g%3E%3Cpath d='M452 46 L480 46 L572 236 L360 236 Z' fill='white'/%3E%3Cg clip-path='url%28%23cone%29'%3E%3Cpath d='M397 10 l-5.9 19.8 M314 113 l-4.9 16.4 M309 105 l-3.7 12.4 M433 -11 l-3.9 13.1 M430 190 l-4.0 13.5 M364 137 l-7.0 23.4 M480 76 l-7.1 23.7 M305 198 l-4.6 15.5 M338 1 l-4.7 15.7 M559 18 l-5.7 19.0 M501 69 l-5.6 18.6 M311 -14 l-4.3 14.5 M515 84 l-4.7 15.8 M483 91 l-4.7 15.6 M552 156 l-4.5 14.9 M480 110 l-6.8 22.5 M531 47 l-7.1 23.8 M329 81 l-6.3 21.1 M340 100 l-3.7 12.5 M511 173 l-5.7 18.9 M579 53 l-6.1 20.3 M486 124 l-5.2 17.5 M567 221 l-5.3 17.7 M509 -14 l-6.1 20.4 M504 234 l-6.6 21.9 M384 73 l-6.0 20.0 M297 93 l-4.2 14.0 M329 -14 l-6.4 21.2 M333 36 l-5.0 16.7 M578 -9 l-5.2 17.4 M471 205 l-6.5 21.8 M575 44 l-5.1 17.0 M408 205 l-7.0 23.5 M340 17 l-4.4 14.8 M367 99 l-5.7 19.1 M377 -29 l-5.1 17.0 M412 121 l-7.0 23.4 M518 107 l-5.8 19.4 M513 -16 l-6.8 22.8 M547 203 l-6.5 21.6 M419 76 l-4.0 13.2 M499 -13 l-3.8 12.8 M359 13 l-4.8 16.1 M307 -30 l-4.1 13.8 M323 67 l-3.7 12.3 M579 133 l-4.1 13.8 M373 62 l-4.9 16.4 M331 196 l-7.2 23.9 M444 99 l-3.9 13.0 M324 61 l-4.6 15.2 M564 13 l-3.7 12.3 M604 111 l-4.1 13.8 M469 -23 l-5.5 18.3 M613 200 l-6.1 20.4 M376 68 l-4.2 14.0 M545 112 l-6.4 21.3 M399 29 l-6.5 21.7 M615 197 l-6.5 21.7 M560 167 l-4.4 14.7 M461 65 l-3.7 12.3 M299 44 l-4.5 15.1 M519 224 l-5.2 17.4 M599 233 l-7.0 23.5 M410 29 l-4.4 14.7 M355 24 l-5.8 19.5 M587 194 l-5.3 17.8 M505 183 l-3.9 13.0 M508 212 l-6.4 21.4 M538 97 l-4.2 14.1 M550 58 l-6.5 21.6 M611 75 l-5.0 16.8 M602 163 l-4.2 14.0 M332 10 l-6.9 22.9 M556 9 l-6.6 21.9 M614 145 l-4.9 16.2 M471 5 l-3.7 12.2 M610 143 l-5.5 18.3 M598 85 l-6.7 22.5 M563 26 l-4.5 15.0 M387 34 l-5.7 19.0 M376 81 l-4.1 13.6 M590 64 l-5.2 17.5 M483 211 l-5.1 17.0 M593 103 l-5.5 18.4 M463 -25 l-5.2 17.3 M350 -29 l-6.5 21.6 M347 96 l-6.2 20.7 M474 57 l-5.5 18.2 M473 179 l-4.0 13.3 M475 36 l-4.6 15.3 M545 105 l-5.6 18.7 M541 213 l-5.2 17.3 M492 104 l-5.4 18.1 M519 90 l-5.5 18.4 M448 220 l-6.1 20.4 M579 221 l-4.5 15.1 M475 221 l-6.6 22.1 M335 2 l-5.2 17.3 M314 34 l-3.9 12.9 M511 179 l-6.8 22.8 M341 160 l-6.0 19.9 M337 205 l-7.1 23.6 M362 223 l-5.0 16.8 M451 233 l-6.6 22.0 M343 85 l-5.5 18.2 M402 22 l-4.7 15.8 M528 -25 l-5.6 18.6 M435 -25 l-4.8 16.0 M496 106 l-3.8 12.8 M615 180 l-7.1 23.7 M325 41 l-3.7 12.5 M547 42 l-4.1 13.6 M429 212 l-6.5 21.8 M375 10 l-6.9 23.0 M478 156 l-3.9 13.1 M309 153 l-5.1 17.1 M314 220 l-5.9 19.6 M555 -8 l-6.7 22.3 M312 199 l-5.2 17.4 M402 117 l-6.9 23.1 M378 4 l-5.5 18.3 M369 -1 l-4.2 13.9 M307 24 l-4.7 15.7 M391 172 l-4.6 15.5 M455 17 l-4.8 16.2 M296 37 l-3.7 12.2 M532 117 l-4.3 14.3 M447 219 l-4.0 13.3 M560 85 l-5.4 17.9 M565 75 l-5.4 18.1 M517 231 l-4.8 16.1 M565 158 l-5.9 19.6 M424 62 l-3.8 12.7 M333 -11 l-6.3 20.9 M374 13 l-3.9 13.0 M568 202 l-6.0 20.0 M383 34 l-4.7 15.5 M442 12 l-5.2 17.3 M377 226 l-7.1 23.7 M471 35 l-7.1 23.6 M392 65 l-3.6 12.0 M416 96 l-5.4 18.0 M356 104 l-3.6 12.1 M377 -6 l-5.0 16.8 M304 -24 l-4.7 15.7 M367 126 l-5.5 18.4 M538 145 l-6.2 20.6 M580 74 l-4.8 15.9 M615 10 l-6.2 20.7 M502 -18 l-6.6 22.0 M584 137 l-6.2 20.8 M558 7 l-5.5 18.3 M456 192 l-6.5 21.7 M563 125 l-6.8 22.7 M515 154 l-4.4 14.8 M300 5 l-4.9 16.3 M325 192 l-5.6 18.7 M497 137 l-6.1 20.2 M451 -29 l-6.5 21.6 M537 104 l-5.5 18.4 M508 -12 l-6.3 20.8 M373 -10 l-4.6 15.2 M531 25 l-6.3 20.9 M612 101 l-5.0 16.6 M448 152 l-6.4 21.2 M494 141 l-3.9 12.9 M339 38 l-6.3 20.9 M390 121 l-3.6 12.1 M310 41 l-6.0 20.1 M518 150 l-4.6 15.5 M460 94 l-5.3 17.6 M329 208 l-4.3 14.4 M613 219 l-3.7 12.2 M441 188 l-7.1 23.6 M438 41 l-4.4 14.5 M602 26 l-5.7 19.0 M337 109 l-7.0 23.4 M334 188 l-5.4 18.1 M583 157 l-4.4 14.8 M586 99 l-3.7 12.3 M291 101 l-5.2 17.4 M390 7 l-4.8 16.1 M394 194 l-3.6 12.0 M538 193 l-4.0 13.4 M596 160 l-6.8 22.8 M386 69 l-5.0 16.7 M620 127 l-4.9 16.3 M431 43 l-3.8 12.6 M324 192 l-4.6 15.4 M599 36 l-4.6 15.2 M459 20 l-4.9 16.5 M606 205 l-6.5 21.7 M498 213 l-7.0 23.3 M471 161 l-3.8 12.6 M532 90 l-6.3 21.0 M503 46 l-3.8 12.6 M596 4 l-5.3 17.7 M403 49 l-6.3 20.9 M612 39 l-6.0 19.9 M389 118 l-5.0 16.7 M345 13 l-4.3 14.5 M589 102 l-4.4 14.6 M589 235 l-5.2 17.4 M336 21 l-3.9 13.1 M403 -6 l-4.5 14.9 M375 122 l-6.8 22.6 M537 80 l-5.1 17.0 M463 70 l-4.8 16.1 M310 44 l-7.1 23.6 M332 104 l-5.9 19.6 M575 27 l-4.6 15.3 M372 76 l-5.2 17.4 M605 196 l-6.7 22.5 M297 -21 l-6.2 20.5 M586 96 l-5.7 19.0 M290 74 l-6.9 23.1 M562 198 l-7.1 23.7 M372 -1 l-4.2 13.9 M462 151 l-7.0 23.3 M528 142 l-6.4 21.2 M441 117 l-3.7 12.5 M548 32 l-6.9 23.0 M503 51 l-4.1 13.5 M373 139 l-6.1 20.4 M327 -11 l-5.5 18.3 M482 73 l-4.4 14.7 M488 -27 l-4.7 15.6 M442 225 l-5.9 19.7 M582 96 l-4.4 14.8 M372 226 l-6.1 20.5' stroke='black' stroke-width='1.3'/%3E%3C/g%3E%3Cpath d='M306 206 h6' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M319 206 h7' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M337 206 h11' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M354 206 h9' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M304 213 h8' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M320 213 h11' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M337 213 h8' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M350 213 h9' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M304 220 h11' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M321 220 h11' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M337 220 h8' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M354 220 h9' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M305 227 h6' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M321 227 h11' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M338 227 h6' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M350 227 h9' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M305 234 h8' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M320 234 h7' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M337 234 h7' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M351 234 h12' stroke='white' stroke-width='1.6'/%3E%3Cpath d='M442 34 L490 34 L480 46 L452 46 Z' fill='white'/%3E%3Cpath d='M450 34 Q466 22 482 34 Z' fill='white'/%3E%3Cpath d='M478 26 H548' stroke='white' stroke-width='3'/%3E%3Crect x='545' y='24' width='6' height='212' fill='white'/%3E%3Crect x='546.5' y='120' width='3' height='116' fill='black'/%3E%3Cg transform='translate%28186 100%29 scale%280.58%29'%3E%3Cpath d='M376 70 Q392 62 410 60 L413 44 Q423 35 435 40 Q447 35 457 43 L460 60 Q480 58 490 63 Q486 69 474 68 L460 69 L457 90 Q476 98 484 118 L492 176 L488 236 L372 236 L378 176 L386 118 Q390 102 406 96 L409 92 L402 90 Q396 88 400 84 L396 80 L401 77 L394 73 L403 71 Q392 72 376 70 Z' fill='black'/%3E%3C/g%3E%3Cpath d='M438 236 L372 228 L376 236 Z' fill='black'/%3E%3C/svg%3E") /* art:noir-street */;
+}
+.masthead[data-variant="2"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='236' viewBox='0 0 576 236'%3E%3Crect width='576' height='236' fill='black'/%3E%3Cpath d='M404 236 L566 0 L576 0 L576 10 L412 236 Z' fill='white'/%3E%3Ccircle cx='476' cy='74' r='48' fill='white'/%3E%3Ccircle cx='460' cy='62' r='9' fill='none' stroke='black' stroke-width='2.4'/%3E%3Ccircle cx='494' cy='90' r='6' fill='none' stroke='black' stroke-width='2.4'/%3E%3Ccircle cx='488' cy='56' r='3.5' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M302 236 V138 H336 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Crect x='320' y='180' width='6' height='8' fill='white'/%3E%3Crect x='309' y='195' width='6' height='8' fill='white'/%3E%3Cpath d='M338 236 V104 H380 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Crect x='345' y='131' width='6' height='8' fill='white'/%3E%3Crect x='345' y='161' width='6' height='8' fill='white'/%3E%3Crect x='356' y='176' width='6' height='8' fill='white'/%3E%3Cpath d='M382 236 V152 H418 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Crect x='400' y='164' width='6' height='8' fill='white'/%3E%3Crect x='389' y='179' width='6' height='8' fill='white'/%3E%3Crect x='400' y='179' width='6' height='8' fill='white'/%3E%3Cpath d='M420 236 V86 H470 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Crect x='438' y='128' width='6' height='8' fill='white'/%3E%3Crect x='460' y='143' width='6' height='8' fill='white'/%3E%3Crect x='460' y='158' width='6' height='8' fill='white'/%3E%3Crect x='449' y='173' width='6' height='8' fill='white'/%3E%3Crect x='438' y='188' width='6' height='8' fill='white'/%3E%3Crect x='438' y='203' width='6' height='8' fill='white'/%3E%3Crect x='460' y='203' width='6' height='8' fill='white'/%3E%3Cpath d='M472 236 V134 H506 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Crect x='490' y='161' width='6' height='8' fill='white'/%3E%3Crect x='490' y='176' width='6' height='8' fill='white'/%3E%3Crect x='479' y='191' width='6' height='8' fill='white'/%3E%3Crect x='490' y='206' width='6' height='8' fill='white'/%3E%3Crect x='479' y='221' width='6' height='8' fill='white'/%3E%3Cpath d='M508 236 V114 H546 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Cpath d='M548 236 V148 H576 V236 Z' fill='black' stroke='white' stroke-width='3.2' stroke-linejoin='miter'/%3E%3Crect x='566' y='190' width='6' height='8' fill='white'/%3E%3Crect x='555' y='220' width='6' height='8' fill='white'/%3E%3Cpath d='M431 86 L435 62 M459 86 L455 62 M445 86 V62 M433 78 L457 66 M457 78 L433 66' fill='none' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M431 86 L435 62 M459 86 L455 62 M445 86 V62 M433 78 L457 66 M457 78 L433 66' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3Cg stroke='white' stroke-width='3' fill='black' stroke-linejoin='round'%3E%3Cpath d='M427 62 h36 v-26 h-36 Z'/%3E%3Cpath d='M424 36 L445 22 L466 36 Z'/%3E%3C/g%3E%3Crect x='312' y='26' width='34' height='124' fill='black' stroke='white' stroke-width='3.5'/%3E%3Cpath d='M346 60 H356 M346 120 H356' stroke='white' stroke-width='3'/%3E%3Cg transform='translate%28321 36%29'%3E%3Cpath d='M0 0 V16 M16 0 V16 M0 8 H16' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate%28321 58%29'%3E%3Cpath d='M8 0 C-2 0 -2 16 8 16 C18 16 18 0 8 0 Z' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate%28321 80%29'%3E%3Cpath d='M0 0 H16 M8 0 V16' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate%28321 102%29'%3E%3Cpath d='M16 0 H0 V16 H16 M0 8 H12' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3Cg transform='translate%28321 124%29'%3E%3Cpath d='M0 0 V16 H16' fill='none' stroke='white' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E") /* art:noir-skyline */;
+}
+/* Cut to paper: the typed strip across the foot of the shot. */
+.dateline {
+  margin: auto calc(-1 * var(--pad)) 0;
+  padding: 6px var(--pad) 5px;
+  background: #fff;
+  color: #000;
+  border-top: 3px solid #000;
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+.dateline::before { content: "FILED"; letter-spacing: 0.2em; margin-right: 10px; }
+/* The status, typed on the same strip. */
+.masthead::after {
+  content: "STATUS: OPEN";
+  position: absolute; right: var(--pad); bottom: 5px;
+  color: #000;
+  font-size: var(--size-small);
+  letter-spacing: 0.1em;
+}
+
+/* ---------- section breaks: a typed line of dashes ----------
+   Two breaks in a row happen when news drops out, and read as a typo. */
+.rule + .rule { display: none; }
+.rule {
+  height: 2px;
+  margin: 2px var(--pad);
+  background: repeating-linear-gradient(90deg, #000 0 11px, transparent 11px 17px);
+}
+
+/* ---------- headings: rubber stamps, landed crooked ----------
+   Shrink-wrapped to the words, double-ruled, and never quite straight. The
+   distressed display face supplies the broken ink. */
+.sec-head {
+  display: table;
+  max-width: 64%;
+  margin: 6px 0 9px var(--pad);
+  padding: 3px 10px 1px !important;
+  border: 3px solid #000;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.12);
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transform: rotate(-1.4deg);
+}
+section:nth-of-type(even) .sec-head { transform: rotate(1.1deg); }
+
+/* Every rotating slot is filed as an exhibit, typed on the right. */
+.slot { counter-increment: exhibit; }
+/* A typewriter cannot set a drop cap, so this one does not either. */
+.slot-body::first-letter { float: none !important; font-size: inherit !important;
+                           line-height: inherit !important; padding: 0 !important; }
+
+.slot::before {
+  content: "EXHIBIT " counter(exhibit, upper-alpha);
+  float: right;
+  margin: 12px var(--pad) 0 8px;
+  padding-bottom: 1px;
+  border-bottom: 2px solid #000;
+  font-size: var(--size-small);
+  letter-spacing: 0.22em;
+}
+
+/* ---------- weather: a witness statement ---------- */
+.weather { position: relative; }
+/* A note in pencil beside the stamp. */
+.weather::before {
+  content: "suspect: the sky";
+  float: right;
+  margin: 10px 22px 0 8px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.15);
+  line-height: 1;
+  border-bottom: 2px solid #000;
+  transform: rotate(-4deg);
+}
+.verdict::before {
+  content: "STATEMENT";
+  display: block;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.3em;
+  margin-bottom: 1px;
+}
+/* The figures as a typed form, with the high circled in pencil. */
+.temps {
+  border-top: 0; border-bottom: 0;
+  margin: 8px var(--pad) 2px;
+  column-gap: 26px;
+}
+.temp-cell { padding: 2px 0 3px; border-bottom: 2px dotted #000; }
+.temp-cell + .temp-cell { border-left: 0; }
+.temp-label { font-weight: 400; letter-spacing: 0.24em; }
+.temp-cell + .temp-cell .temp-value {
+  padding: 2px 12px;
+  margin-right: -6px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='50' viewBox='0 0 100 50' preserveAspectRatio='none'%3E%3Cpath d='M58 6 C84 5 97 15 95 27 C93 41 70 47 46 46 C20 45 4 38 5 25 C6 12 26 5 52 4 C66 4 75 7 80 10' fill='none' stroke='black' stroke-width='2.4'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.temp-value { font-weight: 400; }
+/* A coffee ring, set down on the chart - line art under line art, never on
+   prose. */
+.weather::after {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92' viewBox='0 0 92 92'%3E%3Ccircle cx='46' cy='46' r='41' fill='none' stroke='black' stroke-width='3' stroke-dasharray='84 4 46 3 104 6'/%3E%3Ccircle cx='47' cy='45' r='36' fill='none' stroke='black' stroke-width='1.2' stroke-dasharray='26 8 60 12'/%3E%3C/svg%3E");
+  position: absolute; right: 60px; bottom: 48px;
+  transform: rotate(20deg);
+  pointer-events: none;
+}
+
+/* ---------- news: a clipping from the evening paper ----------
+   Cut out with pinking-shear edges, taped in, and missing its photograph. */
+.news {
+  position: relative;
+  margin: 14px 10px 10px;
+  padding: 16px 0 16px;
+  border-left: 1px solid #000; border-right: 1px solid #000;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 7 L6 1 L12 7' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") top left / 12px 7px repeat-x,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 0 L6 6 L12 0' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") bottom left / 12px 7px repeat-x;
+}
+.news::before {
+  content: "PHOTO MISSING";
+  float: right;
+  width: 138px; height: 88px;
+  margin: 2px var(--pad) 6px 12px;
+  box-sizing: border-box;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 3px;
+  border: 2px solid #000;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0 L100 78 M100 0 L0 78' stroke='black' stroke-width='1.5' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") top / 100% 100% no-repeat;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+/* A strip of tape across the top corner. */
+.news::after {
+  content: "";
+  position: absolute; top: -9px; left: -12px;
+  width: 78px; height: 20px;
+  border: 2px solid #000;
+  background: #fff repeating-linear-gradient(90deg, #000 0 1px, transparent 1px 5px);
+  transform: rotate(-24deg);
+}
+.news .sec-head { max-width: calc(100% - 210px); }
+.news-item { margin-bottom: 5px; }
+.news-n::after { content: "."; }
+.news-n { margin-right: 8px; }
+
+/* ---------- itemization: the evidence log ---------- */
+.itemization { padding-top: 4px; }
+.itemization::before {
+  content: "EVIDENCE LOG";
+  display: block;
+  text-align: center;
+  letter-spacing: 0.4em;
+  font-size: var(--size-small);
+  border-bottom: 2px solid #000;
+  margin: 2px 0 6px;
+}
+.item-tier { letter-spacing: 0.08em; }
+.leader {
+  background-image: repeating-linear-gradient(to right,
+      #000 0 3px, transparent 3px 9px);
+}
+/* UNSOLVED, stamped into the gap between SUBTOTAL and its figure. */
+.totals { position: relative; padding-top: 4px; padding-bottom: 6px; }
+.totals::after {
+  content: "UNSOLVED";
+  position: absolute; left: 47%; top: 50%;
+  transform: translate(-50%, -50%) rotate(-9deg);
+  padding: 2px 10px 0;
+  border: 3px solid #000;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+  background: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.4);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+}
+
+/* ---------- legalese: the case report ----------
+   The closing report on today's case, typed at three in the morning, with the
+   disposition Python drew for it struck crooked in the corner like the
+   UNSOLVED above, and the line he did not type pencilled underneath. It sits
+   just above THE END?, so the film ends on the report. */
+.legalese {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 2px dotted #000;
+}
+.legalese::before {
+  content: "CASE REPORT  \00B7  No. " attr(data-no);
+  display: block;
+  letter-spacing: 0.3em;
+  margin-bottom: 5px;
+}
+/* On a morning with a report, its stamp is the verdict - the evidence log's
+   UNSOLVED would be a second, contradicting one an inch above it. */
+.receipt:has(.legalese) .totals::after { display: none; }
+.legalese .blk-label {
+  float: right;
+  max-width: 44%;
+  margin: 2px 4px 10px 18px;
+  padding: 3px 8px 1px;
+  border: 3px solid #000;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+  background: #fff;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.15);
+  line-height: 1.08;
+  letter-spacing: 0.05em;
+  transform: rotate(-6deg);
+}
+.legalese .footnote {
+  clear: both;
+  margin-top: 6px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.2);
+  line-height: 1.1;
+  transform: rotate(-1.5deg);
+}
+
+.answers .answer-label { letter-spacing: 0.1em; }
+
+.serial { margin-top: 10px; }
+.serial .row { margin-bottom: 3px; letter-spacing: 0.08em; }
+
+/* THE END? - the film's last frame, above the tear. A question, because the
+   status on the strip up top still says OPEN. */
+.serial::after {
+  content: "THE END?";
+  display: block;
+  margin-top: 12px;
+  padding: 10px 0 8px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.7);
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+/* ---------- coupon: a business card ---------- */
+.tear {
+  margin-top: 16px;
+  padding-top: 5px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-body);
+}
+.coupon-inner {
+  position: relative;
+  margin: 12px 34px 10px 30px;
+  padding: 14px 16px 10px 96px !important;
+  border: 2px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  min-height: 86px;
+}
+/* The fedora, where a logo would be. */
+.coupon-inner::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='34' viewBox='0 0 66 34'%3E%3Cpath d='M2 26 Q33 34 64 26 Q58 21 49 21 L45 6 Q41 1 33 5 Q25 1 21 6 L17 21 Q8 21 2 26 Z' fill='black'/%3E%3Crect x='17' y='16' width='32' height='4' fill='white'/%3E%3C/svg%3E");
+  position: absolute; left: 16px; top: 18px;
+}
+/* The card is the contact's, out of his little black book: the book's name small
+   at the top, theirs set large, his note on them typed, his last word on them
+   pencilled, and where to find them along the foot (data-where, from the
+   contact Python drew). */
+.coupon-head {
+  font-size: var(--size-tiny);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+.coupon-inner .blk-label {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin-bottom: 5px;
+}
+.coupon-terms {
+  margin-top: 4px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.15);
+  line-height: 1.1;
+}
+.coupon-inner::after {
+  content: attr(data-where);
+  display: block;
+  margin: 8px 0 0 -80px;
+  padding-top: 3px;
+  border-top: 1px solid #000;
+  white-space: pre;
+  text-align: center;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.16em;
+}
+.coupon-inner:not([data-where])::after { content: "PRIVATE INQUIRIES  -  NO JOB TOO SMALL"; }

@@ -1,0 +1,631 @@
+{#
+  The receipt shell.
+
+  This file owns STRUCTURE only. Every visual decision - typeface, rules,
+  spacing, whether headers are centred or barred - belongs in the persona
+  stylesheet, which is appended last and wins. If you find yourself wanting to
+  change how something looks in here, it belongs in a theme instead.
+
+  Three rules the base CSS enforces so a theme cannot break them:
+    * no page padding - the paper's own unprintable edge is the margin
+    * type sizes come from render.fonts.sizes(): --size-body/small/tiny
+    * anything reversed out (white on black) is bold - see .inv
+#}<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  {{ font_face_css }}
+
+  :root {
+    --font: {{ font_stack }};
+    /* A persona's display face (masthead, headings) and accent face (its
+       second device - stamps, marginalia, cue numbers), from
+       [persona.fonts]. Either falls back to the body face when absent. */
+    --font-display: {{ font_display or 'var(--font)' }};
+    --font-accent: {{ font_accent or 'var(--font)' }};
+    /* A face that belongs to the persona rather than to the page ([persona.fonts]
+       own). The Mimic wears somebody else's every other face and keeps this one
+       for the line where the disguise drops. */
+    --font-own: {{ font_own or 'var(--font)' }};
+    /* The weight the display face is chosen at ([persona.fonts]
+       display_weight). A real weight the face ships, never a synthesised one. */
+    --display-weight: {{ display_weight or 400 }};
+    /* The heaviest weight the accent face actually ships - the accent's --bold.
+       Caveat has a 700; Rye has only a 400, and gets 400 here. */
+    --accent-bold: {{ accent_bold or 400 }};
+    --own-bold: {{ own_bold or 400 }};
+    /* Always available, whatever the persona face is. Content that is only
+       correct in a fixed pitch - ASCII art, grids, anything aligned by column -
+       uses this rather than trusting the machine to have a monospace. */
+    --font-mono: {{ font_mono }};
+    /* The heaviest weight the day's face actually has. VT323 and Special
+       Elite ship a 400 alone, so for those this is 400 and `font-synthesis`
+       below stops the browser inventing the rest. */
+    --bold: {{ bold_weight }};
+    /* The reader's name ([reader] in config.toml, QG_NAME in .env) as CSS
+       strings, for a theme that prints it with `content`. */
+    --reader: {{ reader }};
+    --reader-caps: {{ reader_caps }};
+    --size-body: {{ size_body }}px;
+    --size-small: {{ size_small }}px;
+    --size-tiny: {{ size_tiny }}px;
+    --rule: 3px;
+    --pad: 12px;   /* 72mm page - 6px read as edge-crowded */
+    --gap: 8px;
+    /* Breathing room at the FOOT of a section. Without it the last line of
+       a slot butts straight into the rule that follows, which on paper
+       reads as the two belonging together. Bottom, not top: the header
+       already sits close to its own rule on purpose. */
+    --sec-end: 12px;
+  }
+
+  /* Never synthesise a weight or a slant. A browser asked for bold on a
+     single-weight face fakes it by smearing the glyph sideways, and a smear is
+     soft-edged, which is exactly what the page threshold converts into surplus
+     ink - measured at +50% ink and +60% stroke width for no extra drawn weight
+     (`tools/boldtest.py`). On reversed-out text it is worse than useless: the
+     black smears INTO the white glyph and eats the counters, which is the
+     opposite of what bolding it was for. Where a face has no bold, emphasis
+     has to come from the layout - a bar, a rule, letter-spacing - not from
+     asking for a weight that does not exist. */
+  * { font-synthesis: none; font-synthesis-weight: none; }
+
+  html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+  /* A positioning context for the whole page. Slot 59 draws a ruler down the
+     edge of the receipt and costs no paper of its own by being absolutely
+     positioned against this - it is the only slot that draws outside its own
+     box, which is exactly why the catalogue prices it at 0mm. */
+  .receipt { position: relative; }
+  body {
+    font-family: var(--font);
+    font-size: var(--size-body);
+    line-height: 1.35;
+    -webkit-font-smoothing: none;
+  }
+
+  /* Full-bleed by default; .pad opts in to inset content. */
+  .pad   { padding-left: var(--pad); padding-right: var(--pad); }
+  .rule  { height: var(--rule); background: #000; }
+  /* Reversed-out text MUST be bold. At the page threshold, white glyphs on
+     black are eaten by surrounding ink - the heavier the page, the worse. Use
+     .inv rather than hand-rolling background/color so the weight comes with it. */
+  .inv   { background: #000; color: #fff; font-weight: var(--bold); }
+  .bar   { background: #000; color: #fff; font-weight: var(--bold);
+           padding: 4px var(--pad); }
+  .small { font-size: var(--size-small); }
+  .tiny  { font-size: var(--size-tiny); }
+  .row   { display: flex; justify-content: space-between; gap: 6px; }
+  .sec   { margin-top: var(--gap); padding-bottom: var(--sec-end); }
+  .sec-head { font-weight: var(--bold); }
+  img    { display: block; }
+  /* Slot media centres by default - a card flush against the left edge reads as
+     a mistake. Themes may override.
+     `display:block` matters for the SVG: inline elements ignore `margin:auto`,
+     so an inline chart or moon silently stays left-aligned. */
+  .slot img, .slot svg { display: block; margin: 3px auto; }
+  /* A drawn SVG may shrink to fit; a dithered <img> never may (invariant 2).
+     The year bar is 540px, and anything that insets the page - the edge ruler
+     (slot 59), a theme's margin ornament - otherwise pushes it off the paper. */
+  .slot svg { max-width: 100%; height: auto; }
+  /* The ruler's section has no head or body, so the rules either side of it
+     would print as a double break. */
+  .rule:has(+ .slot-59) { display: none; }
+
+  /* ---------- news ----------
+     Every persona lays an item out as two columns, a marker and the text, as a
+     flex row or a grid. So the headline and its note have to be ONE child: a
+     note added as a third child lands in the marker's column, or beside the
+     headline as a sidebar. Themes restyle all of this freely; the two-children
+     structure is the part they rely on. */
+  .news-body { flex: 1 1 auto; min-width: 0; }
+  /* The note: where the story is from, and the one thing the headline left
+     out. Ruled rather than only indented, so it reads at a glance as
+     subordinate to the headline rather than as a second, smaller headline. */
+  .news-note { font-size: var(--size-small); line-height: 1.32;
+               margin: 6px 0 1px; padding-left: 11px;
+               border-left: 3px solid #000; }
+  /* A label line of its own, not a run-in prefix: several themes set the whole
+     page in capitals and ship no bold, and on those there is no typographic
+     difference left to tell a label from the sentence after it - "BBC NEWS
+     PROTESTS OVER OVERCROWDED CLASSES" read as one sentence. Uppercased and
+     tracked, but in whatever face the persona is wearing, because a monospaced
+     byline reads as a machine's note in a Victorian ledger. */
+  .news-src  { display: block; font-weight: var(--bold);
+               letter-spacing: 0.11em; text-transform: uppercase;
+               font-size: var(--size-tiny); margin-bottom: 2px; }
+  /* Three headlines four pixels apart read as one paragraph. A theme that
+     wants them tighter or looser sets its own margin and wins. */
+  .news-item + .news-item { margin-top: 12px; }
+
+  table  { width: 100%; border-collapse: collapse; }
+  td     { padding: 0; vertical-align: top; }
+  td.r   { text-align: right; white-space: nowrap; }
+
+  /* Paired values sit on a grid rather than flying to opposite edges. At 72mm
+     `space-between` leaves a void down the middle. */
+  .meta  { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; }
+  .meta .r { text-align: right; white-space: nowrap; }
+
+  /* Itemization: dot leaders carry the eye across the width, which is what a
+     wide receipt wants and what a ledger has always done.
+     Hard colour stops only - a gradient with soft stops makes greys, and greys
+     do not survive the page threshold. */
+  .item      { display: flex; align-items: baseline; gap: 7px; }
+  /* The name is the only part of a row allowed to give way: a long slot name
+     would otherwise push the price off the right edge, and the price is the
+     one thing on a receipt row that must survive. The name shrinks and
+     truncates; the leader, tier and price never do. */
+  .item-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+               min-width: 0; flex: 0 1 auto; }
+  .leader    { flex: 1 1 auto; min-width: 14px; align-self: stretch;
+               background-image: repeating-linear-gradient(to right,
+                   #000 0 2px, transparent 2px 7px);
+               background-repeat: repeat-x;
+               background-size: 100% 2px;
+               background-position: 0 82%; }
+  .item-tier, .item-price { white-space: nowrap; flex: 0 0 auto; }
+  .item-price { min-width: 3.4em; text-align: right; }
+
+  /* The tear line is functional, not decorative - it has to read as "tear
+     here". Defaulted in the base so a new theme cannot ship without one. */
+  .tear { border-top: 2px dashed #000; margin-top: 8px; padding-top: 4px; }
+
+  /* Slot 55 is a renderer slot: its appearance IS its content, so the rule
+     lives here rather than in a theme, and every persona gets the same slab.
+     Bold and oversized because reversed-out strokes lose weight to the
+     surrounding ink at the page threshold (SYSTEM.md 1.1) - this is that
+     invariant's worst case, a whole panel of it. */
+  .slot-55 .slot-body {
+    background: #000; color: #fff; font-weight: var(--bold);
+    font-size: calc(var(--size-body) + 6px); line-height: 1.3;
+    padding: 20px var(--pad); margin-top: 0;
+    min-height: 200px; display: flex; align-items: center;
+  }
+  .slot-55 .sec-head:empty { display: none; }
+
+  /* The day's high and low get their own element: they are the two numbers
+     you actually look for, so they must be the easiest thing on the section to
+     find. The narrator is told not to say them. */
+  .temps      { display: grid; grid-template-columns: 1fr 1fr;
+                border-top: 3px solid #000; border-bottom: 3px solid #000;
+                margin-top: 6px; }
+  .temp-cell  { padding: 5px var(--pad); display: flex; align-items: baseline;
+                gap: 10px; }
+  .temp-cell + .temp-cell { border-left: 3px solid #000; }
+  .temp-label { font-size: var(--size-tiny); font-weight: var(--bold);
+                letter-spacing: 0.08em; }
+  .temp-value { font-size: calc(var(--size-body) + 9px);
+                font-weight: var(--bold);
+                line-height: 1.05; margin-left: auto; }
+
+  /* Code snippets (slot 24) are only correct in a fixed pitch, and must not
+     be re-wrapped mid-token. */
+  /* The mono face always has a real bold, so this one may ask for 700. */
+  code.snippet { font-family: var(--font-mono); font-size: var(--size-small);
+                 font-weight: 700; word-break: keep-all; }
+
+  /* Slot 103 is the invented word, and CLAUDE.md invariant 8 requires
+     fabricated content to carry a consistent mark. The mark is applied here
+     rather than written into the slot's text because that text is narrated -
+     a dagger placed in `body` is removed by the very rewrite that makes the
+     section good. A stylesheet cannot be talked out of it. */
+  /* Literal dagger, not a CSS hex escape. The escape is correct CSS and never
+     survives the trip: written from Python, a backslash followed by 202 is
+     consumed as an OCTAL escape, so what reaches the stylesheet is U+0082 and
+     the digit zero - which print as a tofu box and a nought. */
+  .slot-103 .sec-head::after   { content: " †"; }
+  .slot-103 .slot-body::before { content: "† ";
+                                 font-weight: var(--bold); }
+  .slot-103 .slot-fine        { font-weight: var(--bold); }
+
+  /* Slot 106 is the conspiracy. The pattern it cites may be true - the dots
+     come from the receipts table and are computed, not recalled - and the
+     conclusion drawn from them never is. CLAUDE.md invariant 8 again, and this
+     is the slot where it matters most: every other number on the page is real,
+     so a reader has no way to tell where the reliable part stops unless the
+     layout says. Marked in the stylesheet for the same reason as slot 103 -
+     the body is narrated, so anything written into it can be rewritten out.
+
+     ASCII "[?]" rather than an interrobang: the mark has to render in every
+     persona face, and an unusual codepoint that is missing from one of them
+     prints as a tofu box - which marks the section as broken rather than as
+     fabricated. The dagger on slot 103 is safe because every face has it. */
+  .slot-106 .slot-body { border-left: 6px solid #000; padding-left: 10px; }
+  .slot-106 .sec-head::after { content: " [?]"; }
+  .slot-106 .slot-fine { font-weight: var(--bold); }
+
+
+  /* ================= SECTION TREATMENTS =================================
+     The text-only slots were all the same shape - a header, then a
+     paragraph - and eight of those in a row is a wall. These give each family
+     of slot its own typographic behaviour.
+
+     Three constraints shape every one of them, and they are the reason none of
+     this looks like ordinary web design:
+
+       * No greys and no opacity, so hierarchy comes from SIZE, RULES, BOXES
+         and REVERSED-OUT ink. There are no soft tints to lean on.
+       * `--bold` is 400 on several faces, so weight cannot carry emphasis
+         on its own. Everything here works with no weight change at all, and
+         treats bold as a bonus where it exists.
+       * The narrator rewrites most of these bodies, so nothing can depend on
+         markup inside them. Every rule below works on a plain run of prose -
+         ::first-letter, borders, ::before marks - and the `fine` line, which
+         is never narrated and can be styled with confidence.
+
+     Slot-id selectors, so a theme can still override any of it. ==========  */
+
+  /* --- Pull quote: 143 wise saying, 98 best sentence -------------------
+     Rules above and below rather than quotation marks. Every face has a rule;
+     not every face has a decent set of quotes, and VT323's are two square
+     pixels. The attribution hangs right under a short rule, the way a plate
+     caption does. */
+  .slot-143 .slot-body, .slot-98 .slot-body, .slot-25 .slot-body {
+    font-size: calc(var(--size-body) + 2px);
+    line-height: 1.45;
+    border-top: 3px solid #000; border-bottom: 3px solid #000;
+    padding: 10px var(--pad); margin-top: 6px;
+  }
+  .slot-143 .slot-fine, .slot-98 .slot-fine, .slot-25 .slot-fine {
+    text-align: right; letter-spacing: 0.06em; margin-top: 5px;
+  }
+  .slot-143 .slot-fine::before, .slot-98 .slot-fine::before,
+  .slot-25 .slot-fine::before { content: "- "; }
+
+  /* --- Dictionary entry: 31 untranslatable, 32 etymology, 103 invented ---
+     A drop cap, because it is the one piece of typographic hierarchy that
+     needs neither weight nor colour, and at 18px body a three-line cap is a
+     shape rather than a letter - which is what makes it survive a threshold.
+     The language or note sets as a boxed tag, the way a dictionary sets a
+     part-of-speech label. */
+  .slot-31 .slot-body::first-letter,
+  .slot-32 .slot-body::first-letter {
+    float: left; font-size: 3.1em; line-height: 0.78;
+    padding: 2px 7px 0 0; font-weight: var(--bold);
+  }
+  /* Not floated on the poem. Its lines are separate blocks with a hanging
+     indent, and the negative indent pulls the next line in under a floated
+     initial - "Glory be" printed as "G ry be", with the capital sitting on the
+     second line. The initial stays in the line instead, just larger. */
+  .slot-147 .slot-body::first-letter {
+    font-size: 1.5em; line-height: 1; font-weight: var(--bold);
+  }
+  .slot-31 .slot-fine {
+    display: inline-block; border: 2px solid #000; padding: 1px 7px;
+    margin-top: 6px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  /* The true derivation gets a mark of its own - not a warning, a lineage.
+     Slot 32 must be distinguishable at a glance from 103, and this is the
+     other half of that: 103 has a dagger, 32 has a rule down the left like a
+     citation. */
+  .slot-32 .slot-body {
+    border-left: 4px solid #000; padding-left: 12px; margin-left: var(--pad);
+  }
+  .slot-32 .slot-body::first-letter { padding-left: 0; }
+
+  /* --- Spec plate: 46 machine facts, 43 year bar --------------------------
+     Two corner brackets and a fixed pitch. A full border would make it a box
+     like everything else; brackets read as a technical plate, which is what a
+     fact about the machine should look like. */
+  .slot-46 .slot-body {
+    position: relative; font-family: var(--font-mono);
+    font-size: var(--size-small); line-height: 1.5;
+    padding: 12px 16px; margin: 4px var(--pad);
+  }
+  .slot-46 .slot-body::before, .slot-46 .slot-body::after {
+    content: ""; position: absolute; width: 16px; height: 16px;
+  }
+  .slot-46 .slot-body::before {
+    top: 0; left: 0; border-top: 3px solid #000; border-left: 3px solid #000;
+  }
+  .slot-46 .slot-body::after {
+    bottom: 0; right: 0; border-bottom: 3px solid #000;
+    border-right: 3px solid #000;
+  }
+
+  /* --- Notice: 33 cognitive bias -----------------------------------------
+     A hazard plate. The double rule is the whole device: it says "read this
+     one" without needing a heavier weight or a bigger size. */
+  .slot-33 .slot-body {
+    border-top: 3px solid #000; border-bottom: 3px solid #000;
+    box-shadow: 0 5px 0 -2px #000, 0 -5px 0 -2px #000;
+    padding: 9px var(--pad); margin: 8px 0;
+  }
+
+  /* --- Cartouche: 150 horoscope -------------------------------------------
+     A double-ruled box with the disclosure set into its foot, so the admission
+     that the sign was invented reads as part of the frame rather than as an
+     apology after the fact. */
+  .slot-150 .slot-body {
+    border: 3px double #000; border-width: 5px; border-style: double;
+    padding: 10px var(--pad); margin: 4px 0 0; line-height: 1.4;
+  }
+  .slot-150 .sec-head {
+    text-align: center; letter-spacing: 0.22em; text-transform: uppercase;
+  }
+  .slot-150 .slot-fine {
+    text-align: center; letter-spacing: 0.08em; margin-top: 4px;
+  }
+
+  /* --- Given room: 149 joke ----------------------------------------------
+     Deliberately the least decorated section on the page. A joke in a box is a
+     joke being introduced, and a joke being introduced has already failed.
+     Larger, looser, centred, and nothing else. */
+  .slot-149 .slot-body {
+    font-size: calc(var(--size-body) + 1px); line-height: 1.55;
+    text-align: center; padding: 6px calc(var(--pad) + 10px);
+  }
+  .slot-149 .sec-head { text-align: center; letter-spacing: 0.14em; }
+
+  /* --- Filed: 130 fun fact, 138 most-read ---------------------------------
+     A stamped reference number down the side. The fact gets an index, because
+     a fact with a filing mark reads as retrieved rather than as asserted. */
+  .slot-130 .slot-body, .slot-138 .slot-body {
+    border-left: 3px solid #000; border-right: 3px solid #000;
+    padding: 8px var(--pad); margin: 4px 0;
+  }
+
+  /* --- Argued: 111 steelman ---------------------------------------------
+     Hanging indent, so each line after the first sits in from the left and the
+     block reads as a quoted argument rather than as the receipt's own opinion.
+     That distinction matters on this slot more than anywhere: the steelman is
+     deliberately not what the reader thinks. */
+  .slot-111 .slot-body {
+    padding-left: calc(var(--pad) + 18px); text-indent: -18px;
+    line-height: 1.45;
+  }
+  /* 115: one line per outlet, written by the narrator as lines - so its
+     newlines are kept. If the narrator fails, the outlets' own headlines print
+     instead, each under its name, set like the news note so the three
+     wordings sit level and read across. */
+  .slot-115 .slot-body { white-space: pre-line; line-height: 1.45; }
+  .framing { padding-left: 11px; border-left: 3px solid #000;
+             line-height: 1.32; white-space: normal; }
+  .framing + .framing { margin-top: 10px; }
+  .framing-src { display: block; font-weight: var(--bold);
+                 letter-spacing: 0.11em; text-transform: uppercase;
+                 font-size: var(--size-tiny); margin-bottom: 2px; }
+
+  /* --- Assignment: 51 micro-dare, 48 journaling ---------------------------
+     Reversed out. It is an instruction, and an instruction on a receipt should
+     look like one - this is the same logic as the black panel, at one line. */
+  .slot-51 .slot-body {
+    background: #000; color: #fff; font-weight: var(--bold);
+    padding: 10px var(--pad); margin-top: 2px; line-height: 1.4;
+  }
+
+  /* Slot 44: the count is the whole section, so it is set large. */
+  .slot-44 .days-n { font-size: calc(var(--size-body) * 2.4);
+                     font-weight: var(--bold); line-height: 1.05;
+                     letter-spacing: 0.02em; }
+
+  /* Puzzle answers, upside-down at the footer. The house rule is same-day
+     solutions (SLOTS.md, PUZZLES): nothing carries over, because a puzzle whose
+     answer arrives tomorrow needs today's receipt kept, and these get thrown
+     away. Rotating the whole block keeps it in normal reading order once the
+     paper is turned over, and a rotated element keeps its box, so the layout
+     height is unaffected. Not a theme decision - it is the mechanism. */
+  .answers        { transform: rotate(180deg); margin-top: var(--gap); }
+  .answer-label   { font-weight: var(--bold); }
+  .answer-item    { margin-top: 4px; }
+
+  /* A block's drawn pick and its body set as lines ([persona.blocks.<key>]
+     picks and layout). Only enough that an unthemed one reads; the look is the
+     theme's. */
+  .blk-label      { font-weight: var(--bold); }
+  .ln             { display: block; }
+  .ln + .ln       { margin-top: 2px; }
+  .ln-label       { font-weight: var(--bold); }
+
+  /* A masthead's photograph ([persona.picture]). Dithered to 1-bit before it
+     got here and at its final size, so it is centred and never scaled. */
+  .mh-picture     { margin: 0; }
+  .mh-picture img { margin: 0 auto; }
+
+  {{ theme_css }}
+</style></head>
+{# --roll is how much of the current 80m roll the machine has printed, from the
+   receipts table, as a percentage - a fact a theme may draw a gauge from and
+   cannot compute. An estimate: nothing records a roll being changed. #}
+{# --appearance is which morning this is for a persona told its own history
+   (the Machine's firmware version), and the one before it - two values,
+   because CSS can print a number through counter-reset but cannot subtract. #}
+<body><div class="receipt" style="--roll: {{ roll_pct|default(0) }}%
+  {%- if appearance %}; --appearance: {{ appearance }}; --appearance-prev: {{ appearance - 1 }}{% endif %}">
+
+  {# ---------- masthead ----------
+     The data attributes are facts a theme may print or draw but cannot compute:
+     CSS reads them with attr() and attribute selectors. Nothing is styled here.
+     data-wet is 1 when rain is forecast; data-dd and data-mm are the date's
+     day and month as two digits, for a theme that sets the date as figures. #}
+  <header class="masthead" data-no="{{ receipt_no }}" data-moon="{{ moon }}"
+          data-variant="{{ variant }}" data-wet="{{ wet }}"
+          data-dd="{{ serial_date[:2] }}" data-mm="{{ month_no }}"
+          data-wears="{{ wears }}" data-absorbed="{{ absorbed }}">
+    <div class="wordmark">{{ wordmark }}</div>
+    {# The persona's own masthead lines ([persona.masthead]) - a case title, a
+       log entry, an exchange between two commentators. Written by the narrator,
+       or the day's fallback, and escaped in `main.masthead_html()` - which is
+       also where a persona with `speakers` has its head set as turns, so this
+       must not escape again. #}
+    {# Each line carries the masthead's figures too, for a theme that numbers
+       a line from them - attr() reaches only an element's own attributes. #}
+    {% for key, text in (masthead_copy or {}).items() %}
+    <div class="mh mh-{{ key }}" data-no="{{ receipt_no }}" data-dd="{{ serial_date[:2] }}" data-mm="{{ month_no }}">{{ text }}</div>
+    {% endfor %}
+    {% if picture %}
+    <figure class="mh-picture">{{ picture.img }}
+      {% if picture.credit %}<figcaption class="mh-picture-credit">{{ picture.credit|e }}</figcaption>{% endif %}
+    </figure>
+    {% endif %}
+    <div class="dateline">{{ dateline }}</div>
+  </header>
+
+  {# ---------- weather ---------- #}
+  <section class="sec weather">
+    <div class="pad sec-head">{{ weather.head }}</div>
+    {# The persona's own layout draws the whole section - verdict, figures,
+       chart and all - from the same facts. Without one (unknown name, or a
+       forecast too thin to draw from) the plain arrangement below prints. #}
+    {% if weather.layout %}{{ weather.layout }}{% else %}
+    <div class="pad verdict">{{ weather.verdict }}</div>
+    {% if weather.high %}
+    <div class="temps">
+      <div class="temp-cell"><span class="temp-label">LOW</span>
+           <span class="temp-value">{{ weather.low }}</span></div>
+      <div class="temp-cell"><span class="temp-label">HIGH</span>
+           <span class="temp-value">{{ weather.high }}</span></div>
+    </div>
+    {% endif %}
+    {# The delta sits under the figures because it is a statement about them. #}
+    <div class="pad small meta">
+      <span class="delta">{{ weather.delta }}</span>
+      <span class="r feels">{{ weather.feels }}</span>
+    </div>
+    {{ weather.chart_svg }}
+    <div class="pad small meta">
+      <span class="sun">{{ weather.sun }}</span>
+      <span class="r daylight">{{ weather.daylight }}</span>
+    </div>
+    {% endif %}
+  </section>
+
+  <div class="rule"></div>
+
+  {# ---------- news ---------- #}
+  {# Guarded: a slot that dropped must leave no trace. An unguarded section
+     renders as an empty bordered box, which reads as a printer fault. #}
+  {% if news %}
+  <section class="sec news">
+    <div class="pad sec-head">{{ news.head }}</div>
+    {# 'headlines', not 'items': news.items would resolve to dict.items #}
+    {% for item in news.headlines %}
+    <div class="pad news-item"><span class="news-n">{{ loop.index }}</span>{{ item }}</div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# ---------- rotating slots ---------- #}
+  {% for slot in slots %}
+  <div class="rule"></div>
+  <section class="sec slot slot-{{ slot.id }}">
+    {% if slot.head %}<div class="pad sec-head">{{ slot.head }}</div>{% endif %}
+    {% if slot.body %}<div class="pad slot-body">{{ slot.body }}</div>{% endif %}
+    {% if slot.image %}{{ slot.image }}{% endif %}
+    {% if slot.fine %}<div class="pad small slot-fine">{{ slot.fine }}</div>{% endif %}
+  </section>
+  {% endfor %}
+
+  {# ---------- itemization ---------- #}
+  <div class="rule"></div>
+  <section class="itemization pad">
+    {% for line in itemization.lines %}
+    <div class="item tier-{{ line.tier }}">
+      <span class="item-name">{{ line.name }}</span>
+      <span class="leader"></span>
+      <span class="item-tier small">{{ line.tier|upper }}</span>
+      <span class="item-price">{{ '%.2f'|format(line.price) }}</span>
+    </div>
+    {% endfor %}
+  </section>
+  <div class="rule"></div>
+  <section class="totals pad">
+    <table>
+      <tr class="subtotal"><td><b>SUBTOTAL</b></td>
+          <td class="r"><b>{{ '%.2f'|format(itemization.subtotal) }}</b></td></tr>
+      <tr class="rarity"><td>RARITY</td>
+          <td class="r stars">{{ stars }}</td></tr>
+    </table>
+  </section>
+
+  {# ---------- the two blocks a persona shapes ----------
+     The legalese and the coupon carry the same facts as the masthead (receipt
+     number, day, month) as data attributes, plus whatever the persona's daily
+     pick declares (data-units, data-kind, data-lucky...), because a theme's
+     pseudo-elements can only attr() their own element. The pick's label prints
+     as .blk-label; a body laid out as lines prints as .ln rows, each with its
+     label and data-k. All of it is escaped in main.py. #}
+  {% macro blk_attrs(b) -%}
+    data-no="{{ receipt_no }}" data-dd="{{ serial_date[:2] }}" data-mm="{{ month_no }}"
+    {%- for k, v in (b.data or {}).items() %} data-{{ k }}="{{ v|e }}"{% endfor %}
+  {%- endmacro %}
+  {% macro blk_lines(b) -%}
+    {%- for ln in b.lines %}<div class="ln"{% if ln.k %} data-k="{{ ln.k }}"{% endif %}>
+      {%- if ln.label %}<span class="ln-label">{{ ln.label }}</span> {% endif -%}
+      <span class="ln-text">{{ ln.text }}</span></div>{% endfor -%}
+  {%- endmacro %}
+
+  {# ---------- legalese (occasional) ---------- #}
+  {% if legalese %}
+  <section class="sec legalese tiny pad" {{ blk_attrs(legalese) }}>
+    {% if legalese.label %}<div class="blk-label">{{ legalese.label|e }}</div>{% endif %}
+    {% if legalese.drawing %}<div class="blk-drawing">{{ legalese.drawing }}</div>{% endif %}
+    {% if legalese.lines %}<div class="blk-lines">{{ blk_lines(legalese) }}</div>
+    {% else %}{{ legalese.body }}{% endif %}
+    {% if legalese.footnote %}<div class="footnote">{{ legalese.footnote }}</div>{% endif %}
+  </section>
+  {% endif %}
+
+  {# ---------- puzzle answers, upside-down ----------
+     Above the tear line on purpose: everything below it leaves with the coupon,
+     and taking the coupon should not take the solutions with it. #}
+  {% if answers %}
+  <div class="rule"></div>
+  <section class="sec answers small pad">
+    {% for a in answers %}
+    <div class="answer-item">
+      <span class="answer-label">{{ a.label }}</span>
+      <div class="answer-body">{{ a.answer }}</div>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {# ---------- a share price ([persona.stock]) ----------
+     Real figures: the close is this receipt's subtotal, the line is the
+     mornings before it (main.with_stock, main.stock_panel). #}
+  {% if stock %}
+  <section class="stock pad">
+    <div class="stock-figures">
+      <span class="stock-ticker">{{ stock.ticker }}</span>
+      <span class="stock-close">{{ stock.close }}</span>
+      <span class="stock-move">{{ stock.move }}</span>
+    </div>
+    <div class="stock-chart">{{ stock.svg }}<div class="stock-span">{{ stock.span }}</div></div>
+  </section>
+  {% endif %}
+
+  {# ---------- serial ---------- #}
+  <footer class="serial">
+    <div class="pad small row">
+      <span>No. {{ receipt_no }}</span><span>{{ serial_date }}</span>
+    </div>
+    {{ barcode }}
+  </footer>
+
+  {# ---------- coupon ----------
+     LAST, always, and the tear line goes ABOVE it.
+
+     You tear along the line to take the coupon away, so everything BELOW the
+     line leaves with it. The coupon must therefore be the last thing on the
+     receipt, or claiming your free coffee would cost you the itemization, the
+     barcode and the serial number. Real receipts do the same.
+
+     The tear is manual. The printer's cutter fires once, at the end of the
+     whole job, to separate the receipt from the roll - never here. Cutting at
+     the tear line would hand you a detached coupon and post the receipt
+     separately, which is backwards. #}
+  {% if coupon %}
+  <section class="sec coupon" {{ blk_attrs(coupon) }}>
+    <div class="tear">{{ tear_glyph }}</div>
+    <div class="coupon-inner pad" {{ blk_attrs(coupon) }}>
+      <div class="coupon-head">{{ coupon.head }}</div>
+      {% if coupon.label %}<div class="blk-label">{{ coupon.label|e }}</div>{% endif %}
+      {% if coupon.drawing %}<div class="blk-drawing">{{ coupon.drawing }}</div>{% endif %}
+      {% if coupon.lines %}<div class="coupon-body blk-lines">{{ blk_lines(coupon) }}</div>
+      {% else %}<div class="coupon-body">{{ coupon.body }}</div>{% endif %}
+      {% if coupon.terms %}<div class="tiny coupon-terms">{{ coupon.terms }}</div>{% endif %}
+    </div>
+  </section>
+  {% endif %}
+
+</div></body></html>

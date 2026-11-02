@@ -1,0 +1,36 @@
+# quick-guthe dependencies.
+#
+# Pinned to what the receipt has actually been printed with. The renderer in
+# particular is sensitive to version drift: the page threshold (170) and the
+# type floor (12px) were measured on paper against this Chromium, and a
+# different build can antialias differently enough to move both.
+#
+#   python -m pip install -r requirements.txt
+#   python -m playwright install chromium
+#
+# Python 3.11, 64-bit, in a venv (see README.md). Pillow 9.5 has no wheels past
+# 3.11, and Playwright ships no Chromium for 32-bit Windows.
+
+# Rendering - HTML to a 1-bit bitmap
+playwright==1.62.0
+Pillow==9.5.0
+numpy==1.26.4
+Jinja2==3.1.2
+
+# Narrator
+anthropic==1.4.0
+
+# Things drawn as pixels rather than trusted to the printer's own modes
+python-barcode==0.16.1
+qrcode==8.2
+
+# Sky slots (35, 36, 38) - planetary and stellar positions computed locally,
+# so no ephemeris download and nothing that can go stale
+ephem==4.2.1
+
+# Friend timezones (72) - the IANA time zone database behind `zoneinfo`.
+# Windows ships none of its own, so without this every zone lookup fails.
+tzdata==2026.5
+
+# Windows only: the direct usbprint.sys device path (printer/usbwin.py)
+pywin32==306; sys_platform == "win32"

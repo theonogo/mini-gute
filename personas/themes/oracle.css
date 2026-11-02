@@ -1,0 +1,316 @@
+/* Weights come from --bold, never a literal 700. Almendra ships a real 700;
+   Grenze Gotisch is set at its 400 and Uncial Antiqua has nothing else. See
+   the font-synthesis note in the base stylesheet. */
+/* The Oracle.
+ *
+ * A page torn from a hedge witch's grimoire. Tonight's moon, found among all
+ * eight, crowns a blackletter masthead. A thorned vine climbs the right-hand
+ * edge the full length of the paper - the right, because slot 59's ruler owns
+ * the left. Headings sit between a waxing and a waning crescent, like a name
+ * held between two hands, and each section is set apart by a single candle.
+ * The weather is read from a teacup, seen from above on its saucer, with the
+ * figures sitting in the tea and the leaves clinging to the rim. Headlines are
+ * what the crows brought, each marked by a footprint. The itemization is a list
+ * of ingredients, the coupon a charm hung on a cord.
+ *
+ * Signature trick: the legalese footnote is printed in mirror writing. Thermal
+ * paper is thin, so it reads true from the back, held up to a window.
+ *
+ * The moon row is a fact, not a flourish - the phase comes from the masthead's
+ * data-moon, computed the same way as slot 37. A witch may dress the sky; she
+ * does not get to pick it.
+ *
+ * The vine insets the page by 30px on the right. The widest image any slot
+ * sends is 520px (xkcd), inside the 546px that leaves, so nothing dithered is
+ * ever resampled to fit (CLAUDE.md invariant 2).
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 6px; --sec-end: 10px; }
+
+body { line-height: 1.34; }
+
+/* ---------- the vine, up the right-hand edge ----------
+   A 96px tile whose stem leaves the bottom at the same point and angle it
+   enters the top, so the repeat is seamless. */
+.receipt { padding-right: 30px; }
+.receipt::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0; right: 0;
+  width: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='96' viewBox='0 0 28 96'%3E%3Cpath d='M14 0 C22 16 22 32 14 48 C6 64 6 80 14 96' fill='none' stroke='black' stroke-width='2.2'/%3E%3Cpath d='M20 21 L27 18 L21 27 Z M8 69 L1 66 L7 75 Z M19 33 L25 35 L18 38 Z' fill='black'/%3E%3Cpath d='M17 44 Q25 36 28 45 Q21 50 17 44 Z M11 89 Q3 82 0 90 Q7 95 11 89 Z' fill='black'/%3E%3C/svg%3E") top right / 28px 96px repeat-y;
+}
+
+/* ---------- masthead: tonight's moon, then the day ----------
+   The persona's name never prints. Under the moons she says, in her own words,
+   which one is tonight's - chosen by the same computed data-moon as the ring,
+   so the words cannot disagree with the sky - and the date is set as the
+   blackletter title. The wordmark element is emptied to carry that line. */
+.masthead {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 12px var(--pad) 4px;
+}
+.masthead::before { order: 0; }
+.wordmark { order: 1; }
+.dateline { order: 2; }
+.masthead::after { order: 5; align-self: stretch; }
+/* The omen she read this morning, between two small stars in her spell-hand,
+   and her counsel from it under that, quoted, the way she says it to you. */
+.mh-omen {
+  order: 3;
+  max-width: 92%;
+  margin-top: 9px;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.mh-omen::before, .mh-omen::after {
+  content: "";
+  display: inline-block;
+  vertical-align: 0.1em;
+  margin: 0 9px;
+  width: 14px; height: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M7 0 L8.6 5.4 L14 7 L8.6 8.6 L7 14 L5.4 8.6 L0 7 L5.4 5.4 Z' fill='black'/%3E%3C/svg%3E") center / 14px 14px no-repeat;
+}
+.mh-counsel {
+  order: 4;
+  max-width: 90%;
+  margin-top: 4px;
+  font-size: var(--size-body);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+.mh-counsel::before { content: "\201C"; }
+.mh-counsel::after { content: "\201D"; }
+/* All eight phases, new to waning crescent; today's gets a ring round it. The
+   ring is a second background layer, moved by the attribute selectors below. */
+.masthead::before {
+  content: "";
+  display: block;
+  width: 280px; height: 34px;
+  margin: 0 auto 2px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34'%3E%3Ccircle cx='17' cy='17' r='15.5' fill='none' stroke='black' stroke-width='2' stroke-dasharray='3 2.4'/%3E%3C/svg%3E") no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='34' viewBox='0 0 280 34'%3E%3Cg stroke='black' stroke-width='1.6'%3E%3Ccircle cx='17' cy='17' r='10' fill='black'/%3E%3Cg transform='translate(35 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='black'/%3E%3Cpath d='M17 7 A10 10 0 0 1 17 27 A4 10 0 0 0 17 7 Z' fill='white' stroke='none'/%3E%3Ccircle cx='17' cy='17' r='10' fill='none'/%3E%3C/g%3E%3Cg transform='translate(70 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='white'/%3E%3Cpath d='M17 7 A10 10 0 0 0 17 27 Z' fill='black'/%3E%3C/g%3E%3Cg transform='translate(105 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='black'/%3E%3Cpath d='M17 7 A10 10 0 0 1 17 27 A6 10 0 0 1 17 7 Z' fill='white' stroke='none'/%3E%3Ccircle cx='17' cy='17' r='10' fill='none'/%3E%3C/g%3E%3Cg transform='translate(140 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='white'/%3E%3C/g%3E%3Cg transform='translate(175 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='black'/%3E%3Cpath d='M17 7 A10 10 0 0 0 17 27 A6 10 0 0 0 17 7 Z' fill='white' stroke='none'/%3E%3Ccircle cx='17' cy='17' r='10' fill='none'/%3E%3C/g%3E%3Cg transform='translate(210 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='white'/%3E%3Cpath d='M17 7 A10 10 0 0 1 17 27 Z' fill='black'/%3E%3C/g%3E%3Cg transform='translate(245 0)'%3E%3Ccircle cx='17' cy='17' r='10' fill='black'/%3E%3Cpath d='M17 7 A10 10 0 0 0 17 27 A4 10 0 0 1 17 7 Z' fill='white' stroke='none'/%3E%3Ccircle cx='17' cy='17' r='10' fill='none'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") no-repeat;
+}
+.masthead[data-moon="0"]::before { background-position: 0 0, 0 0; }
+.masthead[data-moon="1"]::before { background-position: 35px 0, 0 0; }
+.masthead[data-moon="2"]::before { background-position: 70px 0, 0 0; }
+.masthead[data-moon="3"]::before { background-position: 105px 0, 0 0; }
+.masthead[data-moon="4"]::before { background-position: 140px 0, 0 0; }
+.masthead[data-moon="5"]::before { background-position: 175px 0, 0 0; }
+.masthead[data-moon="6"]::before { background-position: 210px 0, 0 0; }
+.masthead[data-moon="7"]::before { background-position: 245px 0, 0 0; }
+
+.wordmark { font-size: 0; line-height: 0; }
+.wordmark::after {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+  line-height: 1.2;
+}
+.masthead[data-moon="0"] .wordmark::after { content: "the moon is new, and hiding"; }
+.masthead[data-moon="1"] .wordmark::after { content: "a young moon, waxing"; }
+.masthead[data-moon="2"] .wordmark::after { content: "the moon at her first quarter"; }
+.masthead[data-moon="3"] .wordmark::after { content: "the moon, swelling towards full"; }
+.masthead[data-moon="4"] .wordmark::after { content: "the moon is full"; }
+.masthead[data-moon="5"] .wordmark::after { content: "the moon, on the wane"; }
+.masthead[data-moon="6"] .wordmark::after { content: "the moon at her last quarter"; }
+.masthead[data-moon="7"] .wordmark::after { content: "an old moon, thinning"; }
+.dateline {
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.66);
+  line-height: 1.05;
+}
+/* A rule with an eye at its centre, closing the masthead. */
+.masthead::after {
+  content: "";
+  display: block;
+  height: 22px;
+  margin: 4px 0 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22' viewBox='0 0 46 22'%3E%3Cpath d='M3 11 Q23 -3 43 11 Q23 25 3 11 Z' fill='white' stroke='black' stroke-width='2'/%3E%3Ccircle cx='23' cy='11' r='5' fill='black'/%3E%3Ccircle cx='21.5' cy='9.5' r='1.4' fill='white'/%3E%3C/svg%3E") center / 46px 22px no-repeat,
+    linear-gradient(#000, #000) left 50% / calc(50% - 30px) 2px no-repeat,
+    linear-gradient(#000, #000) right 50% / calc(50% - 30px) 2px no-repeat;
+}
+
+/* ---------- section breaks: one candle ---------- */
+.rule {
+  height: 24px;
+  margin: 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='30' viewBox='0 0 20 30'%3E%3Cpath d='M10 1 C14 6 15 10 10 14 C5 10 6 6 10 1 Z' fill='black'/%3E%3Cpath d='M10 7 C11.5 9 11.5 11 10 12.5 C8.5 11 8.5 9 10 7 Z' fill='white'/%3E%3Crect x='6' y='16' width='8' height='12' fill='white' stroke='black' stroke-width='2'/%3E%3Cpath d='M10 14 V16' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") center / 16px 24px no-repeat,
+    linear-gradient(#000, #000) 12% 74% / 28% 1px no-repeat,
+    linear-gradient(#000, #000) 88% 74% / 28% 1px no-repeat;
+}
+.rule + .rule { display: none; }
+
+/* ---------- headings, held between two crescents ---------- */
+.sec-head {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  text-align: center;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.18);
+  line-height: 1.1;
+}
+.sec-head::before, .sec-head::after {
+  content: "";
+  flex: none;
+  width: 26px; height: 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M13 1.5 A11.5 11.5 0 1 0 13 24.5 A3.5 11.5 0 0 1 13 1.5 Z' fill='black'/%3E%3Cpath d='M20 8 L21.5 11.6 L25.4 12 L22.4 14.5 L23.3 18.3 L20 16.2 L16.7 18.3 L17.6 14.5 L14.6 12 L18.5 11.6 Z' fill='black'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.sec-head::after { transform: scaleX(-1); }
+
+/* Drop caps, where the base sets them (31, 32), are blackletter: a grimoire's
+   initials. The poem's initial (147) stays in the line and takes the face too. */
+.slot-31 .slot-body::first-letter,
+.slot-32 .slot-body::first-letter,
+.slot-147 .slot-body::first-letter {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+}
+
+/* Blackletter will not letter-space: spaced capitals in Grenze fall apart into
+   separate strokes, and the horoscope's base heading asks for exactly that. */
+.slot-150 .sec-head { text-transform: none; letter-spacing: 0; }
+
+/* ---------- weather: read from the cup ---------- */
+.verdict { text-align: center; padding: 0 22px; }
+.temps {
+  position: relative;
+  grid-template-columns: 1fr;
+  align-content: center; justify-items: center;
+  width: 134px; height: 134px;
+  margin: 14px auto 12px;
+  border: 3px solid #000;
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px #fff, 0 0 0 10px #000;
+  /* Tea leaves, clinging near the rim and never under a figure. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='black'%3E%3Cpath d='M28 34 q6 -5 9 1 q-5 4 -9 -1 Z'/%3E%3Cpath d='M104 26 q5 3 1 8 q-4 -3 -1 -8 Z'/%3E%3Cpath d='M118 92 q4 5 -2 7 q-2 -5 2 -7 Z'/%3E%3Cpath d='M24 98 q6 -1 6 5 q-6 1 -6 -5 Z'/%3E%3Ccircle cx='40' cy='118' r='2'/%3E%3Ccircle cx='96' cy='120' r='1.6'/%3E%3Ccircle cx='18' cy='66' r='1.6'/%3E%3Ccircle cx='124' cy='58' r='2'/%3E%3Ccircle cx='70' cy='14' r='1.5'/%3E%3Ccircle cx='80' cy='128' r='1.3'/%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+/* The handle, off to the right of the cup. */
+.temps::after {
+  content: "";
+  position: absolute; top: 50%; right: -36px;
+  width: 22px; height: 24px;
+  border: 3px solid #000; border-left: 0;
+  border-radius: 0 14px 14px 0;
+  transform: translateY(-50%);
+}
+.temp-cell { padding: 0; gap: 6px; justify-content: center; }
+.temp-cell + .temp-cell { border-left: 0; }
+.temp-label { font-family: var(--font-accent); font-weight: 400; letter-spacing: 0.04em; }
+.temp-value { margin-left: 0; font-size: var(--size-body); }
+.weather svg.chart { width: 100%; height: auto; }
+.weather .meta { margin-top: 2px; }
+
+/* ---------- news: what the crows brought ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  column-gap: 10px;
+  margin-bottom: 5px;
+}
+.news-n {
+  width: 20px; height: 18px;
+  margin-top: 6px;
+  font-size: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='18' viewBox='0 0 20 18'%3E%3Cpath d='M10 17 V8 M10 8 L3 2 M10 8 V1 M10 8 L17 2' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* ---------- the itemization: ingredients ---------- */
+.itemization::before {
+  content: "Ingredients";
+  display: block;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  margin: 2px 0 2px;
+}
+.item-tier { font-family: var(--font-accent); font-size: var(--size-tiny); }
+.leader {
+  background-image: repeating-linear-gradient(to right,
+      #000 0 2px, transparent 2px 9px);
+}
+.totals { padding-top: 2px; padding-bottom: 4px; }
+
+/* ---------- legalese: a warning, and its footnote in a mirror ---------- */
+.legalese {
+  margin: 8px var(--pad) 0;
+  padding: 6px 12px 6px !important;
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+.legalese::before {
+  content: "A Warning";
+  display: block;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-body);
+  margin-bottom: 2px;
+}
+.legalese .footnote {
+  transform: scaleX(-1);
+  margin-top: 5px;
+  padding-top: 4px;
+  border-top: 1px solid #000;
+}
+.legalese:has(.footnote)::after {
+  content: "hold it to the window, child";
+  display: block;
+  text-align: right;
+  font-family: var(--font-accent);
+  margin-top: 3px;
+}
+
+.serial .row { font-family: var(--font-accent); margin-top: 6px; }
+
+/* ---------- coupon: a charm on a cord ---------- */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dotted #000;
+  text-align: center;
+  font-family: var(--font-accent);
+}
+.coupon-inner {
+  position: relative;
+  width: 74%;
+  margin: 46px auto 10px;
+  padding: 26px 20px 26px !important;
+  box-sizing: border-box;
+  border: 3px solid #000;
+  border-radius: 18px 18px 50% 50% / 18px 18px 22% 22%;
+  box-shadow: 0 0 0 4px #fff, 0 0 0 6px #000;
+  text-align: center;
+}
+/* The cord, knotted above and threaded through the hole. */
+.coupon-inner::before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='44' viewBox='0 0 120 62' preserveAspectRatio='none'%3E%3Cpath d='M10 0 Q40 30 60 40 M110 0 Q80 30 60 40' fill='none' stroke='black' stroke-width='2.2'/%3E%3Ccircle cx='60' cy='40' r='4' fill='black'/%3E%3Cpath d='M60 44 V58' stroke='black' stroke-width='2.2'/%3E%3C/svg%3E");
+  position: absolute; top: -46px; left: 50%;
+  transform: translateX(-50%);
+}
+.coupon-inner::after {
+  content: "";
+  position: absolute; top: 8px; left: 50%;
+  width: 10px; height: 10px;
+  border: 3px solid #000; border-radius: 50%;
+  transform: translateX(-50%);
+}
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.coupon-terms { margin-top: 6px; font-family: var(--font-accent); }

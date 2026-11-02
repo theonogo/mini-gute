@@ -1,0 +1,474 @@
+/* Weights come from --bold, never a literal 700. Libre Caslon Text and Oswald
+   ship real 700s (--bold, --accent-bold); Abril Fatface has one weight and is
+   all weight. See the font-synthesis note in the base stylesheet. */
+/* The Stage Manager.
+ *
+ * The programme and the prompt book for a one-night-only production of the
+ * reader's day. The masthead is a playbill under the house curtain: the valance swagged
+ * and fringed across the top of the page and the drapes tied back to either
+ * side, and standing in the opening THE THEATRE ROYAL PRESENTS, tonight's
+ * production title in fat face, its billing line, TONIGHT! ONE PERFORMANCE
+ * ONLY! and the date - title and billing written fresh by the narrator
+ * ([persona.masthead]). A row of footlights along the lip of the stage closes
+ * it. The persona's name never prints.
+ *
+ * Below, the prompt book. Every section is marked up in the margin the way a
+ * real one is: a cue column down the left with STANDBY over the cue - LX, SQ or
+ * FLY and its number - and a cue line running into the heading. The day's slots
+ * are the cast, billed by rarity (ENSEMBLE, FEATURED, LEADING ROLE, STAR
+ * BILLING); the totals are the box office return; the legalese a note from the
+ * management; backstage superstition over the serial. The coupon is a ticket,
+ * ADMIT ONE on its stub, and below it the signature trick: the ghost light, a
+ * single bare bulb on a stand, drawn at the foot of the tear-off so it leaves
+ * with you.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 8px; --sec-end: 12px; --cue: 82px; }
+
+body { line-height: 1.4; }
+
+.receipt { counter-reset: cue scene; }
+
+/* ---------- masthead: the curtain, the playbill, the footlights ---------- */
+.masthead {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 58px 100px 0;
+  text-align: center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='210' viewBox='0 0 576 210'%3E%3Cg%3E%3Cpath d='M0 40 L12 40 C12 110 38 126 35 150 C32 172 16 190 12 210 L0 210 C3 190 25 172 27 150 C28 126 0 110 0 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M12 40 L24 40 C24 110 41 126 38 150 C35 172 28 190 24 210 L12 210 C15 190 28 172 30 150 C31 126 12 110 12 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M24 40 L36 40 C36 110 44 126 41 150 C38 172 40 190 36 210 L24 210 C27 190 31 172 33 150 C34 126 24 110 24 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M36 40 L48 40 C48 110 47 126 44 150 C41 172 52 190 48 210 L36 210 C39 190 34 172 36 150 C37 126 36 110 36 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M48 40 L60 40 C60 110 50 126 47 150 C44 172 64 190 60 210 L48 210 C51 190 37 172 39 150 C40 126 48 110 48 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M60 40 L72 40 C72 110 53 126 50 150 C47 172 76 190 72 210 L60 210 C63 190 40 172 42 150 C43 126 60 110 60 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M72 40 L84 40 C84 110 56 126 53 150 C50 172 88 190 84 210 L72 210 C75 190 43 172 45 150 C46 126 72 110 72 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M4 146 C30 158 60 158 88 142' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M4 146 C30 158 60 158 88 142' fill='none' stroke='black' stroke-width='3' stroke-dasharray='4 2'/%3E%3Cpath d='M82 146 L74 176 L92 176 Z' fill='black'/%3E%3Cpath d='M76 170 H90' stroke='white' stroke-width='1.2'/%3E%3C/g%3E%3Cg transform='translate%28576 0%29 scale%28-1 1%29'%3E%3Cpath d='M0 40 L12 40 C12 110 38 126 35 150 C32 172 16 190 12 210 L0 210 C3 190 25 172 27 150 C28 126 0 110 0 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M12 40 L24 40 C24 110 41 126 38 150 C35 172 28 190 24 210 L12 210 C15 190 28 172 30 150 C31 126 12 110 12 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M24 40 L36 40 C36 110 44 126 41 150 C38 172 40 190 36 210 L24 210 C27 190 31 172 33 150 C34 126 24 110 24 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M36 40 L48 40 C48 110 47 126 44 150 C41 172 52 190 48 210 L36 210 C39 190 34 172 36 150 C37 126 36 110 36 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M48 40 L60 40 C60 110 50 126 47 150 C44 172 64 190 60 210 L48 210 C51 190 37 172 39 150 C40 126 48 110 48 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M60 40 L72 40 C72 110 53 126 50 150 C47 172 76 190 72 210 L60 210 C63 190 40 172 42 150 C43 126 60 110 60 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M72 40 L84 40 C84 110 56 126 53 150 C50 172 88 190 84 210 L72 210 C75 190 43 172 45 150 C46 126 72 110 72 40 Z' fill='black' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M4 146 C30 158 60 158 88 142' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M4 146 C30 158 60 158 88 142' fill='none' stroke='black' stroke-width='3' stroke-dasharray='4 2'/%3E%3Cpath d='M82 146 L74 176 L92 176 Z' fill='black'/%3E%3Cpath d='M76 170 H90' stroke='white' stroke-width='1.2'/%3E%3C/g%3E%3Crect x='0' y='0' width='576' height='26' fill='black'/%3E%3Cpath d='M0 20 Q72 78 144 20 Z' fill='black' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M20 30 Q72 62 124 30' fill='none' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M10.3 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M20.6 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M30.9 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M41.1 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M51.4 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M61.7 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M72.0 48.0 V57.0' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M82.3 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M92.6 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M102.9 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M113.1 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M123.4 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M133.7 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M144 20 Q216 78 288 20 Z' fill='black' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M164 30 Q216 62 268 30' fill='none' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M154.3 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M164.6 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M174.9 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M185.1 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M195.4 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M205.7 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M216.0 48.0 V57.0' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M226.3 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M236.6 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M246.9 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M257.1 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M267.4 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M277.7 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M288 20 Q360 78 432 20 Z' fill='black' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M308 30 Q360 62 412 30' fill='none' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M298.3 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M308.6 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M318.9 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M329.1 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M339.4 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M349.7 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M360.0 48.0 V57.0' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M370.3 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M380.6 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M390.9 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M401.1 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M411.4 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M421.7 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M432 20 Q504 78 576 20 Z' fill='black' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M452 30 Q504 62 556 30' fill='none' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M442.3 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M452.6 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M462.9 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M473.1 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M483.4 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M493.7 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M504.0 48.0 V57.0' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M514.3 47.4 V56.4' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M524.6 45.6 V54.6' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M534.9 42.7 V51.7' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M545.1 38.5 V47.5' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M555.4 33.2 V42.2' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M565.7 26.7 V35.7' stroke='black' stroke-width='2.6'/%3E%3Ccircle cx='144' cy='22' r='7' fill='white' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M139 28 L144 48 L149 28 Z' fill='black'/%3E%3Ccircle cx='288' cy='22' r='7' fill='white' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M283 28 L288 48 L293 28 Z' fill='black'/%3E%3Ccircle cx='432' cy='22' r='7' fill='white' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M427 28 L432 48 L437 28 Z' fill='black'/%3E%3Cpath d='M0 6 H576' stroke='white' stroke-width='1.2'/%3E%3C/svg%3E") /* art:stage-curtain */ center top / 576px 210px no-repeat;
+}
+.wordmark { display: none; }
+.masthead::before {
+  content: "THE THEATRE ROYAL PRESENTS";
+  order: 0;
+  margin-top: 8px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.24em;
+}
+/* Tonight's production. */
+.mh-title {
+  order: 1;
+  margin: 4px 0 4px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.75);
+  line-height: 1.02;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.mh-billing {
+  order: 2;
+  font-style: italic;
+  font-size: var(--size-small);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+/* The slip tucked into every programme. */
+.mh-billing::after {
+  content: "At this performance the role of " var(--reader-caps) " will be played by " var(--reader-caps) ".";
+  display: block;
+  margin: 10px -40px 0;
+  padding: 5px 10px 6px;
+  border: 2px solid #000;
+  background: #fff;
+  font-style: normal;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  transform: rotate(-1.5deg);
+}
+.masthead::after {
+  content: "TONIGHT!  ONE PERFORMANCE ONLY!";
+  order: 3;
+  margin: 10px -80px 0;
+  padding: 4px 14px 5px;
+  border-top: 3px double #000;
+  border-bottom: 3px double #000;
+  border-width: 5px;
+  white-space: pre;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.05);
+  letter-spacing: 0.08em;
+}
+.dateline {
+  order: 4;
+  align-self: stretch;
+  margin: 8px -100px 0;
+  padding: 0 var(--pad) 30px;
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+  /* The lip of the stage, and its footlights. */
+  background:
+    radial-gradient(circle at 50% 100%, #000 0 9px, #fff 9.5px 12px, transparent 12.5px) center bottom 3px / 36px 16px repeat-x,
+    linear-gradient(#000, #000) left bottom / 100% 4px no-repeat;
+}
+.dateline::before { content: "Opening night  \2014  "; white-space: pre; font-style: italic; }
+.dateline::after {
+  content: "Running time: one day, with an interval. This production contains haze, strobe, loud weather and a gunshot (offstage).";
+  display: block;
+  margin: 4px 40px 0;
+  font-style: italic;
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+/* ---------- section breaks: a plain rule with a diamond ---------- */
+.rule {
+  height: 14px;
+  margin: 6px 0 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M20 1 L26 7 L20 13 L14 7 Z' fill='black'/%3E%3Ccircle cx='7' cy='7' r='2' fill='black'/%3E%3Ccircle cx='33' cy='7' r='2' fill='black'/%3E%3C/svg%3E") center / 40px 14px no-repeat,
+    linear-gradient(#000, #000) left center / calc(50% - 26px) 2px no-repeat,
+    linear-gradient(#000, #000) right center / calc(50% - 26px) 2px no-repeat;
+}
+.rule + .rule { display: none; }
+/* Between the scenes, now and then, a stage direction in the italic a script
+   sets them in - three in a receipt, never one after another. Every other break
+   is the ornament alone, or the page starts reading like a script. */
+.rule { counter-increment: scene; }
+.rule:nth-of-type(3), .rule:nth-of-type(6), .rule:nth-of-type(9) {
+  height: auto;
+  padding-top: 16px;
+  background-position: center top, left 7px, right 7px;
+  background-size: 40px 14px, calc(50% - 26px) 2px, calc(50% - 26px) 2px;
+}
+.rule::before {
+  display: block;
+  margin: 4px var(--pad) 0;
+  text-align: center;
+  font-style: italic;
+  font-size: var(--size-small);
+  line-height: 1.3;
+}
+.rule:nth-of-type(3)::before {
+  content: "Sc. " counter(scene) ".  (A long pause. Somewhere offstage, a phone rings. Nobody answers it.)";
+}
+.rule:nth-of-type(6) { counter-increment: none; }
+.rule:nth-of-type(6)::before {
+  content: "INTERVAL  \2014  twenty minutes. (The bar is open. The house lights come up, reluctantly.)";
+}
+.rule:nth-of-type(9)::before {
+  content: "Sc. " counter(scene) ".  (Exit " var(--reader-caps) ", pursued by a deadline.)";
+}
+
+/* ---------- the prompt book: cue column and cue lines ---------- */
+.weather, .news, .slot {
+  position: relative;
+  counter-increment: cue;
+  margin-left: var(--cue);
+  border-left: 2px solid #000;
+}
+.weather > .pad, .news > .pad, .slot > .pad { padding-left: 12px; }
+.weather .temps { margin-left: 12px; }
+.weather svg { display: block; max-width: 100%; height: auto; }
+.weather .meta { font-size: var(--size-tiny); }
+/* STANDBY, and the cue itself, in the margin. */
+.weather::before, .news::before, .slot::before {
+  content: "STANDBY\A LX " counter(cue);
+  position: absolute; top: 2px; left: calc(-1 * var(--cue));
+  width: calc(var(--cue) - 8px);
+  white-space: pre;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.slot:nth-of-type(3n)::before { content: "STANDBY\A SQ " counter(cue); }
+.slot:nth-of-type(3n+1)::before { content: "STANDBY\A FLY " counter(cue); }
+.news::before { content: "STANDBY\A SQ " counter(cue); }
+/* GO, reversed out, where the cue is called. */
+.weather::after, .news::after, .slot::after {
+  content: "GO";
+  position: absolute; top: 44px; left: calc(-1 * var(--cue) + 20px);
+  width: 34px;
+  padding: 1px 0 2px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.1em;
+}
+.sec-head {
+  position: relative;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  line-height: 1.1;
+}
+/* The cue line: from the margin, through the book's spine, to the words. */
+.weather .sec-head::before, .news .sec-head::before, .slot .sec-head::before {
+  content: "";
+  position: absolute; left: -14px; top: 0.6em;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #000;
+}
+
+/* The stage manager's pencil in the margin - on the odd cue, not every one, the
+   way a real book is marked only where it matters. Room is kept under the GO of
+   a section that carries one. */
+.weather, .slot:nth-of-type(4n+3), .slot:nth-of-type(7n+6) { min-height: 118px; }
+.weather .sec-head::after,
+.slot:nth-of-type(4n+3) .sec-head::after,
+.slot:nth-of-type(7n+6) .sec-head::after {
+  content: "hold for laugh";
+  position: absolute; top: 72px; left: calc(-1 * var(--cue));
+  width: calc(var(--cue) - 12px);
+  text-align: center;
+  font-family: var(--font);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--size-tiny);
+  line-height: 1.15;
+  transform: rotate(-3deg);
+}
+.weather .sec-head::after { content: "fog on the rain!"; }
+.slot:nth-of-type(7n+6) .sec-head::after { content: "check props"; }
+/* ---------- weather: the lighting plot ---------- */
+.temps {
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  margin-right: 0;
+}
+.temp-cell { padding: 4px 10px; }
+.temp-cell + .temp-cell { border-left: 2px solid #000; }
+.temp-label { font-family: var(--font-accent); font-weight: var(--accent-bold); letter-spacing: 0.14em; }
+.temp-label::before { content: "GEL: "; }
+.temp-value { font-family: var(--font-display); font-weight: var(--display-weight); }
+
+/* ---------- news: notes from the wings ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 4px;
+  margin-bottom: 4px;
+}
+.news-n {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+}
+.news-n::after { content: "."; }
+
+/* ---------- itemization: the cast, in order of appearance ---------- */
+.itemization { padding-top: 4px; }
+.itemization::before {
+  content: "THE CAST";
+  display: block;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  line-height: 1.1;
+}
+.itemization::after {
+  content: "in order of appearance";
+  display: block;
+  order: -1;
+  margin: 0 0 4px;
+  text-align: center;
+  font-style: italic;
+  font-size: var(--size-tiny);
+}
+.itemization { display: flex; flex-direction: column; }
+.itemization::before { order: -2; }
+.item-name { font-size: var(--size-small); }
+/* Billed by rarity. */
+.item-tier { font-size: 0; }
+.item-tier::before {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.08em;
+}
+.tier-common .item-tier::before    { content: "ENSEMBLE"; }
+.tier-uncommon .item-tier::before  { content: "FEATURED"; }
+.tier-rare .item-tier::before      { content: "LEADING ROLE"; }
+.tier-legendary .item-tier::before { content: "STAR BILLING"; }
+.totals::before {
+  content: "BOX OFFICE RETURN";
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.16em;
+}
+
+/* ---------- legalese: a note from the management ----------
+   The slip tucked into the programme on a night with a cast change, like the
+   one in the masthead: boxed, the management's regret in
+   one sentence, and the stage manager's own pencil in its margin. */
+.legalese {
+  margin: 12px calc(var(--pad) + 8px) 2px;
+  padding: 7px 14px 9px !important;
+  border: 2px solid #000;
+  text-align: center;
+  font-size: var(--size-small);
+  line-height: 1.32;
+}
+.legalese::before {
+  content: "A NOTE FROM THE MANAGEMENT";
+  display: block;
+  margin: 0 0 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #000;
+  font-style: normal;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.14em;
+}
+/* Her pencil, as in the margins of the prompt book. */
+.legalese .footnote {
+  margin: 6px -4px 0 0;
+  text-align: right;
+  font-style: italic;
+  font-size: var(--size-tiny);
+  line-height: 1.15;
+  transform: rotate(-2.5deg);
+}
+
+.serial { margin-top: 12px; }
+.serial::before {
+  content: "NO WHISTLING  \00B7  NO GOOD LUCK  \00B7  NEVER NAME THE SCOTTISH PLAY";
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+  white-space: pre;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+}
+.serial .row { font-size: var(--size-tiny); }
+.serial::after {
+  content: "CURTAIN CALL:  WEATHER, NEWS, COMPANY. THE DESK DOES NOT BOW.";
+  display: block;
+  margin: 8px var(--pad) 0;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+/* ---------- coupon: the ticket, and the ghost light ---------- */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  letter-spacing: 0.1em;
+}
+.coupon-inner {
+  position: relative;
+  margin: 12px var(--pad) 6px;
+  padding: 12px 16px 12px 86px !important;
+  min-height: 120px;
+  border: 3px solid #000;
+  /* Notched corners, the way a ticket is punched. */
+  background:
+    radial-gradient(circle at 0 0, #fff 0 13px, #000 13px 16px, transparent 16px) left top / 20px 20px no-repeat,
+    radial-gradient(circle at 100% 0, #fff 0 13px, #000 13px 16px, transparent 16px) right top / 20px 20px no-repeat,
+    radial-gradient(circle at 0 100%, #fff 0 13px, #000 13px 16px, transparent 16px) left bottom / 20px 20px no-repeat,
+    radial-gradient(circle at 100% 100%, #fff 0 13px, #000 13px 16px, transparent 16px) right bottom / 20px 20px no-repeat;
+}
+/* The stub: ADMIT ONE, turned on its side, behind a perforation. */
+.coupon-inner::before {
+  content: "ADMIT ONE";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 66px;
+  display: flex; align-items: center; justify-content: center;
+  border-right: 3px dotted #000;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.2);
+  letter-spacing: 0.06em;
+}
+/* The ticket is for the NEXT production, and its face is that show's advert:
+   the title in fat face, a rave and a stinker with their stars, the run, and
+   the warning. The row comes from the day's last digit and the seat from the
+   day, so the stub is never the same seat twice in a row. */
+.coupon-head {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.coupon-body { font-size: var(--size-small); }
+.coupon-body .ln-label { display: none; }
+.coupon-body .ln[data-k="title"] {
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  line-height: 1.04;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.coupon-body .ln[data-k="review"] { font-style: italic; line-height: 1.25; }
+.coupon-body .ln[data-k="run"],
+.coupon-body .ln[data-k="warning"] {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.coupon-body .ln[data-k="run"] { margin-top: 4px; }
+.coupon-body .ln[data-k="warning"] .ln-label { display: inline; }
+.coupon-body .ln[data-k="warning"] .ln-label::after { content: ":"; }
+.coupon-terms { margin-top: 4px; font-style: italic; }
+.coupon-inner { --row: "T"; }
+.coupon-inner[data-dd$="0"] { --row: "C"; }
+.coupon-inner[data-dd$="1"] { --row: "F"; }
+.coupon-inner[data-dd$="2"] { --row: "H"; }
+.coupon-inner[data-dd$="3"] { --row: "J"; }
+.coupon-inner[data-dd$="4"] { --row: "K"; }
+.coupon-inner[data-dd$="5"] { --row: "L"; }
+.coupon-inner[data-dd$="6"] { --row: "M"; }
+.coupon-inner[data-dd$="7"] { --row: "P"; }
+.coupon-inner[data-dd$="8"] { --row: "R"; }
+.coupon-inner::after {
+  content: "STALLS  \00B7  ROW " var(--row) "  \00B7  SEAT " attr(data-dd);
+  display: block;
+  margin-top: 8px;
+  padding-top: 4px;
+  border-top: 1px solid #000;
+  white-space: pre;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.14em;
+}
+/* The ghost light, left on at the foot of the stub. */
+.coupon::after {
+  content: "the ghost light stays on";
+  display: block;
+  margin: 6px 0 4px;
+  padding-top: 124px;
+  text-align: center;
+  font-style: italic;
+  font-size: var(--size-tiny);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='120' viewBox='0 0 70 120'%3E%3Cpath d='M35 50 V104 M35 104 L16 118 M35 104 L54 118 M35 104 V118' stroke='black' stroke-width='3' stroke-linecap='round'/%3E%3Crect x='29' y='40' width='12' height='12' fill='black'/%3E%3Cpath d='M35 6 C20 6 18 26 28 34 V40 H42 V34 C52 26 50 6 35 6 Z' fill='white' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M31 30 C31 22 39 22 39 30' fill='none' stroke='black' stroke-width='1.4'/%3E%3Cpath d='M22 12 C14 22 16 34 26 40 M48 12 C56 22 54 34 44 40 M35 2 V40' fill='none' stroke='black' stroke-width='1.6'/%3E%3Cpath d='M10 18 L2 14' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M60 18 L68 14' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M12 32 L3 34' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M58 32 L67 34' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") /* art:stage-ghostlight */ center top / 70px 120px no-repeat;
+}

@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+out/
+.env
+config.local.toml
+data/cache.sqlite
+data/photos/
+
+# Scraped quotations: other people's copyrighted words, kept local only.
+data/quotes.json
+data/quotes.json.tmp
+
+# Personal taste and reading history. Committed as *.example templates;
+# copy each to its real name and fill it in.
+data/profile.md
+data/books.txt
+
+# Downloaded once and cached: raw Gutenberg books (the stories cut from them are
+# committed) and OpenStreetMap tiles, which are of the home neighbourhood.
+data/gutenberg/
+data/tiles/
+
+.venv/

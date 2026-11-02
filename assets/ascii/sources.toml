@@ -1,0 +1,133 @@
+# Where the harvested ASCII art comes from, and what it is tagged with.
+#
+# Read by tools/harvestascii.py. Each key is a persona art tag (the `art_tags`
+# in personas/personas.toml); its value is the asciiart.eu sub-categories that
+# suit it. A sub-category listed under several tags gets all of them, which is
+# how a lighthouse ends up both `nautical` and `engraving`.
+#
+# To give a persona more art: add its tag here, then rerun the harvest.
+# `[title_tags]` adds a tag when a word appears in a piece's own title, which
+# catches the moon in "misc" or the robot filed under "other".
+
+# Piece ids that are dropped whatever their category - misfiled, or just not
+# good on paper. The id is the asciiart.eu data-id kept in harvested.json.
+skip = [
+  "2e0bbef8cc05db9b",   # Paris skyline filed under monuments, drawn as a harbour
+]
+
+[tags]
+ornament  = ["art-and-design/celtic", "art-and-design/fleur-de-lis",
+             "art-and-design/scrolls", "art-and-design/geometries",
+             "miscellaneous/diamonds", "miscellaneous/awards",
+             "clothing-and-accessories/crowns"]
+engraving = ["art-and-design/famous-paintings", "art-and-design/sculptures",
+             "art-and-design/egyptian", "buildings-and-places/castles",
+             "buildings-and-places/church", "buildings-and-places/lighthouses",
+             "buildings-and-places/monuments", "buildings-and-places/windmills",
+             "miscellaneous/keys", "miscellaneous/hourglass",
+             "miscellaneous/anchors", "miscellaneous/candles",
+             "miscellaneous/feathers"]
+botanical = ["plants/bonsai-trees", "plants/cactus", "plants/daffodils",
+             "plants/dandelions", "plants/flowers", "plants/leaf",
+             "plants/mushroom", "plants/roses", "plants/other",
+             "animals/insects", "animals/birds-land"]
+moon      = ["space/moons", "space/stars", "nature/sunset"]
+occult    = ["art-and-design/pentacles", "mythology/ghosts",
+             "mythology/grim-reapers", "mythology/skeletons",
+             "mythology/dragons", "mythology/devils", "mythology/phoenix",
+             "miscellaneous/candles", "miscellaneous/playing-cards",
+             "miscellaneous/bones", "animals/bats", "animals/spiders",
+             "holiday-and-events/halloween"]
+radar     = ["space/satellites", "space/telescopes", "miscellaneous/antennas",
+             "vehicles/navy", "vehicles/airplanes"]
+schematic = ["electronics/robots", "electronics/calculators",
+             "electronics/clocks", "electronics/light-bulbs",
+             "art-and-design/mazes", "art-and-design/fractals",
+             "computers/computers", "miscellaneous/tools"]
+grid      = ["art-and-design/mazes", "art-and-design/geometries",
+             "computers/keyboards", "miscellaneous/dice",
+             "miscellaneous/abacuses", "sports-and-outdoors/chess"]
+chart     = ["miscellaneous/money", "miscellaneous/abacuses",
+             "electronics/calculators", "miscellaneous/mailbox",
+             "miscellaneous/boxes", "electronics/phones"]
+nautical  = ["vehicles/boats", "vehicles/navy", "miscellaneous/anchors",
+             "buildings-and-places/lighthouses", "nature/islands",
+             "nature/beach", "animals/fish", "animals/dolphins",
+             "animals/birds-water", "animals/other-water",
+             "logos/jolly-roger", "mythology/mermaids",
+             "sports-and-outdoors/fishing"]
+map       = ["buildings-and-places/maps", "buildings-and-places/flags",
+             "nature/islands", "nature/mountains", "nature/landscapes",
+             "miscellaneous/magnifying-glass"]
+noir      = ["miscellaneous/cigarettes", "miscellaneous/handcuffs",
+             "miscellaneous/magnifying-glass", "miscellaneous/bottles",
+             "miscellaneous/keys", "weapons/guns", "clothing-and-accessories/hats",
+             "nature/rains", "animals/cats"]
+city      = ["buildings-and-places/cities", "buildings-and-places/buildings",
+             "buildings-and-places/bridges", "buildings-and-places/houses",
+             "vehicles/busses", "vehicles/cars", "vehicles/trains"]
+doodle    = ["computers/smileys", "animals/cats", "animals/dogs",
+             "animals/rabbits", "animals/cows", "animals/frogs",
+             "toys/teddy-bears", "toys/balloons", "toys/other",
+             "miscellaneous/other", "nature/clouds"]
+food      = ["food-and-drinks/apples", "food-and-drinks/bananas",
+             "food-and-drinks/beers", "food-and-drinks/candies",
+             "food-and-drinks/chocolates", "food-and-drinks/coffee-and-tea",
+             "food-and-drinks/drinks", "food-and-drinks/ice-creams",
+             "food-and-drinks/other"]
+sign      = ["miscellaneous/signs", "logos/no-smoking", "logos/recycle",
+             "logos/biohazards", "miscellaneous/badges"]
+theatre   = ["music/musical-instruments", "music/pianos",
+             "music/musical-notation", "sports-and-outdoors/dancing",
+             "sports-and-outdoors/juggling", "people/faces",
+             "holiday-and-events/fireworks", "mythology/fairies",
+             "art-and-design/mona-lisa"]
+sport     = ["sports-and-outdoors/baseball", "sports-and-outdoors/basketball",
+             "sports-and-outdoors/billiards", "sports-and-outdoors/bowling",
+             "sports-and-outdoors/boxing", "sports-and-outdoors/cycling",
+             "sports-and-outdoors/darts", "sports-and-outdoors/fencing",
+             "sports-and-outdoors/football", "sports-and-outdoors/golf",
+             "sports-and-outdoors/ice-hockey", "sports-and-outdoors/skiing",
+             "sports-and-outdoors/soccer", "sports-and-outdoors/surfing",
+             "sports-and-outdoors/swimming", "sports-and-outdoors/tennis",
+             "sports-and-outdoors/other", "miscellaneous/awards"]
+space     = ["space/aliens", "space/astronauts", "space/moons", "space/other",
+             "space/planetary-rovers", "space/planets", "space/satellites",
+             "space/spaceships", "space/stars", "space/telescopes",
+             "animals/monkeys"]
+stars     = ["space/stars", "space/planets", "space/moons", "nature/sun"]
+headline  = ["electronics/cameras", "electronics/televisions",
+             "people/famous", "holiday-and-events/fireworks",
+             "miscellaneous/money"]
+photo     = ["electronics/cameras", "people/faces", "electronics/televisions"]
+circuit   = ["electronics/electronics", "electronics/robots",
+             "electronics/audio-equipment", "electronics/other",
+             "computers/computers", "computers/floppies",
+             "computers/keyboards", "computers/mouse", "computers/bug",
+             "computers/joysticks", "computers/game-consoles"]
+future    = ["space/spaceships", "space/planetary-rovers", "electronics/robots",
+             "vehicles/choppers", "space/astronauts"]
+alien     = ["space/aliens", "mythology/monsters", "animals/amoeba",
+             "animals/scorpions", "animals/spiders", "animals/insects",
+             "animals/reptiles"]
+anatomy   = ["people/body-parts", "miscellaneous/bones", "miscellaneous/dna",
+             "miscellaneous/medical", "mythology/skeletons", "logos/caduceus"]
+cipher    = ["miscellaneous/keys", "miscellaneous/playing-cards",
+             "miscellaneous/dice", "computers/floppies", "computers/keyboards",
+             "miscellaneous/magnifying-glass"]
+radio     = ["electronics/audio-equipment", "electronics/stereos",
+             "electronics/phones", "electronics/televisions",
+             "miscellaneous/antennas"]
+
+[title_tags]
+moon      = ["moon", "crescent"]
+stars     = ["star", "constellation", "comet"]
+occult    = ["witch", "skull", "crystal ball", "cauldron", "tarot", "crow", "raven"]
+nautical  = ["ship", "boat", "sail", "anchor", "whale", "octopus", "lighthouse"]
+schematic = ["robot", "circuit", "gear", "machine"]
+food      = ["pie", "coffee", "burger", "pizza", "cake", "cup", "diner"]
+noir      = ["detective", "gun", "cigar", "fedora", "rain"]
+theatre   = ["mask", "curtain", "stage", "clown"]
+space     = ["rocket", "planet", "saturn", "ufo", "astronaut"]
+alien     = ["alien", "ufo", "tentacle"]
+city      = ["city", "skyline", "street", "taxi"]

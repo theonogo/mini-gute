@@ -1,0 +1,288 @@
+# quick-guthe configuration.
+#
+# Everything tunable lives here rather than inline (CLAUDE.md, Conventions).
+# This file is committed: secrets and personal values go in .env, and personal
+# tuning (your own news feeds) in config.local.toml, which is merged over this
+# one and gitignored.
+
+[reader]
+# Who the receipt is for. Personas address the reader by name and some print
+# it. A placeholder: set QG_NAME in .env.
+name = "Sam"
+
+[location]
+# A placeholder so the pipeline runs: QG_LATITUDE, QG_LONGITUDE and
+# QG_LOCATION_NAME in .env win over these. Feeds the weather, sunrise, ISS
+# passes, what's-on and every other slot that knows where you are.
+name = "London"
+latitude = 51.5074
+longitude = -0.1278
+timezone = "auto"          # "auto" resolves from the coordinates
+
+[weather]
+# Hours counted as "the day" for verdict purposes. Rain at 03:00 is not a
+# reason to take a coat.
+day_start = 7
+day_end = 22
+# A rain window needs this probability, for at least this many hours running,
+# before the verdict mentions it.
+rain_probability = 45
+rain_min_hours = 1
+# Above this UV index the verdict starts mentioning sun.
+uv_notable = 5.0
+# Wind in km/h that is worth a remark.
+wind_notable = 30.0
+
+[timezones]
+# Slot 72. The zones themselves are TIMEZONES in .env. A friend counts as awake
+# from awake_from up to, not including, awake_until, in their own local time -
+# and the fine print says so, so "asleep" is a clock reading, not a claim.
+awake_from = 7
+awake_until = 23
+
+[news]
+count = 3
+max_age_hours = 36
+# Headlines longer than this are dropped rather than wrapped to three lines.
+max_chars = 120
+# Most grim headlines (death, war, disaster) a morning prints. Serious news is
+# news; the cap is only there so the whole section is never bleak.
+grim_max = 2
+# How many headlines the ranker reads. Every feed gets one seat, then the rest
+# are shared out by weight (D'Hondt), so a blog posting twice a day is in front
+# of the ranker as surely as a wire posting a hundred times. This is the token
+# dial: each candidate is a title and a summary cut to `summary_chars`.
+candidates = 48
+summary_chars = 120
+# Days of printed headlines the ranker is shown, so it neither repeats a story
+# nor misses that one has moved on (printed as a follow-up).
+memory_days = 5
+
+# Feeds for slot 10, read against data/profile.md. `name` is what prints - many
+# feeds call themselves "Latest Updates" or "Blog". `weight` is how good the
+# outlet is for this reader: 0.5 is filler, 1 is solid, 1.5 and up is the best
+# of its kind. `max_age_hours` overrides the default for feeds that post weekly
+# or less. Hacker News is read in points order, not age.
+#
+# A general-interest example. Put your own list in config.local.toml, where it
+# replaces this one.
+
+# --- the world, briefly
+[[news.feeds]]
+name = "BBC News"
+url = "https://feeds.bbci.co.uk/news/world/rss.xml"
+weight = 1.0
+[[news.feeds]]
+name = "The Guardian"
+url = "https://www.theguardian.com/world/rss"
+weight = 0.6
+
+# --- hackers, makers and tech
+[[news.feeds]]
+name = "Hacker News"
+url = "https://hnrss.org/frontpage?points=150"
+weight = 1.6
+[[news.feeds]]
+name = "Hackaday"
+url = "https://hackaday.com/blog/feed/"
+weight = 1.1
+[[news.feeds]]
+name = "404 Media"
+url = "https://www.404media.co/rss/"
+weight = 1.0
+max_age_hours = 72
+[[news.feeds]]
+name = "Ars Technica"
+url = "https://feeds.arstechnica.com/arstechnica/index"
+weight = 0.9
+
+# --- games and books
+[[news.feeds]]
+name = "Polygon"
+url = "https://www.polygon.com/rss/index.xml"
+weight = 1.0
+[[news.feeds]]
+name = "Reactor"
+url = "https://reactormag.com/feed/"
+weight = 0.8
+
+# --- strange
+[[news.feeds]]
+name = "UPI Odd News"
+url = "https://rss.upi.com/news/odd_news.rss"
+weight = 1.0
+max_age_hours = 48
+[[news.feeds]]
+name = "Atlas Obscura"
+url = "https://www.atlasobscura.com/feeds/latest"
+weight = 0.8
+max_age_hours = 72
+[[news.feeds]]
+name = "Oddity Central"
+url = "https://www.odditycentral.com/feed"
+weight = 0.7
+max_age_hours = 96
+
+[framing]
+# Slot 115: the same story from three outlets. These are read only on the days
+# 115 is drawn, never ranked, and chosen for spread - country and leaning - not
+# for taste. `group` keeps the three printed outlets from being three of a kind.
+max_age_hours = 36
+[[framing.feeds]]
+name = "BBC News"
+url = "https://feeds.bbci.co.uk/news/world/rss.xml"
+group = "uk"
+[[framing.feeds]]
+name = "The Guardian"
+url = "https://www.theguardian.com/world/rss"
+group = "uk-left"
+[[framing.feeds]]
+name = "Sky News"
+url = "https://feeds.skynews.com/feeds/rss/world.xml"
+group = "uk"
+[[framing.feeds]]
+name = "Mail Online"
+url = "https://www.dailymail.co.uk/news/worldnews/index.rss"
+group = "uk-right"
+[[framing.feeds]]
+name = "New York Times"
+url = "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+group = "us"
+[[framing.feeds]]
+name = "Washington Post"
+url = "https://feeds.washingtonpost.com/rss/world"
+group = "us"
+[[framing.feeds]]
+name = "NPR"
+url = "https://feeds.npr.org/1004/rss.xml"
+group = "us"
+[[framing.feeds]]
+name = "Fox News"
+url = "https://feeds.foxnews.com/foxnews/latest"
+group = "us-right"
+[[framing.feeds]]
+name = "New York Post"
+url = "https://nypost.com/news/feed/"
+group = "us-right"
+[[framing.feeds]]
+name = "CBC"
+url = "https://www.cbc.ca/webfeed/rss/rss-world"
+group = "canada"
+[[framing.feeds]]
+name = "Le Monde"
+url = "https://www.lemonde.fr/en/rss/une.xml"
+group = "france"
+[[framing.feeds]]
+name = "France 24"
+url = "https://www.france24.com/en/rss"
+group = "france"
+[[framing.feeds]]
+name = "Deutsche Welle"
+url = "https://rss.dw.com/rdf/rss-en-all"
+group = "germany"
+[[framing.feeds]]
+name = "Al Jazeera"
+url = "https://www.aljazeera.com/xml/rss/all.xml"
+group = "qatar"
+[[framing.feeds]]
+name = "Times of India"
+url = "https://timesofindia.indiatimes.com/rssfeeds/296589292.cms"
+group = "india"
+[[framing.feeds]]
+name = "SCMP"
+url = "https://www.scmp.com/rss/91/feed"
+group = "hong-kong"
+[[framing.feeds]]
+name = "The Moscow Times"
+url = "https://www.themoscowtimes.com/rss/news"
+group = "russia-exile"
+
+[paper]
+# Paper is cheap and length is not a design constraint (CLAUDE.md invariant 3).
+# The budget is a guard against a runaway render - a slot in a loop, an image
+# that failed to scale - not a ration. Raise it rather than trim a design.
+budget_mm = 1030
+# The spine prints every day and is never drawn, so the selection engine fits
+# the rotating slots into budget_mm minus this reserve. Without it the engine
+# fits a full draw on top of the spine and the render fails the budget.
+# Measured with every persona block at its tallest pick and the legalese
+# printing; the tallest spine is the Mimic wearing the Daily Roll, at ~456mm.
+# Re-measure and raise it (and budget_mm with it) when a spine grows.
+spine_reserve_mm = 480
+
+[rarity]
+# Per-draw tier weights. Must sum to 1. See SYSTEM.md 4. Uncommon is uncommon
+# because its pool is large, not because it is scarce: any single uncommon
+# still comes round rarely, so the tier can be drawn often without a repeat
+# being felt.
+common = 0.50
+uncommon = 0.37
+rare = 0.13
+legendary_odds = 25        # separate per-receipt roll, 1 in N (~15 a year)
+# How many rotating slots a morning draws, uniformly between the two. A pinned
+# series part rides on top of this rather than taking one of them. The draw
+# count and the tier weights are coupled (SYSTEM.md 4): more draws is more
+# chances at a rare, so changing one moves the felt rarity of the other.
+draws_min = 3
+draws_max = 5
+
+[personas]
+# Per-draw tier weights for the persona, which are NOT the slot weights above -
+# a persona is worn for a whole page and wears out at its own rate. Must sum
+# to 1. See SYSTEM.md 3.6.
+#
+# A tier's weight is shared out among its members, so writing another rare
+# persona makes the existing rares scarcer rather than making rare mornings
+# commoner. The odds of *a* rare day are this number and stay this number.
+common = 0.50
+uncommon = 0.35
+rare = 0.15
+# The persona recency curve. Same shape as [recency], slower to recover: the
+# reader sees one page a day, so the same face twice in a week reads as a broken
+# machine even when the draw was honest. 0.95/14 puts a persona at 5% of its
+# weight the morning after it printed, a third of it a week later, and back to
+# two thirds at a fortnight. A persona that has never printed is undamped, so a
+# debut does not have to queue.
+suppression = 0.95
+tau_days = 14
+
+[slots]
+# Per-slot tuning. This is the dial to reach for after a week of real mornings:
+# how rare something *feels* is not knowable from the spec, and retuning should
+# cost a config edit rather than a code change.
+#
+# Slots ship with the tier docs/SLOTS.md gives them. Anything listed below wins
+# at run time, everywhere - selection, itemization price and the rarity stars.
+# The coverage report lists retunings separately from genuine doc mismatches.
+#
+# `disabled` retires a slot without deleting it. It stays registered and stays
+# in the coverage count; it simply never draws.
+disabled = [
+    115,    # three outlets, one story: did not work on real mornings
+]
+
+[slots.tier]
+# <slot id> = "common" | "uncommon" | "rare"
+# 132 = "uncommon"      # tarot too frequent at common
+# 14  = "uncommon"      # nonogram eats 60mm; make it an event
+
+[slots.paper_mm]
+# <slot id> = <mm>. Only the budget-fitting estimate; a slot may still render
+# shorter. Raise one that is being skipped unfairly, lower one that is padding.
+# 14 = 70
+
+[recency]
+# weight multiplier = 1 - suppression * exp(-days_since_seen / tau)
+suppression = 0.9
+tau_days = 10
+
+[paths]
+data = "data"
+cache = "data/cache.sqlite"
+# Photographs mailed in as PHOTO replies (SYSTEM.md 6) land here and resurface
+# later as printed photos. Gitignored: they are the reader's own pictures.
+photos = "data/photos"
+# Every recorded morning's page, as the PNG that went to the printer. The text
+# of each section is kept in the store as well (`tools/printed.py` reads both
+# back), so feedback on a morning can be checked against what actually printed.
+archive = "out/archive"

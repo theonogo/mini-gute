@@ -1,0 +1,421 @@
+/* Weights come from --bold, never a literal 700. Libre Baskerville ships a
+   real 400, 700 and italic, and Playfair Display SC a 400 and 700; Pinyon
+   Script has one weight and is a signature, which wants no other.
+   See the font-synthesis note in the base stylesheet. */
+/* The Clerk.
+ *
+ * A ledger kept by someone who takes the work seriously. The receipt should
+ * read as a document that was written into rather than a printout: centred
+ * small caps, engraved furniture, ruled columns, and air where a form would
+ * have a box. No black bars anywhere - this persona would consider them
+ * vulgar, and the one reversed-out panel on the page (slot 55) is the base
+ * stylesheet's, not his.
+ *
+ * The italic its dateline, asides and fine print lean on is a real italic
+ * file: `font-synthesis: none` would correctly refuse to fake one, and they
+ * would print upright.
+ *
+ * The page is never headed with the persona's name (SYSTEM.md 3.7). What heads
+ * it is the head of the book itself: an engraved
+ * headpiece, the standing title of the volume, the folio number taken from the
+ * receipt number, and then two lines the narrator writes each morning - the
+ * inscription that opens today's entry, and the clerk's aside under it.
+ *
+ * The furniture is drawn in tools/themeart.py and marked art:name - a
+ * headpiece, a swelled rule for the section breaks, the office seal on the
+ * warrant, and a tailpiece where the page stops. A Victorian jobbing printer
+ * had rules, flowers and a seal and no way to print a tone at all, which is
+ * exactly the register a 1-bit threshold wants.
+ */
+
+:root { --rule: 1px; --pad: 18px; --gap: 12px; --sec-end: 13px; }
+
+body { line-height: 1.45; }
+
+/* ---------- the head of the book ----------
+   DOM order is wordmark, narrated lines, dateline. The page wants the volume's
+   standing head, then the date, then today's entry, so the column is reordered
+   here rather than in the template - every persona gets the same markup. */
+.masthead {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 var(--pad) 2px;
+}
+/* The headpiece: a printer's flower between two scrolls, hairlines running out
+   to both margins. Full-bleed, because the rules have to reach the paper's
+   edge to read as ruling rather than as decoration. */
+.masthead::before {
+  content: "";
+  order: 0;
+  display: block;
+  height: 66px;
+  margin: 10px calc(-1 * var(--pad)) 8px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='66' viewBox='0 0 576 66'%3E%3Cpath d='M0 24.0 H176 M0 42.0 H176 M400 24.0 H576 M400 42.0 H576' stroke='black' stroke-width='2' fill='none'/%3E%3Cpath d='M254.0 33.0 L253.1 37.6 L251.3 41.8 L248.7 45.5 L245.4 48.4 L241.6 50.6 L237.5 51.9 L233.4 52.2 L229.3 51.7 L225.5 50.3 L222.2 48.2 L219.5 45.5 L217.4 42.4 L216.1 38.9 L215.6 35.4 L215.9 31.8 L216.9 28.6 L218.5 25.6 L220.7 23.2 L223.3 21.3 L226.1 20.1 L229.1 19.5 L232.0 19.6 L234.8 20.3 L237.3 21.5 L239.3 23.2 L241.0 25.2 L242.1 27.5 L242.6 29.9 L242.7 32.2 L242.2 34.5 L241.3 36.5 L240.0 38.1 L238.5 39.5 L236.7 40.4 L234.9 40.8 L233.1 40.9 L231.5 40.6 L230.0 39.9 L228.7 39.0 L227.8 37.8 L227.2 36.6 L226.9 35.3 L226.9 34.1 L227.2 33.0' fill='none' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M214.0 33.0 C206.9 18.5 192.6 13.2 180.8 10.6 C185.0 24.5 199.3 29.8 214.0 33.0 Z' fill='black'/%3E%3Cpath d='M214.0 33.0 C197.9 34.2 187.7 45.5 180.8 55.4 C195.3 56.7 205.5 45.5 214.0 33.0 Z' fill='black'/%3E%3Ccircle cx='186' cy='33.0' r='5' fill='black'/%3E%3Cpath d='M176 33.0 h-14' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M322.0 33.0 L322.9 37.6 L324.7 41.8 L327.3 45.5 L330.6 48.4 L334.4 50.6 L338.5 51.9 L342.6 52.2 L346.7 51.7 L350.5 50.3 L353.8 48.2 L356.5 45.5 L358.6 42.4 L359.9 38.9 L360.4 35.4 L360.1 31.8 L359.1 28.6 L357.5 25.6 L355.3 23.2 L352.7 21.3 L349.9 20.1 L346.9 19.5 L344.0 19.6 L341.2 20.3 L338.7 21.5 L336.7 23.2 L335.0 25.2 L333.9 27.5 L333.4 29.9 L333.3 32.2 L333.8 34.5 L334.7 36.5 L336.0 38.1 L337.5 39.5 L339.3 40.4 L341.1 40.8 L342.9 40.9 L344.5 40.6 L346.0 39.9 L347.3 39.0 L348.2 37.8 L348.8 36.6 L349.1 35.3 L349.1 34.1 L348.8 33.0' fill='none' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M362.0 33.0 C378.1 31.8 388.3 20.5 395.2 10.6 C380.7 9.3 370.5 20.5 362.0 33.0 Z' fill='black'/%3E%3Cpath d='M362.0 33.0 C369.1 47.5 383.4 52.8 395.2 55.4 C391.0 41.5 376.7 36.2 362.0 33.0 Z' fill='black'/%3E%3Ccircle cx='390' cy='33.0' r='5' fill='black'/%3E%3Cpath d='M400 33.0 h14' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M288.0 33.0 C295.4 41.8 303.1 37.9 309.0 33.0 C303.1 22.9 295.4 26.8 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C295.4 24.2 303.1 28.1 309.0 33.0 C303.1 43.1 295.4 39.2 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C284.0 43.8 291.4 48.5 298.5 51.2 C304.3 41.0 297.0 36.3 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C299.3 35.0 299.8 43.7 298.5 51.2 C286.8 51.2 286.3 42.5 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C276.7 35.0 276.2 43.7 277.5 51.2 C289.2 51.2 289.7 42.5 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C292.0 43.8 284.6 48.5 277.5 51.2 C271.7 41.0 279.0 36.3 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C280.6 24.2 272.9 28.1 267.0 33.0 C272.9 43.1 280.6 39.2 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C280.6 41.8 272.9 37.9 267.0 33.0 C272.9 22.9 280.6 26.8 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C292.0 22.2 284.6 17.5 277.5 14.8 C271.7 25.0 279.0 29.7 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C276.7 31.0 276.2 22.3 277.5 14.8 C289.2 14.8 289.7 23.5 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C299.3 31.0 299.8 22.3 298.5 14.8 C286.8 14.8 286.3 23.5 288.0 33.0 Z' fill='black'/%3E%3Cpath d='M288.0 33.0 C284.0 22.2 291.4 17.5 298.5 14.8 C304.3 25.0 297.0 29.7 288.0 33.0 Z' fill='black'/%3E%3Ccircle cx='288' cy='33.0' r='7.1' fill='white'/%3E%3Ccircle cx='288' cy='33.0' r='7.1' fill='none' stroke='black' stroke-width='2'/%3E%3Ccircle cx='288' cy='33.0' r='2.5' fill='black'/%3E%3C/svg%3E") /* art:vc-headpiece */
+              center / 576px 66px no-repeat;
+}
+/* The persona's name never prints (SYSTEM.md 3.7). The wordmark is emptied and
+   carries the standing head of the volume instead - what the book is, not who
+   keeps it - with the folio under it, counted from the receipt number. */
+.wordmark {
+  order: 1;
+  font-size: 0;
+}
+.wordmark::before {
+  content: "Being a Fair Account of the Day";
+  display: block;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.35);
+  letter-spacing: 0.05em;
+  line-height: 1.15;
+}
+/* The folio line closes the head: the receipt number read as a page of the
+   book, over a swelled rule. It sits on the masthead's own pseudo-element
+   because attr() reaches only the element's own attributes, and data-no is on
+   the header. */
+.masthead::after {
+  content: "Folio " attr(data-no) " · kept at the desk, in a fair hand";
+  order: 6;
+  display: block;
+  margin: 11px calc(-1 * var(--pad)) 0;
+  padding-top: 17px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='13' viewBox='0 0 576 13'%3E%3Cpath d='M88 6.5 C170 3.9 240 3.1 288 3.1 C336 3.1 406 3.9 488 6.5 C406 9.1 336 9.9 288 9.9 C240 9.9 170 9.1 88 6.5 Z' fill='black'/%3E%3Cpath d='M70 2.0999999999999996 L78 6.5 L70 10.9 L62 6.5 Z' fill='black'/%3E%3Cpath d='M506 2.0999999999999996 L514 6.5 L506 10.9 L498 6.5 Z' fill='black'/%3E%3C/svg%3E") /* art:vc-swell */
+              center top / 460px 13px no-repeat;
+  font-size: var(--size-tiny);
+  font-variant: small-caps;
+  letter-spacing: 0.14em;
+}
+.dateline {
+  order: 3;
+  margin-top: 2px;
+  font-style: italic;
+  font-size: var(--size-small);
+}
+/* The inscription that opens today's entry. Set at the measure of a written
+   line rather than the full width - a sentence in a ledger is written across
+   the ruling, not to the margins. */
+.mh-entry {
+  order: 4;
+  max-width: 92%;
+  margin: 9px auto 0;
+  font-size: calc(var(--size-body) + 1px);
+  line-height: 1.34;
+  text-wrap: balance;
+}
+/* The clerk's aside, in the hand he uses for things that are not quite the
+   record. A hairline over it, half the measure, so it reads as a note added
+   under the entry rather than a second sentence of it. */
+.mh-remark {
+  order: 5;
+  max-width: 76%;
+  margin: 7px auto 0;
+  padding-top: 6px;
+  border-top: 1px solid #000;
+  font-style: italic;
+  font-size: var(--size-small);
+  line-height: 1.32;
+}
+
+/* ---------- section breaks ----------
+   A swelled rule: thick at the middle, tapering to nothing, a lozenge either
+   side. It is the Victorian section break, and it is also the reason this
+   persona needs no bars - a rule with a shape carries as much weight as a slab
+   of ink and spends a fraction of it. */
+.rule {
+  height: 13px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='13' viewBox='0 0 576 13'%3E%3Cpath d='M88 6.5 C170 3.9 240 3.1 288 3.1 C336 3.1 406 3.9 488 6.5 C406 9.1 336 9.9 288 9.9 C240 9.9 170 9.1 88 6.5 Z' fill='black'/%3E%3Cpath d='M70 2.0999999999999996 L78 6.5 L70 10.9 L62 6.5 Z' fill='black'/%3E%3Cpath d='M506 2.0999999999999996 L514 6.5 L506 10.9 L498 6.5 Z' fill='black'/%3E%3C/svg%3E") /* art:vc-swell */
+              center / 460px 13px no-repeat;
+  margin: 3px 0 4px;
+}
+
+/* ---------- section headings ----------
+   Centred in the display face, with a double hairline running out to each
+   margin. The doubled rule is the ledger's, and it is what keeps a heading
+   from reading as a label on a form. */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) + 1px);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+.sec-head::before,
+.sec-head::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 3px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+/* ---------- the weather, as the day's opening paragraph ----------
+   A versal rather than a centred line. It is the one piece of hierarchy that
+   needs neither weight nor colour, and at this size it is a shape before it is
+   a letter - which is what survives a threshold. */
+.verdict {
+  text-align: justify;
+  font-size: calc(var(--size-body) + 1px);
+  line-height: 1.4;
+}
+.verdict::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: 3.1em;
+  line-height: 0.8;
+  padding: 3px 9px 0 0;
+}
+.meta { font-style: italic; margin-top: 5px; }
+
+/* The thermometer, ruled as a two-column entry rather than bordered as a
+   panel. Hairlines only: the base stylesheet's 3px slabs belong to a form. */
+.temps {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  margin-top: 8px;
+}
+.temp-cell { padding: 6px var(--pad) 5px; }
+.temp-cell + .temp-cell { border-left: 1px solid #000; }
+.temp-label {
+  font-variant: small-caps;
+  font-size: var(--size-tiny);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+}
+.temp-value {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) + 11px);
+}
+
+/* ---------- intelligence from abroad ----------
+   Numbered in roman, which is the ledger's numbering and not something the
+   template can know. The figure the template prints is hidden and the numeral
+   comes from a counter - the text itself is untouched, so nothing here can
+   disagree with what was fetched. */
+.news { counter-reset: dispatch; }
+.news-item {
+  counter-increment: dispatch;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 7px;
+  text-indent: 0;
+  padding-left: 0;
+}
+.news-n {
+  visibility: hidden;          /* not font-size:0 - that would zero the em
+                                  below, and the numeral sets its own column */
+  flex: none;
+  width: 2.6em;
+  text-align: right;
+  margin-right: 0;
+}
+.news-n::before {
+  content: counter(dispatch, upper-roman) ".";
+  visibility: visible;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+}
+
+.slot-body { text-align: justify; }
+.slot-fine { text-align: center; font-style: italic; }
+
+/* A quotation is set as a quotation: indented both sides, italic, with the
+   attribution hanging under it. The base gives these rules above and below;
+   a book would give them air instead. */
+.slot-143 .slot-body, .slot-98 .slot-body, .slot-25 .slot-body {
+  border: 0;
+  padding: 4px calc(var(--pad) + 14px) 0;
+  font-style: italic;
+  font-size: calc(var(--size-body) + 1px);
+  text-align: center;
+}
+.slot-143 .slot-fine, .slot-98 .slot-fine, .slot-25 .slot-fine {
+  font-style: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- the account ----------
+   Ruled columns, as a ledger has: the particulars on the left, the class and
+   the amount in their own columns with a hairline down each. The rules are
+   drawn as the section's background rather than as borders on the cells,
+   because the cells are flex items whose widths the template decides and the
+   ruling of a ledger page does not move to suit its entries. */
+.itemization {
+  position: relative;
+  padding-top: 24px;
+  padding-bottom: 6px;
+  background-image: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  background-size: 1px calc(100% - 32px), 1px calc(100% - 32px);
+  background-position: right 78px top 24px, right 186px top 24px;
+  background-repeat: no-repeat;
+}
+/* The head of the account. Two labels, one at each end of the ruling, set as
+   the section's own pseudo-elements so no row has to carry them. */
+.itemization::before,
+.itemization::after {
+  position: absolute;
+  top: 0;
+  font-variant: small-caps;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.16em;
+  padding-bottom: 3px;
+}
+.itemization::before {
+  content: "Particulars of the day";
+  left: var(--pad);
+  right: var(--pad);
+  border-bottom: 1px solid #000;
+}
+.itemization::after { content: "Dr."; right: var(--pad); }
+.item { padding: 2px 0; }
+.item-tier {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  width: 100px;
+  text-align: left;
+  padding-left: 14px;
+  box-sizing: border-box;
+}
+.item-price { width: 74px; padding-left: 10px; box-sizing: border-box; }
+.leader { background-position: 0 78%; margin-right: 4px; }
+
+/* ---------- the totals, and the hand that entered them ---------- */
+.totals {
+  position: relative;
+  padding-top: 26px;
+}
+.totals::before {
+  content: "Cr.";
+  position: absolute;
+  top: 2px;
+  left: var(--pad);
+  right: var(--pad);
+  padding-bottom: 3px;
+  border-bottom: 1px solid #000;
+  font-variant: small-caps;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.16em;
+  text-align: right;
+}
+.totals td { padding: 3px 0; }
+.totals .subtotal td { font-variant: small-caps; letter-spacing: 0.08em; }
+.stars { letter-spacing: 0.16em; }
+/* The signature: the clerk's own hand, in the accent face, over a ruled line
+   with what he is under it. Pinyon Script is a hairline script and needs the
+   size - at anything under about 1.7x the body it prints as a grey smear. */
+.totals::after {
+  content: "Entered and found correct";
+  display: block;
+  width: 62%;
+  margin: 16px 0 0 auto;
+  padding-bottom: 2px;
+  border-bottom: 1px solid #000;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: calc(var(--size-body) * 1.9);
+  line-height: 1.05;
+  text-align: center;
+}
+
+.legalese {
+  font-style: italic;
+  text-align: justify;
+  margin-top: 12px;
+}
+.legalese::before {
+  content: "Endorsement. ";
+  font-style: normal;
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+}
+.legalese .footnote { margin-top: 5px; }
+
+.answers .answer-label {
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- the foot of the page ----------
+   The countersignature over the serial, and the tailpiece under everything -
+   the mark an engraver puts where a page stops. .serial is the last thing on
+   the receipt that is not the warrant, so the ornament belongs to it. */
+.serial { margin-top: 12px; position: relative; }
+.serial::before {
+  content: "Countersigned, and the book closed at this line";
+  display: block;
+  margin: 0 var(--pad) 8px;
+  padding-top: 6px;
+  border-top: 1px solid #000;
+  font-size: var(--size-tiny);
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+.serial::after {
+  content: "";
+  display: block;
+  height: 54px;
+  margin-top: 6px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='54' viewBox='0 0 300 54'%3E%3Cpath d='M190.5 12.9 L187.6 14.6 L185.1 16.8 L183.1 19.4 L181.7 22.2 L181.0 25.3 L180.8 28.4 L181.3 31.3 L182.3 34.1 L183.9 36.6 L185.8 38.6 L188.1 40.2 L190.6 41.3 L193.2 41.8 L195.8 41.8 L198.3 41.3 L200.6 40.3 L202.6 38.9 L204.2 37.2 L205.4 35.2 L206.2 33.1 L206.5 31.0 L206.4 28.8 L205.8 26.9 L204.9 25.1 L203.7 23.5 L202.3 22.3 L200.7 21.5 L199.0 21.0 L197.3 20.8 L195.7 21.0 L194.2 21.6 L192.8 22.4 L191.8 23.4 L191.0 24.5 L190.4 25.8 L190.2 27.0 L190.2 28.3 L190.5 29.4 L190.9 30.4 L191.6 31.2 L192.4 31.9 L193.2 32.3 L194.1 32.5 L194.9 32.6' fill='none' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M202.0 25.0 C220.0 25.8 234.0 15.5 244.0 6.3 C228.5 3.1 214.4 13.3 202.0 25.0 Z' fill='black'/%3E%3Cpath d='M202.0 25.0 C214.4 19.6 219.9 7.9 222.9 -1.8 C211.2 1.1 205.7 12.8 202.0 25.0 Z' fill='black'/%3E%3Cpath d='M202.0 25.0 C212.1 31.7 223.3 29.8 231.9 27.1 C224.0 19.6 212.8 21.5 202.0 25.0 Z' fill='black'/%3E%3Cpath d='M246 27.0 H282' stroke='black' stroke-width='2'/%3E%3Ccircle cx='290' cy='27.0' r='3.6' fill='black'/%3E%3Cpath d='M109.4 45.1 L106.0 45.6 L102.7 45.3 L99.6 44.5 L96.7 43.0 L94.3 41.1 L92.3 38.7 L90.9 36.0 L90.0 33.2 L89.8 30.3 L90.1 27.5 L91.0 24.9 L92.3 22.5 L94.1 20.5 L96.1 18.9 L98.4 17.8 L100.8 17.2 L103.2 17.1 L105.6 17.5 L107.7 18.4 L109.6 19.6 L111.2 21.1 L112.3 22.8 L113.1 24.8 L113.5 26.7 L113.5 28.7 L113.0 30.5 L112.3 32.2 L111.2 33.6 L110.0 34.7 L108.5 35.5 L107.0 36.0 L105.5 36.2 L104.0 36.1 L102.7 35.6 L101.5 35.0 L100.6 34.1 L99.8 33.1 L99.4 32.0 L99.1 30.9 L99.1 29.9 L99.4 28.9 L99.8 28.0 L100.3 27.3 L101.0 26.8' fill='none' stroke='black' stroke-width='2.6'/%3E%3Cpath d='M98.0 25.0 C86.5 11.1 69.5 7.5 56.0 6.3 C64.0 19.9 81.0 23.6 98.0 25.0 Z' fill='black'/%3E%3Cpath d='M98.0 25.0 C95.8 11.6 85.7 3.5 77.1 -1.8 C77.0 10.3 87.1 18.4 98.0 25.0 Z' fill='black'/%3E%3Cpath d='M98.0 25.0 C87.1 19.7 76.2 23.2 68.1 27.1 C76.9 33.4 87.8 29.9 98.0 25.0 Z' fill='black'/%3E%3Cpath d='M54 27.0 H18' stroke='black' stroke-width='2'/%3E%3Ccircle cx='10' cy='27.0' r='3.6' fill='black'/%3E%3Cpath d='M150.0 16.0 L159.0 27.0 L150.0 38.0 L141.0 27.0 Z' fill='black'/%3E%3Cpath d='M150.0 22.0 L154.0 27.0 L150.0 32.0 L146.0 27.0 Z' fill='white'/%3E%3C/svg%3E") /* art:vc-tailpiece */
+              center / 300px 54px no-repeat;
+}
+.serial .row { font-variant: small-caps; letter-spacing: 0.06em; }
+
+/* ---------- the warrant ----------
+   Not a coupon. A bordered instrument with the office seal struck into its
+   lower corner, and the terms in the hand a clerk uses for a clause he hopes
+   nobody tests. The tear is above it: you tear the line to take the warrant
+   away, which is why the receipt puts the coupon last. */
+.tear {
+  border-top: 1px dashed #000;
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 7px;
+  letter-spacing: 0.5em;
+  font-variant: small-caps;
+}
+.coupon-inner {
+  position: relative;
+  margin: 8px 14px 6px;
+  padding: 12px 14px 30px;
+  border: 1px solid #000;
+  outline: 1px solid #000;
+  outline-offset: 3px;
+  text-align: center;
+}
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: 0.14em;
+  font-size: calc(var(--size-body) + 1px);
+  padding-bottom: 7px;
+  margin-bottom: 7px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='13' viewBox='0 0 576 13'%3E%3Cpath d='M88 6.5 C170 3.9 240 3.1 288 3.1 C336 3.1 406 3.9 488 6.5 C406 9.1 336 9.9 288 9.9 C240 9.9 170 9.1 88 6.5 Z' fill='black'/%3E%3Cpath d='M70 2.0999999999999996 L78 6.5 L70 10.9 L62 6.5 Z' fill='black'/%3E%3Cpath d='M506 2.0999999999999996 L514 6.5 L506 10.9 L498 6.5 Z' fill='black'/%3E%3C/svg%3E") /* art:vc-swell */
+              center bottom / 200px 9px no-repeat;
+}
+.coupon-body { line-height: 1.4; }
+/* The seal is struck over the corner of the instrument, as a seal is - it
+   overlaps the border rather than sitting politely inside it. The terms are
+   inset on that side so nothing is printed under the wax. */
+.coupon-inner::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  bottom: -20px;
+  width: 92px;
+  height: 92px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='124' height='124' viewBox='0 0 124 124'%3E%3Cpath d='M115.3 62.0 L117.0 73.7 L108.7 82.8 L103.7 92.3 L98.8 102.9 L88.7 108.3 L77.7 110.4 L67.6 115.4 L56.1 118.4 L44.6 115.6 L34.4 109.8 L26.6 101.3 L18.2 93.8 L12.7 84.0 L7.3 73.6 L8.2 62.0 L10.4 51.0 L13.1 40.2 L19.3 31.0 L26.0 22.0 L36.6 17.9 L46.3 13.7 L56.5 9.2 L67.3 11.7 L79.4 8.4 L88.8 15.6 L98.4 21.6 L106.9 29.4 L112.5 39.5 L111.7 51.4 Z' fill='black'/%3E%3Ccircle cx='62' cy='62' r='45' fill='none' stroke='white' stroke-width='2'/%3E%3Ccircle cx='107.0' cy='62.0' r='1.8' fill='black'/%3E%3Ccircle cx='105.5' cy='73.6' r='1.8' fill='black'/%3E%3Ccircle cx='101.0' cy='84.5' r='1.8' fill='black'/%3E%3Ccircle cx='93.8' cy='93.8' r='1.8' fill='black'/%3E%3Ccircle cx='84.5' cy='101.0' r='1.8' fill='black'/%3E%3Ccircle cx='73.6' cy='105.5' r='1.8' fill='black'/%3E%3Ccircle cx='62.0' cy='107.0' r='1.8' fill='black'/%3E%3Ccircle cx='50.4' cy='105.5' r='1.8' fill='black'/%3E%3Ccircle cx='39.5' cy='101.0' r='1.8' fill='black'/%3E%3Ccircle cx='30.2' cy='93.8' r='1.8' fill='black'/%3E%3Ccircle cx='23.0' cy='84.5' r='1.8' fill='black'/%3E%3Ccircle cx='18.5' cy='73.6' r='1.8' fill='black'/%3E%3Ccircle cx='17.0' cy='62.0' r='1.8' fill='black'/%3E%3Ccircle cx='18.5' cy='50.4' r='1.8' fill='black'/%3E%3Ccircle cx='23.0' cy='39.5' r='1.8' fill='black'/%3E%3Ccircle cx='30.2' cy='30.2' r='1.8' fill='black'/%3E%3Ccircle cx='39.5' cy='23.0' r='1.8' fill='black'/%3E%3Ccircle cx='50.4' cy='18.5' r='1.8' fill='black'/%3E%3Ccircle cx='62.0' cy='17.0' r='1.8' fill='black'/%3E%3Ccircle cx='73.6' cy='18.5' r='1.8' fill='black'/%3E%3Ccircle cx='84.5' cy='23.0' r='1.8' fill='black'/%3E%3Ccircle cx='93.8' cy='30.2' r='1.8' fill='black'/%3E%3Ccircle cx='101.0' cy='39.5' r='1.8' fill='black'/%3E%3Ccircle cx='105.5' cy='50.4' r='1.8' fill='black'/%3E%3Cpath d='M40 84 L82 40' stroke='white' stroke-width='3.4' stroke-linecap='round'/%3E%3Cpath d='M47.6 76.1 l7.0 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M51.8 71.7 l6.5 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M56.0 67.3 l6.0 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M60.2 62.9 l5.5 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M64.4 58.5 l5.0 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M68.6 54.1 l4.5 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M72.8 49.7 l4.0 -3.5' stroke='white' stroke-width='2'/%3E%3Cpath d='M36 44 L74 82' stroke='white' stroke-width='3.4' stroke-linecap='round'/%3E%3Ccircle cx='33' cy='41' r='7' fill='none' stroke='white' stroke-width='3'/%3E%3Cpath d='M68 76 l7 -7 M62 70 l6 -6' stroke='white' stroke-width='3'/%3E%3C/svg%3E") /* art:vc-seal */
+              center / 92px 92px no-repeat;
+}
+.coupon-terms {
+  font-style: italic;
+  margin: 9px 76px 0 0;
+  text-align: left;
+}

@@ -1,0 +1,216 @@
+{
+  "_note": [
+    "Complete short poems, all public domain. Slot 147.",
+    "",
+    "Add poems by editing this file - the slot needs no code change. Keep them",
+    "SHORT and COMPLETE: the point of the slot is a poem finished in one",
+    "morning, with no serial to keep up with.",
+    "",
+    "TRANSCRIPTION: these texts are transcribed and have NOT been diffed against",
+    "a canonical source. They print verbatim and are attributed by name, so an",
+    "error here is an error attributed to a real poet - the exact failure",
+    "SYSTEM.md section 9 exists to prevent. Each entry carries a `source` for a",
+    "verification pass. Treat that pass as outstanding.",
+    "",
+    "PUBLIC DOMAIN: every author died before 1930 or the work was published",
+    "before 1929. Deliberately no translations - a modern translation of Basho",
+    "is under its translator's copyright even though Basho is not, and an old",
+    "public-domain translation has to be sourced rather than recalled."
+  ],
+  "poems": [
+    {
+      "title": "I'm Nobody! Who are you?",
+      "author": "Emily Dickinson",
+      "year": "c. 1861",
+      "source": "Poems by Emily Dickinson, Series 2 (1891)",
+      "lines": [
+        "I'm Nobody! Who are you?",
+        "Are you – Nobody – too?",
+        "Then there's a pair of us!",
+        "Don't tell! they'd advertise – you know!",
+        "",
+        "How dreary – to be – Somebody!",
+        "How public – like a Frog –",
+        "To tell one's name – the livelong June –",
+        "To an admiring Bog!"
+      ]
+    },
+    {
+      "title": "Fog",
+      "author": "Carl Sandburg",
+      "year": "1916",
+      "source": "Chicago Poems (1916)",
+      "lines": [
+        "The fog comes",
+        "on little cat feet.",
+        "",
+        "It sits looking",
+        "over harbor and city",
+        "on silent haunches",
+        "and then moves on."
+      ]
+    },
+    {
+      "title": "In a Station of the Metro",
+      "author": "Ezra Pound",
+      "year": "1913",
+      "source": "Poetry, April 1913",
+      "lines": [
+        "The apparition of these faces in the crowd;",
+        "Petals on a wet, black bough."
+      ]
+    },
+    {
+      "title": "The Red Wheelbarrow",
+      "author": "William Carlos Williams",
+      "year": "1923",
+      "source": "Spring and All (1923)",
+      "lines": [
+        "so much depends",
+        "upon",
+        "",
+        "a red wheel",
+        "barrow",
+        "",
+        "glazed with rain",
+        "water",
+        "",
+        "beside the white",
+        "chickens"
+      ]
+    },
+    {
+      "title": "A man said to the universe",
+      "author": "Stephen Crane",
+      "year": "1899",
+      "source": "War Is Kind (1899)",
+      "lines": [
+        "A man said to the universe:",
+        "\"Sir, I exist!\"",
+        "\"However,\" replied the universe,",
+        "\"The fact has not created in me",
+        "A sense of obligation.\""
+      ]
+    },
+    {
+      "title": "The Sick Rose",
+      "author": "William Blake",
+      "year": "1794",
+      "source": "Songs of Experience (1794)",
+      "lines": [
+        "O Rose thou art sick.",
+        "The invisible worm,",
+        "That flies in the night",
+        "In the howling storm:",
+        "",
+        "Has found out thy bed",
+        "Of crimson joy:",
+        "And his dark secret love",
+        "Does thy life destroy."
+      ]
+    },
+    {
+      "title": "Upon Julia's Clothes",
+      "author": "Robert Herrick",
+      "year": "1648",
+      "source": "Hesperides (1648)",
+      "lines": [
+        "Whenas in silks my Julia goes,",
+        "Then, then (methinks) how sweetly flows",
+        "That liquefaction of her clothes.",
+        "",
+        "Next, when I cast mine eyes and see",
+        "That brave vibration each way free;",
+        "O how that glittering taketh me!"
+      ]
+    },
+    {
+      "title": "The Coin",
+      "author": "Sara Teasdale",
+      "year": "1920",
+      "source": "Flame and Shadow (1920)",
+      "lines": [
+        "Into my heart's treasury",
+        "I slipped a coin",
+        "That time cannot take",
+        "Nor a thief purloin, –",
+        "Oh better than the minting",
+        "Of a gold-crowned king",
+        "Is the safe-kept memory",
+        "Of a lovely thing."
+      ]
+    },
+    {
+      "title": "November Night",
+      "author": "Adelaide Crapsey",
+      "year": "1915",
+      "source": "Verse (1915)",
+      "lines": [
+        "Listen..",
+        "With faint dry sound,",
+        "Like steps of passing ghosts,",
+        "The leaves, frost-crisp'd, break from the trees",
+        "And fall."
+      ]
+    },
+    {
+      "title": "Loveliest of trees",
+      "author": "A. E. Housman",
+      "year": "1896",
+      "source": "A Shropshire Lad (1896), II",
+      "lines": [
+        "Loveliest of trees, the cherry now",
+        "Is hung with bloom along the bough,",
+        "And stands about the woodland ride",
+        "Wearing white for Eastertide.",
+        "",
+        "Now, of my threescore years and ten,",
+        "Twenty will not come again,",
+        "And take from seventy springs a score,",
+        "It only leaves me fifty more.",
+        "",
+        "And since to look at things in bloom",
+        "Fifty springs are little room,",
+        "About the woodlands I will go",
+        "To see the cherry hung with snow."
+      ]
+    },
+    {
+      "title": "\"Hope\" is the thing with feathers",
+      "author": "Emily Dickinson",
+      "year": "c. 1861",
+      "source": "Poems by Emily Dickinson, Series 2 (1891)",
+      "lines": [
+        "\"Hope\" is the thing with feathers –",
+        "That perches in the soul –",
+        "And sings the tune without the words –",
+        "And never stops – at all –",
+        "",
+        "And sweetest – in the Gale – is heard –",
+        "And sore must be the storm –",
+        "That could abash the little Bird",
+        "That kept so many warm –"
+      ]
+    },
+    {
+      "title": "Pied Beauty",
+      "author": "Gerard Manley Hopkins",
+      "year": "1877",
+      "source": "Poems of Gerard Manley Hopkins (1918)",
+      "lines": [
+        "Glory be to God for dappled things –",
+        "  For skies of couple-colour as a brinded cow;",
+        "    For rose-moles all in stipple upon trout that swim;",
+        "Fresh-firecoal chestnut-falls; finches' wings;",
+        "  Landscape plotted and pieced – fold, fallow, and plough;",
+        "    And áll trádes, their gear and tackle and trim.",
+        "",
+        "All things counter, original, spare, strange;",
+        "  Whatever is fickle, freckled (who knows how?)",
+        "    With swift, slow; sweet, sour; adazzle, dim;",
+        "He fathers-forth whose beauty is past change:",
+        "                    Praise him."
+      ]
+    }
+  ]
+}

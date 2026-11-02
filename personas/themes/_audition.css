@@ -1,0 +1,88 @@
+/* Weights come from --bold, never a literal 700 - except for the mono face,
+   which always has a real bold. See the font-synthesis note in the base
+   stylesheet. */
+/* The audition placeholder.
+ *
+ * Worn by any persona in audition that has no stylesheet of its own
+ * (main.theme_css), so its voice can be previewed before its design exists.
+ * This is deliberately NOT a design. Every auditioning persona wears the same
+ * plain page, so the only things that differ on it are the words and the three
+ * faces - which is exactly what is being auditioned.
+ *
+ * The banner under the masthead says so on the page itself. If a receipt ever
+ * reaches paper looking like this on a real morning, an audition was skipped.
+ *
+ * Display and accent faces are used large or not at all: most are single-weight
+ * showpieces (a blackletter, a dot matrix, a glitch face) that were never meant
+ * to be read at body size.
+ */
+
+:root { --rule: 2px; --pad: 12px; --gap: 8px; }
+
+body { line-height: 1.4; }
+
+/* ---------- masthead: the display face, then what this page is ---------- */
+.masthead { padding: 10px var(--pad) 0; }
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 2);
+  line-height: 1.1;
+}
+/* The date is a fact and stays in the body face. The accent face gets only the
+   tear line: Rubik Microbe set as a dateline was unreadable, and nothing on
+   that line needs reading. */
+.dateline { margin: 4px 0 8px; }
+.masthead::after {
+  content: "AUDITION  /  PLACEHOLDER LAYOUT";
+  display: block;
+  margin: 0 calc(-1 * var(--pad));
+  padding: 3px var(--pad) 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--size-small);
+  letter-spacing: 0.12em;
+}
+
+/* ---------- headings in the display face, over a plain rule ---------- */
+.sec-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.3);
+  line-height: 1.15;
+  border-bottom: var(--rule) solid #000;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
+}
+
+.verdict { margin-top: 2px; }
+.meta { margin-top: 3px; }
+
+.news-item { display: flex; gap: 8px; margin-bottom: 4px; }
+.news-n { flex: none; min-width: 1.2em; font-weight: var(--bold); }
+.news-n::after { content: "."; }
+
+/* ---------- coupon: a plain box under the persona's own tear line ---------- */
+.tear {
+  font-family: var(--font-accent);
+  text-align: center;
+  margin-top: 12px;
+  padding-top: 6px;
+}
+.coupon-inner {
+  border: var(--rule) solid #000;
+  margin: 8px var(--pad) 4px;
+  padding: 8px 10px;
+}
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.2);
+  margin-bottom: 4px;
+}
+.coupon-terms { margin-top: 4px; }
+
+.legalese { margin-top: 8px; }
+.serial { margin-top: 8px; }

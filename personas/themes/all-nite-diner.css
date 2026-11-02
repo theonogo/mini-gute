@@ -1,0 +1,405 @@
+/* Weights come from --bold, never a literal 700. Zilla Slab and Kalam ship
+   real 700s (--bold and --accent-bold); Shrikhand has one weight and is heavy
+   enough to need no other. See the font-synthesis note in the base stylesheet. */
+/* Dot's All-Nite Diner.
+ *
+ * The menu and the order ticket at once, for a greasy spoon whose kitchen
+ * keeps receiving orders for impossible food. The masthead is the diner's own
+ * furniture: the sign over the door - DOT'S on a bulb-ringed board, ALL-NITE
+ * DINER on a banner (the one persona whose name may print, because here it is a
+ * logo) - a checkerboard strip, and the chalkboard with today's
+ * special and how it is served, written fresh by the narrator
+ * ([persona.masthead]).
+ *
+ * Checkerboard is the house pattern - the one thermal paper was born to print -
+ * and it divides every section. Headings sit on menu lines with dot leaders
+ * running out to MARKET PRICE. Headlines are order tickets clipped to the rail,
+ * each for a table. The itemization is the guest check, gratuity not included,
+ * and the coupon a punch card: ten cups, the first one punched.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 6px; --sec-end: 12px; }
+
+body { line-height: 1.34; }
+
+.receipt { counter-reset: table; }
+
+/* ---------- masthead: the sign, the strip, the chalkboard ---------- */
+.masthead {
+  display: flex; flex-direction: column;
+  padding: 6px var(--pad) 0;
+  text-align: center;
+}
+/* The sign over the door: the diner's own name - the one persona allowed to
+   print it, because a diner's logo is its furniture - lettered white onto a
+   bulb-ringed board. */
+.masthead::before {
+  content: "Dot's";
+  order: 0;
+  position: relative;
+  display: block;
+  height: 132px;
+  margin: 0 calc(-1 * var(--pad));
+  padding-top: 8px;
+  box-sizing: border-box;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='150' viewBox='0 0 576 150'%3E%3Crect x='96' y='6' width='384' height='126' rx='60' fill='black'/%3E%3Crect x='103' y='13' width='370' height='112' rx='53' fill='none' stroke='white' stroke-width='1.6'/%3E%3Ccircle cx='156.0' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='173.5' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='191.0' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='208.4' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='225.9' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='243.4' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='260.9' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='278.3' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='295.8' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='313.3' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='330.8' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='348.2' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='365.7' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='383.2' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='400.7' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='418.1' cy='24.0' r='3' fill='white'/%3E%3Ccircle cx='435.3' cy='26.9' r='3' fill='white'/%3E%3Ccircle cx='449.8' cy='36.4' r='3' fill='white'/%3E%3Ccircle cx='459.2' cy='50.9' r='3' fill='white'/%3E%3Ccircle cx='462.0' cy='68.1' r='3' fill='white'/%3E%3Ccircle cx='459.8' cy='85.3' r='3' fill='white'/%3E%3Ccircle cx='451.1' cy='100.3' r='3' fill='white'/%3E%3Ccircle cx='437.0' cy='110.4' r='3' fill='white'/%3E%3Ccircle cx='420.0' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='402.5' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='385.0' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='367.6' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='350.1' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='332.6' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='315.1' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='297.7' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='280.2' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='262.7' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='245.2' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='227.8' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='210.3' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='192.8' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='175.3' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='157.9' cy='114.0' r='3' fill='white'/%3E%3Ccircle cx='140.7' cy='111.1' r='3' fill='white'/%3E%3Ccircle cx='126.2' cy='101.6' r='3' fill='white'/%3E%3Ccircle cx='116.8' cy='87.1' r='3' fill='white'/%3E%3Ccircle cx='114.0' cy='69.9' r='3' fill='white'/%3E%3Ccircle cx='116.2' cy='52.7' r='3' fill='white'/%3E%3Ccircle cx='124.9' cy='37.7' r='3' fill='white'/%3E%3Ccircle cx='139.0' cy='27.6' r='3' fill='white'/%3E%3Cpath d='M96 70 H70 M480 70 H506' stroke='black' stroke-width='3'/%3E%3Cpath d='M42 22 L46.84 39.16 L64 44 L46.84 48.84 L42 66 L37.16 48.84 L20 44 L37.16 39.16 Z' fill='black'/%3E%3Cpath d='M70 101 L72.42 109.58 L81 112 L72.42 114.42 L70 123 L67.58 114.42 L59 112 L67.58 109.58 Z' fill='black'/%3E%3Cpath d='M22 85 L23.54 90.46 L29 92 L23.54 93.54 L22 99 L20.46 93.54 L15 92 L20.46 90.46 Z' fill='black'/%3E%3Cpath d='M534 78 L538.84 95.16 L556 100 L538.84 104.84 L534 122 L529.16 104.84 L512 100 L529.16 95.16 Z' fill='black'/%3E%3Cpath d='M508 19 L510.42 27.58 L519 30 L510.42 32.42 L508 41 L505.58 32.42 L497 30 L505.58 27.58 Z' fill='black'/%3E%3Cpath d='M556 43 L557.54 48.46 L563 50 L557.54 51.54 L556 57 L554.46 51.54 L549 50 L554.46 48.46 Z' fill='black'/%3E%3C/svg%3E") /* art:diner-logo */ center top / 576px 150px no-repeat;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 3.9);
+  line-height: 1.3;
+  transform: rotate(-3deg);
+}
+/* The banner across the foot of the board. */
+.masthead::after {
+  content: "ALL-NITE DINER";
+  order: 1;
+  position: relative;
+  display: table;
+  margin: -18px auto 0;
+  padding: 3px 44px 4px 48px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M8 0 L10 6 L16 8 L10 10 L8 16 L6 10 L0 8 L6 6 Z'/%3E%3C/svg%3E") left 16px center / 16px no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M8 0 L10 6 L16 8 L10 10 L8 16 L6 10 L0 8 L6 6 Z'/%3E%3C/svg%3E") right 16px center / 16px no-repeat, #fff;
+  border: 3px solid #000;
+  box-shadow: 5px 5px 0 #000;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: calc(var(--size-body) * 1.15);
+  letter-spacing: 0.22em;
+}
+.dateline {
+  order: 2;
+  margin: 12px 0 8px;
+  font-size: var(--size-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.dateline::before { content: "Open all night  /  "; white-space: pre; }
+/* The checkerboard strip, carried by the emptied wordmark. */
+.wordmark {
+  order: 3;
+  height: 16px;
+  margin: 0 calc(-1 * var(--pad));
+  font-size: 0;
+  background: repeating-conic-gradient(#000 0 25%, #fff 0 50%) 0 0 / 16px 16px;
+}
+/* The chalkboard: today's special, and how it comes. Two blocks, one board. */
+.mh-special, .mh-served {
+  order: 4;
+  margin: 0 calc(-1 * var(--pad));
+  padding: 0 28px;
+  background: #000;
+  color: #fff;
+}
+.mh-special {
+  padding-top: 12px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.4);
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.mh-special::before {
+  content: "TODAY'S SPECIAL";
+  display: block;
+  width: max-content;
+  margin: 0 auto 6px;
+  padding-bottom: 2px;
+  border-bottom: 2px dashed #fff;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.24em;
+}
+.mh-served {
+  order: 5;
+  padding-top: 4px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-body);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* The strip again under the board, closing it. */
+.mh-served::after {
+  content: "";
+  display: block;
+  height: 16px;
+  margin: 12px -28px 0;
+  background: repeating-conic-gradient(#000 0 25%, #fff 0 50%) 0 0 / 16px 16px;
+}
+/* Shrikhand will not letter-space; the horoscope's base heading asks it to. */
+.slot-150 .sec-head { text-transform: none; letter-spacing: 0; text-align: left; }
+
+/* ---------- section breaks: the checkerboard ---------- */
+.rule {
+  height: 10px;
+  margin: 6px 0;
+  background: repeating-conic-gradient(#000 0 25%, #fff 0 50%) 0 0 / 10px 10px;
+}
+.rule + .rule { display: none; }
+
+/* ---------- headings: menu lines, dot leaders out to MARKET PRICE ---------- */
+.sec-head {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.15);
+  line-height: 1.15;
+}
+.sec-head::after {
+  content: "MARKET PRICE";
+  flex: 1 1 60px;
+  min-width: 60px;
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.12em;
+  background:
+    linear-gradient(#fff, #fff) right center / 9.4em 100% no-repeat,
+    repeating-linear-gradient(to right, #000 0 2px, transparent 2px 7px) left 72% / 100% 2px no-repeat;
+}
+
+/* ---------- weather: soup of the day ---------- */
+.verdict { font-size: var(--size-body); }
+.temps {
+  border: 0;
+  column-gap: 12px;
+  margin: 8px var(--pad) 4px;
+}
+.temp-cell {
+  padding: 3px 12px 4px;
+  border: 2px solid #000;
+  border-radius: 14px;
+}
+.temp-cell + .temp-cell { border-left: 2px solid #000; }
+.temp-label { letter-spacing: 0.12em; }
+.temp-value { font-family: var(--font-display); font-weight: var(--display-weight); }
+
+/* ---------- news: order tickets on the rail ---------- */
+.news { position: relative; padding-top: 4px; }
+.news-item {
+  position: relative;
+  margin: 12px 22px 4px;
+  padding: 18px 12px 8px !important;
+  border: 2px solid #000;
+  background: #fff;
+  counter-increment: table;
+}
+.news-item:nth-child(odd)  { transform: rotate(-0.7deg); }
+.news-item:nth-child(even) { transform: rotate(0.6deg); }
+/* The clip at the top of each ticket. */
+.news-item::before {
+  content: "";
+  position: absolute; top: -8px; left: 50%;
+  width: 28px; height: 12px;
+  margin-left: -14px;
+  background: #000;
+  border-radius: 2px;
+}
+.news-n {
+  position: absolute; top: 2px; left: 12px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+}
+.news-n { font-size: 0; }
+.news-n::before {
+  content: "TABLE " counter(table);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.08em;
+}
+
+/* ---------- itemization: the guest check ---------- */
+.itemization { padding-top: 4px; }
+.itemization::before {
+  content: "GUEST CHECK        TABLE 1        GUESTS 1";
+  display: block;
+  margin-bottom: 4px;
+  padding: 3px 8px 4px;
+  border: 2px solid #000;
+  white-space: pre;
+  text-align: center;
+  font-weight: var(--bold);
+  font-size: var(--size-small);
+  letter-spacing: 0.06em;
+}
+.item-name { font-size: var(--size-small); }
+.item-tier { font-size: var(--size-tiny); }
+.totals::after {
+  content: "gratuity not included :)";
+  display: block;
+  margin: 4px 4px 2px 0;
+  text-align: right;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-body);
+  transform: rotate(-2deg);
+}
+
+/* ---------- legalese: the health inspection card ----------
+   Posted in the window by law, the way New York diners post theirs: the grade
+   Python drew, huge in its box, and two findings an inspector wrote down about
+   impossible things in a completely normal voice, each with its status tag.
+   The cook's last word comes through the hatch underneath. */
+.legalese {
+  margin: 10px var(--pad) 0;
+  padding: 8px 12px 10px !important;
+  border: 3px solid #000;
+  text-align: left;
+}
+.legalese::before {
+  content: "DEPT. OF HEALTH  \00B7  SANITARY INSPECTION";
+  display: block;
+  margin-bottom: 7px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #000;
+  font-weight: var(--bold);
+  letter-spacing: 0.06em;
+}
+.legalese .blk-label {
+  float: right;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 96px; height: 104px;
+  margin: 0 0 6px 12px;
+  border: 5px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 3.4);
+  line-height: 1;
+}
+.legalese .blk-label::after {
+  content: "GRADE";
+  margin-top: 4px;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.2em;
+}
+.legalese[data-grade="pending"] .blk-label {
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+.legalese[data-grade="pending"] .blk-label::before {
+  content: "GRADE";
+  font-size: var(--size-small);
+}
+.legalese[data-grade="pending"] .blk-label::after { content: ""; margin: 0; }
+.legalese .ln { display: flex; flex-direction: column; }
+.legalese .ln-text::first-letter { text-transform: uppercase; }
+.legalese .ln + .ln { margin-top: 7px; }
+.legalese .ln-label {
+  order: 2;
+  align-self: flex-start;
+  margin-top: 3px;
+  padding: 0 6px;
+  border: 2px solid #000;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.08em;
+}
+.legalese .footnote {
+  clear: both;
+  margin-top: 9px;
+  padding-top: 6px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+}
+
+.serial { margin-top: 10px; }
+.serial::before {
+  content: "THANK YOU - COME AGAIN";
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+}
+
+/* ---------- coupon: the punch card ----------
+   The cups stay; the terms change every time it prints. What the free one gets
+   you is the big line, how to claim it under it, then the card's ten cups with
+   how a punch is earned printed beneath them in place of BUY NINE, and the
+   waitress's own note in her hand at the foot. The labels are for the card's
+   order, not for print: each line is its own thing on a real card. */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-weight: var(--bold);
+}
+.coupon-inner {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 10px var(--pad) 8px;
+  padding: 10px 14px 12px !important;
+  border: 3px solid #000;
+  border-radius: 16px;
+  text-align: center;
+}
+.coupon-head {
+  order: 0;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.15);
+  margin-bottom: 2px;
+}
+.coupon-body.blk-lines { display: contents; }
+.coupon-body .ln-label { display: none; }
+.coupon-body .ln[data-k="reward"] {
+  order: 1;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.05);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.coupon-body .ln[data-k="reward"]::before {
+  content: "THE TENTH ONE GETS YOU";
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.1em;
+}
+.coupon-body .ln[data-k="claim"] {
+  order: 2;
+  margin-top: 5px;
+  font-size: var(--size-small);
+  line-height: 1.3;
+}
+.coupon-inner::after {
+  content: "";
+  order: 3;
+  align-self: stretch;
+  height: 44px;
+  margin-top: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='44' viewBox='0 0 520 44'%3E%3Cpath d='M8 10 H38 V26 C38 38 8 38 8 26 Z M38 14 C48 14 48 26 38 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Ccircle cx='23' cy='22' r='8' fill='black'/%3E%3Cpath d='M59 10 H89 V26 C89 38 59 38 59 26 Z M89 14 C99 14 99 26 89 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M110 10 H140 V26 C140 38 110 38 110 26 Z M140 14 C150 14 150 26 140 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M161 10 H191 V26 C191 38 161 38 161 26 Z M191 14 C201 14 201 26 191 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M212 10 H242 V26 C242 38 212 38 212 26 Z M242 14 C252 14 252 26 242 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M263 10 H293 V26 C293 38 263 38 263 26 Z M293 14 C303 14 303 26 293 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M314 10 H344 V26 C344 38 314 38 314 26 Z M344 14 C354 14 354 26 344 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M365 10 H395 V26 C395 38 365 38 365 26 Z M395 14 C405 14 405 26 395 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M416 10 H446 V26 C446 38 416 38 416 26 Z M446 14 C456 14 456 26 446 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M467 10 H497 V26 C497 38 467 38 467 26 Z M497 14 C507 14 507 26 497 26' fill='white' stroke='black' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E") /* art:diner-cups */ center top / 520px 44px no-repeat;
+}
+.coupon-body .ln[data-k="rule"] {
+  order: 4;
+  margin-top: 4px;
+  font-size: var(--size-tiny);
+  font-weight: var(--bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.coupon-terms {
+  order: 5;
+  margin-top: 8px;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-body);
+  line-height: 1.15;
+  transform: rotate(-2deg);
+}
+

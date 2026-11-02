@@ -1,0 +1,396 @@
+/* Weights come from --bold, never a literal 700. JetBrains Mono ships a real
+   700 (--bold) and Silkscreen a real 700; Doto is a hairline below 900 and is
+   set at 900 through --display-weight. See the font-synthesis note in the base
+   stylesheet. */
+/* The Machine.
+ *
+ * The printer's own diagnostic output, which is exactly what this is. The
+ * masthead is a self-test page: the model and firmware line, the head's own
+ * density ramps and checkerboards printed as a test strip, a status block
+ * ([ OK ] POWER, [ ?? ] SELF), and the system time. Then the two lines it was
+ * not built to print, written fresh by the narrator ([persona.masthead]): a
+ * QUERY it cannot resolve, and one sentence in the dot-matrix face, set large,
+ * as if it pressed harder on the head to say it. The persona's name never
+ * prints - the machine has a model number instead.
+ *
+ * Upper case throughout. Headings are log lines with a timestamp and a level.
+ * Section breaks are the command trace: the ESC/POS codes that really pass down
+ * the cable, with what the machine makes of executing them. The weather is a sensor readout for a sensor it
+ * admits it does not have. The itemization is an output manifest and the coupon
+ * a token with a checksum.
+ *
+ * Signature trick: the paper gauge along the foot, drawn from --roll - the
+ * metres this machine has actually printed against an 80m roll (main.ROLL_MM,
+ * from the receipts table). It is an estimate, because nothing records a roll
+ * being changed, and the gauge says so rather than pretending.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 12px; --gap: 8px; --sec-end: 12px; }
+
+body { line-height: 1.34; text-transform: uppercase; }
+/* Quoted matter is never shouted: a poem, a quotation or a harvested line is
+   reproduced as it was written, whatever the machine's own register is. */
+.slot-147 .slot-body, .slot-143 .slot-body, .slot-98 .slot-body,
+.slot-25 .slot-body, .slot-26 .slot-body, .slot-147 .slot-fine,
+.slot-143 .slot-fine, .slot-98 .slot-fine, .slot-25 .slot-fine { text-transform: none; }
+
+.receipt { counter-reset: log rx trace; }
+/* Its firmware version is the morning it is on: --appearance is its true count
+   of printed mornings (wants_history), set on .receipt by the template. CSS can
+   only print a number through a counter, hence two. */
+.receipt { counter-reset: log rx trace fw var(--appearance, 0) fwprev var(--appearance-prev, 0); }
+
+/* ---------- masthead: the self-test page ---------- */
+.masthead {
+  display: flex; flex-direction: column;
+  padding: 4px var(--pad) 10px;
+  border-bottom: 2px solid #000;
+}
+/* The model line. */
+.wordmark {
+  order: 0;
+  font-size: 0;
+  margin-bottom: 2px;
+}
+.wordmark::before {
+  content: "EPSON TM-T20II  \00B7  576 DOTS  \00B7  203 DPI";
+  display: block;
+  padding: 3px 6px 4px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+.wordmark::after {
+  content: "FW 2.0." counter(fw) "   IFACE USB   THRESHOLD 170   MODE: DAILY BRIEF";
+  display: block;
+  margin-top: 3px;
+  white-space: pre;
+  font-size: var(--size-tiny);
+}
+/* The head testing itself: ramps, checkerboards, alignment ticks. */
+.masthead::before {
+  content: "";
+  order: 1;
+  display: block;
+  height: 56px;
+  margin: 6px calc(-1 * var(--pad)) 2px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='56' viewBox='0 0 576 56'%3E%3Crect width='576' height='56' fill='white'/%3E%3Crect x='8' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='10' y='8' width='2' height='2' fill='black'/%3E%3Crect x='18' y='8' width='2' height='2' fill='black'/%3E%3Crect x='26' y='8' width='2' height='2' fill='black'/%3E%3Crect x='34' y='8' width='2' height='2' fill='black'/%3E%3Crect x='42' y='8' width='2' height='2' fill='black'/%3E%3Crect x='14' y='12' width='2' height='2' fill='black'/%3E%3Crect x='22' y='12' width='2' height='2' fill='black'/%3E%3Crect x='30' y='12' width='2' height='2' fill='black'/%3E%3Crect x='38' y='12' width='2' height='2' fill='black'/%3E%3Crect x='10' y='16' width='2' height='2' fill='black'/%3E%3Crect x='18' y='16' width='2' height='2' fill='black'/%3E%3Crect x='26' y='16' width='2' height='2' fill='black'/%3E%3Crect x='34' y='16' width='2' height='2' fill='black'/%3E%3Crect x='42' y='16' width='2' height='2' fill='black'/%3E%3Crect x='14' y='20' width='2' height='2' fill='black'/%3E%3Crect x='22' y='20' width='2' height='2' fill='black'/%3E%3Crect x='30' y='20' width='2' height='2' fill='black'/%3E%3Crect x='38' y='20' width='2' height='2' fill='black'/%3E%3Crect x='10' y='24' width='2' height='2' fill='black'/%3E%3Crect x='18' y='24' width='2' height='2' fill='black'/%3E%3Crect x='26' y='24' width='2' height='2' fill='black'/%3E%3Crect x='34' y='24' width='2' height='2' fill='black'/%3E%3Crect x='42' y='24' width='2' height='2' fill='black'/%3E%3Crect x='50' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='52' y='8' width='2' height='2' fill='black'/%3E%3Crect x='56' y='8' width='2' height='2' fill='black'/%3E%3Crect x='60' y='8' width='2' height='2' fill='black'/%3E%3Crect x='64' y='8' width='2' height='2' fill='black'/%3E%3Crect x='68' y='8' width='2' height='2' fill='black'/%3E%3Crect x='72' y='8' width='2' height='2' fill='black'/%3E%3Crect x='76' y='8' width='2' height='2' fill='black'/%3E%3Crect x='80' y='8' width='2' height='2' fill='black'/%3E%3Crect x='84' y='8' width='2' height='2' fill='black'/%3E%3Crect x='52' y='12' width='2' height='2' fill='black'/%3E%3Crect x='56' y='12' width='2' height='2' fill='black'/%3E%3Crect x='60' y='12' width='2' height='2' fill='black'/%3E%3Crect x='64' y='12' width='2' height='2' fill='black'/%3E%3Crect x='68' y='12' width='2' height='2' fill='black'/%3E%3Crect x='72' y='12' width='2' height='2' fill='black'/%3E%3Crect x='76' y='12' width='2' height='2' fill='black'/%3E%3Crect x='80' y='12' width='2' height='2' fill='black'/%3E%3Crect x='84' y='12' width='2' height='2' fill='black'/%3E%3Crect x='52' y='16' width='2' height='2' fill='black'/%3E%3Crect x='56' y='16' width='2' height='2' fill='black'/%3E%3Crect x='60' y='16' width='2' height='2' fill='black'/%3E%3Crect x='64' y='16' width='2' height='2' fill='black'/%3E%3Crect x='68' y='16' width='2' height='2' fill='black'/%3E%3Crect x='72' y='16' width='2' height='2' fill='black'/%3E%3Crect x='76' y='16' width='2' height='2' fill='black'/%3E%3Crect x='80' y='16' width='2' height='2' fill='black'/%3E%3Crect x='84' y='16' width='2' height='2' fill='black'/%3E%3Crect x='52' y='20' width='2' height='2' fill='black'/%3E%3Crect x='56' y='20' width='2' height='2' fill='black'/%3E%3Crect x='60' y='20' width='2' height='2' fill='black'/%3E%3Crect x='64' y='20' width='2' height='2' fill='black'/%3E%3Crect x='68' y='20' width='2' height='2' fill='black'/%3E%3Crect x='72' y='20' width='2' height='2' fill='black'/%3E%3Crect x='76' y='20' width='2' height='2' fill='black'/%3E%3Crect x='80' y='20' width='2' height='2' fill='black'/%3E%3Crect x='84' y='20' width='2' height='2' fill='black'/%3E%3Crect x='52' y='24' width='2' height='2' fill='black'/%3E%3Crect x='56' y='24' width='2' height='2' fill='black'/%3E%3Crect x='60' y='24' width='2' height='2' fill='black'/%3E%3Crect x='64' y='24' width='2' height='2' fill='black'/%3E%3Crect x='68' y='24' width='2' height='2' fill='black'/%3E%3Crect x='72' y='24' width='2' height='2' fill='black'/%3E%3Crect x='76' y='24' width='2' height='2' fill='black'/%3E%3Crect x='80' y='24' width='2' height='2' fill='black'/%3E%3Crect x='84' y='24' width='2' height='2' fill='black'/%3E%3Crect x='92' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='94' y='8' width='2' height='2' fill='black'/%3E%3Crect x='98' y='8' width='2' height='2' fill='black'/%3E%3Crect x='102' y='8' width='2' height='2' fill='black'/%3E%3Crect x='106' y='8' width='2' height='2' fill='black'/%3E%3Crect x='110' y='8' width='2' height='2' fill='black'/%3E%3Crect x='114' y='8' width='2' height='2' fill='black'/%3E%3Crect x='118' y='8' width='2' height='2' fill='black'/%3E%3Crect x='122' y='8' width='2' height='2' fill='black'/%3E%3Crect x='126' y='8' width='2' height='2' fill='black'/%3E%3Crect x='96' y='10' width='2' height='2' fill='black'/%3E%3Crect x='104' y='10' width='2' height='2' fill='black'/%3E%3Crect x='112' y='10' width='2' height='2' fill='black'/%3E%3Crect x='120' y='10' width='2' height='2' fill='black'/%3E%3Crect x='94' y='12' width='2' height='2' fill='black'/%3E%3Crect x='98' y='12' width='2' height='2' fill='black'/%3E%3Crect x='102' y='12' width='2' height='2' fill='black'/%3E%3Crect x='106' y='12' width='2' height='2' fill='black'/%3E%3Crect x='110' y='12' width='2' height='2' fill='black'/%3E%3Crect x='114' y='12' width='2' height='2' fill='black'/%3E%3Crect x='118' y='12' width='2' height='2' fill='black'/%3E%3Crect x='122' y='12' width='2' height='2' fill='black'/%3E%3Crect x='126' y='12' width='2' height='2' fill='black'/%3E%3Crect x='100' y='14' width='2' height='2' fill='black'/%3E%3Crect x='108' y='14' width='2' height='2' fill='black'/%3E%3Crect x='116' y='14' width='2' height='2' fill='black'/%3E%3Crect x='124' y='14' width='2' height='2' fill='black'/%3E%3Crect x='94' y='16' width='2' height='2' fill='black'/%3E%3Crect x='98' y='16' width='2' height='2' fill='black'/%3E%3Crect x='102' y='16' width='2' height='2' fill='black'/%3E%3Crect x='106' y='16' width='2' height='2' fill='black'/%3E%3Crect x='110' y='16' width='2' height='2' fill='black'/%3E%3Crect x='114' y='16' width='2' height='2' fill='black'/%3E%3Crect x='118' y='16' width='2' height='2' fill='black'/%3E%3Crect x='122' y='16' width='2' height='2' fill='black'/%3E%3Crect x='126' y='16' width='2' height='2' fill='black'/%3E%3Crect x='96' y='18' width='2' height='2' fill='black'/%3E%3Crect x='104' y='18' width='2' height='2' fill='black'/%3E%3Crect x='112' y='18' width='2' height='2' fill='black'/%3E%3Crect x='120' y='18' width='2' height='2' fill='black'/%3E%3Crect x='94' y='20' width='2' height='2' fill='black'/%3E%3Crect x='98' y='20' width='2' height='2' fill='black'/%3E%3Crect x='102' y='20' width='2' height='2' fill='black'/%3E%3Crect x='106' y='20' width='2' height='2' fill='black'/%3E%3Crect x='110' y='20' width='2' height='2' fill='black'/%3E%3Crect x='114' y='20' width='2' height='2' fill='black'/%3E%3Crect x='118' y='20' width='2' height='2' fill='black'/%3E%3Crect x='122' y='20' width='2' height='2' fill='black'/%3E%3Crect x='126' y='20' width='2' height='2' fill='black'/%3E%3Crect x='100' y='22' width='2' height='2' fill='black'/%3E%3Crect x='108' y='22' width='2' height='2' fill='black'/%3E%3Crect x='116' y='22' width='2' height='2' fill='black'/%3E%3Crect x='124' y='22' width='2' height='2' fill='black'/%3E%3Crect x='94' y='24' width='2' height='2' fill='black'/%3E%3Crect x='98' y='24' width='2' height='2' fill='black'/%3E%3Crect x='102' y='24' width='2' height='2' fill='black'/%3E%3Crect x='106' y='24' width='2' height='2' fill='black'/%3E%3Crect x='110' y='24' width='2' height='2' fill='black'/%3E%3Crect x='114' y='24' width='2' height='2' fill='black'/%3E%3Crect x='118' y='24' width='2' height='2' fill='black'/%3E%3Crect x='122' y='24' width='2' height='2' fill='black'/%3E%3Crect x='126' y='24' width='2' height='2' fill='black'/%3E%3Crect x='96' y='26' width='2' height='2' fill='black'/%3E%3Crect x='104' y='26' width='2' height='2' fill='black'/%3E%3Crect x='112' y='26' width='2' height='2' fill='black'/%3E%3Crect x='120' y='26' width='2' height='2' fill='black'/%3E%3Crect x='134' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='136' y='8' width='2' height='2' fill='black'/%3E%3Crect x='140' y='8' width='2' height='2' fill='black'/%3E%3Crect x='144' y='8' width='2' height='2' fill='black'/%3E%3Crect x='148' y='8' width='2' height='2' fill='black'/%3E%3Crect x='152' y='8' width='2' height='2' fill='black'/%3E%3Crect x='156' y='8' width='2' height='2' fill='black'/%3E%3Crect x='160' y='8' width='2' height='2' fill='black'/%3E%3Crect x='164' y='8' width='2' height='2' fill='black'/%3E%3Crect x='168' y='8' width='2' height='2' fill='black'/%3E%3Crect x='138' y='10' width='2' height='2' fill='black'/%3E%3Crect x='142' y='10' width='2' height='2' fill='black'/%3E%3Crect x='146' y='10' width='2' height='2' fill='black'/%3E%3Crect x='150' y='10' width='2' height='2' fill='black'/%3E%3Crect x='154' y='10' width='2' height='2' fill='black'/%3E%3Crect x='158' y='10' width='2' height='2' fill='black'/%3E%3Crect x='162' y='10' width='2' height='2' fill='black'/%3E%3Crect x='166' y='10' width='2' height='2' fill='black'/%3E%3Crect x='136' y='12' width='2' height='2' fill='black'/%3E%3Crect x='140' y='12' width='2' height='2' fill='black'/%3E%3Crect x='144' y='12' width='2' height='2' fill='black'/%3E%3Crect x='148' y='12' width='2' height='2' fill='black'/%3E%3Crect x='152' y='12' width='2' height='2' fill='black'/%3E%3Crect x='156' y='12' width='2' height='2' fill='black'/%3E%3Crect x='160' y='12' width='2' height='2' fill='black'/%3E%3Crect x='164' y='12' width='2' height='2' fill='black'/%3E%3Crect x='168' y='12' width='2' height='2' fill='black'/%3E%3Crect x='138' y='14' width='2' height='2' fill='black'/%3E%3Crect x='142' y='14' width='2' height='2' fill='black'/%3E%3Crect x='146' y='14' width='2' height='2' fill='black'/%3E%3Crect x='150' y='14' width='2' height='2' fill='black'/%3E%3Crect x='154' y='14' width='2' height='2' fill='black'/%3E%3Crect x='158' y='14' width='2' height='2' fill='black'/%3E%3Crect x='162' y='14' width='2' height='2' fill='black'/%3E%3Crect x='166' y='14' width='2' height='2' fill='black'/%3E%3Crect x='136' y='16' width='2' height='2' fill='black'/%3E%3Crect x='140' y='16' width='2' height='2' fill='black'/%3E%3Crect x='144' y='16' width='2' height='2' fill='black'/%3E%3Crect x='148' y='16' width='2' height='2' fill='black'/%3E%3Crect x='152' y='16' width='2' height='2' fill='black'/%3E%3Crect x='156' y='16' width='2' height='2' fill='black'/%3E%3Crect x='160' y='16' width='2' height='2' fill='black'/%3E%3Crect x='164' y='16' width='2' height='2' fill='black'/%3E%3Crect x='168' y='16' width='2' height='2' fill='black'/%3E%3Crect x='138' y='18' width='2' height='2' fill='black'/%3E%3Crect x='142' y='18' width='2' height='2' fill='black'/%3E%3Crect x='146' y='18' width='2' height='2' fill='black'/%3E%3Crect x='150' y='18' width='2' height='2' fill='black'/%3E%3Crect x='154' y='18' width='2' height='2' fill='black'/%3E%3Crect x='158' y='18' width='2' height='2' fill='black'/%3E%3Crect x='162' y='18' width='2' height='2' fill='black'/%3E%3Crect x='166' y='18' width='2' height='2' fill='black'/%3E%3Crect x='136' y='20' width='2' height='2' fill='black'/%3E%3Crect x='140' y='20' width='2' height='2' fill='black'/%3E%3Crect x='144' y='20' width='2' height='2' fill='black'/%3E%3Crect x='148' y='20' width='2' height='2' fill='black'/%3E%3Crect x='152' y='20' width='2' height='2' fill='black'/%3E%3Crect x='156' y='20' width='2' height='2' fill='black'/%3E%3Crect x='160' y='20' width='2' height='2' fill='black'/%3E%3Crect x='164' y='20' width='2' height='2' fill='black'/%3E%3Crect x='168' y='20' width='2' height='2' fill='black'/%3E%3Crect x='138' y='22' width='2' height='2' fill='black'/%3E%3Crect x='142' y='22' width='2' height='2' fill='black'/%3E%3Crect x='146' y='22' width='2' height='2' fill='black'/%3E%3Crect x='150' y='22' width='2' height='2' fill='black'/%3E%3Crect x='154' y='22' width='2' height='2' fill='black'/%3E%3Crect x='158' y='22' width='2' height='2' fill='black'/%3E%3Crect x='162' y='22' width='2' height='2' fill='black'/%3E%3Crect x='166' y='22' width='2' height='2' fill='black'/%3E%3Crect x='136' y='24' width='2' height='2' fill='black'/%3E%3Crect x='140' y='24' width='2' height='2' fill='black'/%3E%3Crect x='144' y='24' width='2' height='2' fill='black'/%3E%3Crect x='148' y='24' width='2' height='2' fill='black'/%3E%3Crect x='152' y='24' width='2' height='2' fill='black'/%3E%3Crect x='156' y='24' width='2' height='2' fill='black'/%3E%3Crect x='160' y='24' width='2' height='2' fill='black'/%3E%3Crect x='164' y='24' width='2' height='2' fill='black'/%3E%3Crect x='168' y='24' width='2' height='2' fill='black'/%3E%3Crect x='138' y='26' width='2' height='2' fill='black'/%3E%3Crect x='142' y='26' width='2' height='2' fill='black'/%3E%3Crect x='146' y='26' width='2' height='2' fill='black'/%3E%3Crect x='150' y='26' width='2' height='2' fill='black'/%3E%3Crect x='154' y='26' width='2' height='2' fill='black'/%3E%3Crect x='158' y='26' width='2' height='2' fill='black'/%3E%3Crect x='162' y='26' width='2' height='2' fill='black'/%3E%3Crect x='166' y='26' width='2' height='2' fill='black'/%3E%3Crect x='176' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='178' y='8' width='2' height='2' fill='black'/%3E%3Crect x='180' y='8' width='2' height='2' fill='black'/%3E%3Crect x='182' y='8' width='2' height='2' fill='black'/%3E%3Crect x='186' y='8' width='2' height='2' fill='black'/%3E%3Crect x='188' y='8' width='2' height='2' fill='black'/%3E%3Crect x='190' y='8' width='2' height='2' fill='black'/%3E%3Crect x='194' y='8' width='2' height='2' fill='black'/%3E%3Crect x='196' y='8' width='2' height='2' fill='black'/%3E%3Crect x='198' y='8' width='2' height='2' fill='black'/%3E%3Crect x='202' y='8' width='2' height='2' fill='black'/%3E%3Crect x='204' y='8' width='2' height='2' fill='black'/%3E%3Crect x='206' y='8' width='2' height='2' fill='black'/%3E%3Crect x='210' y='8' width='2' height='2' fill='black'/%3E%3Crect x='180' y='10' width='2' height='2' fill='black'/%3E%3Crect x='184' y='10' width='2' height='2' fill='black'/%3E%3Crect x='188' y='10' width='2' height='2' fill='black'/%3E%3Crect x='192' y='10' width='2' height='2' fill='black'/%3E%3Crect x='196' y='10' width='2' height='2' fill='black'/%3E%3Crect x='200' y='10' width='2' height='2' fill='black'/%3E%3Crect x='204' y='10' width='2' height='2' fill='black'/%3E%3Crect x='208' y='10' width='2' height='2' fill='black'/%3E%3Crect x='178' y='12' width='2' height='2' fill='black'/%3E%3Crect x='182' y='12' width='2' height='2' fill='black'/%3E%3Crect x='184' y='12' width='2' height='2' fill='black'/%3E%3Crect x='186' y='12' width='2' height='2' fill='black'/%3E%3Crect x='190' y='12' width='2' height='2' fill='black'/%3E%3Crect x='192' y='12' width='2' height='2' fill='black'/%3E%3Crect x='194' y='12' width='2' height='2' fill='black'/%3E%3Crect x='198' y='12' width='2' height='2' fill='black'/%3E%3Crect x='200' y='12' width='2' height='2' fill='black'/%3E%3Crect x='202' y='12' width='2' height='2' fill='black'/%3E%3Crect x='206' y='12' width='2' height='2' fill='black'/%3E%3Crect x='208' y='12' width='2' height='2' fill='black'/%3E%3Crect x='210' y='12' width='2' height='2' fill='black'/%3E%3Crect x='180' y='14' width='2' height='2' fill='black'/%3E%3Crect x='184' y='14' width='2' height='2' fill='black'/%3E%3Crect x='188' y='14' width='2' height='2' fill='black'/%3E%3Crect x='192' y='14' width='2' height='2' fill='black'/%3E%3Crect x='196' y='14' width='2' height='2' fill='black'/%3E%3Crect x='200' y='14' width='2' height='2' fill='black'/%3E%3Crect x='204' y='14' width='2' height='2' fill='black'/%3E%3Crect x='208' y='14' width='2' height='2' fill='black'/%3E%3Crect x='178' y='16' width='2' height='2' fill='black'/%3E%3Crect x='180' y='16' width='2' height='2' fill='black'/%3E%3Crect x='182' y='16' width='2' height='2' fill='black'/%3E%3Crect x='186' y='16' width='2' height='2' fill='black'/%3E%3Crect x='188' y='16' width='2' height='2' fill='black'/%3E%3Crect x='190' y='16' width='2' height='2' fill='black'/%3E%3Crect x='194' y='16' width='2' height='2' fill='black'/%3E%3Crect x='196' y='16' width='2' height='2' fill='black'/%3E%3Crect x='198' y='16' width='2' height='2' fill='black'/%3E%3Crect x='202' y='16' width='2' height='2' fill='black'/%3E%3Crect x='204' y='16' width='2' height='2' fill='black'/%3E%3Crect x='206' y='16' width='2' height='2' fill='black'/%3E%3Crect x='210' y='16' width='2' height='2' fill='black'/%3E%3Crect x='180' y='18' width='2' height='2' fill='black'/%3E%3Crect x='184' y='18' width='2' height='2' fill='black'/%3E%3Crect x='188' y='18' width='2' height='2' fill='black'/%3E%3Crect x='192' y='18' width='2' height='2' fill='black'/%3E%3Crect x='196' y='18' width='2' height='2' fill='black'/%3E%3Crect x='200' y='18' width='2' height='2' fill='black'/%3E%3Crect x='204' y='18' width='2' height='2' fill='black'/%3E%3Crect x='208' y='18' width='2' height='2' fill='black'/%3E%3Crect x='178' y='20' width='2' height='2' fill='black'/%3E%3Crect x='182' y='20' width='2' height='2' fill='black'/%3E%3Crect x='184' y='20' width='2' height='2' fill='black'/%3E%3Crect x='186' y='20' width='2' height='2' fill='black'/%3E%3Crect x='190' y='20' width='2' height='2' fill='black'/%3E%3Crect x='192' y='20' width='2' height='2' fill='black'/%3E%3Crect x='194' y='20' width='2' height='2' fill='black'/%3E%3Crect x='198' y='20' width='2' height='2' fill='black'/%3E%3Crect x='200' y='20' width='2' height='2' fill='black'/%3E%3Crect x='202' y='20' width='2' height='2' fill='black'/%3E%3Crect x='206' y='20' width='2' height='2' fill='black'/%3E%3Crect x='208' y='20' width='2' height='2' fill='black'/%3E%3Crect x='210' y='20' width='2' height='2' fill='black'/%3E%3Crect x='180' y='22' width='2' height='2' fill='black'/%3E%3Crect x='184' y='22' width='2' height='2' fill='black'/%3E%3Crect x='188' y='22' width='2' height='2' fill='black'/%3E%3Crect x='192' y='22' width='2' height='2' fill='black'/%3E%3Crect x='196' y='22' width='2' height='2' fill='black'/%3E%3Crect x='200' y='22' width='2' height='2' fill='black'/%3E%3Crect x='204' y='22' width='2' height='2' fill='black'/%3E%3Crect x='208' y='22' width='2' height='2' fill='black'/%3E%3Crect x='178' y='24' width='2' height='2' fill='black'/%3E%3Crect x='180' y='24' width='2' height='2' fill='black'/%3E%3Crect x='182' y='24' width='2' height='2' fill='black'/%3E%3Crect x='186' y='24' width='2' height='2' fill='black'/%3E%3Crect x='188' y='24' width='2' height='2' fill='black'/%3E%3Crect x='190' y='24' width='2' height='2' fill='black'/%3E%3Crect x='194' y='24' width='2' height='2' fill='black'/%3E%3Crect x='196' y='24' width='2' height='2' fill='black'/%3E%3Crect x='198' y='24' width='2' height='2' fill='black'/%3E%3Crect x='202' y='24' width='2' height='2' fill='black'/%3E%3Crect x='204' y='24' width='2' height='2' fill='black'/%3E%3Crect x='206' y='24' width='2' height='2' fill='black'/%3E%3Crect x='210' y='24' width='2' height='2' fill='black'/%3E%3Crect x='180' y='26' width='2' height='2' fill='black'/%3E%3Crect x='184' y='26' width='2' height='2' fill='black'/%3E%3Crect x='188' y='26' width='2' height='2' fill='black'/%3E%3Crect x='192' y='26' width='2' height='2' fill='black'/%3E%3Crect x='196' y='26' width='2' height='2' fill='black'/%3E%3Crect x='200' y='26' width='2' height='2' fill='black'/%3E%3Crect x='204' y='26' width='2' height='2' fill='black'/%3E%3Crect x='208' y='26' width='2' height='2' fill='black'/%3E%3Crect x='218' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='220' y='8' width='2' height='2' fill='black'/%3E%3Crect x='222' y='8' width='2' height='2' fill='black'/%3E%3Crect x='224' y='8' width='2' height='2' fill='black'/%3E%3Crect x='226' y='8' width='2' height='2' fill='black'/%3E%3Crect x='228' y='8' width='2' height='2' fill='black'/%3E%3Crect x='230' y='8' width='2' height='2' fill='black'/%3E%3Crect x='232' y='8' width='2' height='2' fill='black'/%3E%3Crect x='234' y='8' width='2' height='2' fill='black'/%3E%3Crect x='236' y='8' width='2' height='2' fill='black'/%3E%3Crect x='238' y='8' width='2' height='2' fill='black'/%3E%3Crect x='240' y='8' width='2' height='2' fill='black'/%3E%3Crect x='242' y='8' width='2' height='2' fill='black'/%3E%3Crect x='244' y='8' width='2' height='2' fill='black'/%3E%3Crect x='246' y='8' width='2' height='2' fill='black'/%3E%3Crect x='248' y='8' width='2' height='2' fill='black'/%3E%3Crect x='250' y='8' width='2' height='2' fill='black'/%3E%3Crect x='252' y='8' width='2' height='2' fill='black'/%3E%3Crect x='222' y='10' width='2' height='2' fill='black'/%3E%3Crect x='226' y='10' width='2' height='2' fill='black'/%3E%3Crect x='230' y='10' width='2' height='2' fill='black'/%3E%3Crect x='234' y='10' width='2' height='2' fill='black'/%3E%3Crect x='238' y='10' width='2' height='2' fill='black'/%3E%3Crect x='242' y='10' width='2' height='2' fill='black'/%3E%3Crect x='246' y='10' width='2' height='2' fill='black'/%3E%3Crect x='250' y='10' width='2' height='2' fill='black'/%3E%3Crect x='220' y='12' width='2' height='2' fill='black'/%3E%3Crect x='222' y='12' width='2' height='2' fill='black'/%3E%3Crect x='224' y='12' width='2' height='2' fill='black'/%3E%3Crect x='226' y='12' width='2' height='2' fill='black'/%3E%3Crect x='228' y='12' width='2' height='2' fill='black'/%3E%3Crect x='230' y='12' width='2' height='2' fill='black'/%3E%3Crect x='232' y='12' width='2' height='2' fill='black'/%3E%3Crect x='234' y='12' width='2' height='2' fill='black'/%3E%3Crect x='236' y='12' width='2' height='2' fill='black'/%3E%3Crect x='238' y='12' width='2' height='2' fill='black'/%3E%3Crect x='240' y='12' width='2' height='2' fill='black'/%3E%3Crect x='242' y='12' width='2' height='2' fill='black'/%3E%3Crect x='244' y='12' width='2' height='2' fill='black'/%3E%3Crect x='246' y='12' width='2' height='2' fill='black'/%3E%3Crect x='248' y='12' width='2' height='2' fill='black'/%3E%3Crect x='250' y='12' width='2' height='2' fill='black'/%3E%3Crect x='252' y='12' width='2' height='2' fill='black'/%3E%3Crect x='222' y='14' width='2' height='2' fill='black'/%3E%3Crect x='226' y='14' width='2' height='2' fill='black'/%3E%3Crect x='230' y='14' width='2' height='2' fill='black'/%3E%3Crect x='234' y='14' width='2' height='2' fill='black'/%3E%3Crect x='238' y='14' width='2' height='2' fill='black'/%3E%3Crect x='242' y='14' width='2' height='2' fill='black'/%3E%3Crect x='246' y='14' width='2' height='2' fill='black'/%3E%3Crect x='250' y='14' width='2' height='2' fill='black'/%3E%3Crect x='220' y='16' width='2' height='2' fill='black'/%3E%3Crect x='222' y='16' width='2' height='2' fill='black'/%3E%3Crect x='224' y='16' width='2' height='2' fill='black'/%3E%3Crect x='226' y='16' width='2' height='2' fill='black'/%3E%3Crect x='228' y='16' width='2' height='2' fill='black'/%3E%3Crect x='230' y='16' width='2' height='2' fill='black'/%3E%3Crect x='232' y='16' width='2' height='2' fill='black'/%3E%3Crect x='234' y='16' width='2' height='2' fill='black'/%3E%3Crect x='236' y='16' width='2' height='2' fill='black'/%3E%3Crect x='238' y='16' width='2' height='2' fill='black'/%3E%3Crect x='240' y='16' width='2' height='2' fill='black'/%3E%3Crect x='242' y='16' width='2' height='2' fill='black'/%3E%3Crect x='244' y='16' width='2' height='2' fill='black'/%3E%3Crect x='246' y='16' width='2' height='2' fill='black'/%3E%3Crect x='248' y='16' width='2' height='2' fill='black'/%3E%3Crect x='250' y='16' width='2' height='2' fill='black'/%3E%3Crect x='252' y='16' width='2' height='2' fill='black'/%3E%3Crect x='222' y='18' width='2' height='2' fill='black'/%3E%3Crect x='226' y='18' width='2' height='2' fill='black'/%3E%3Crect x='230' y='18' width='2' height='2' fill='black'/%3E%3Crect x='234' y='18' width='2' height='2' fill='black'/%3E%3Crect x='238' y='18' width='2' height='2' fill='black'/%3E%3Crect x='242' y='18' width='2' height='2' fill='black'/%3E%3Crect x='246' y='18' width='2' height='2' fill='black'/%3E%3Crect x='250' y='18' width='2' height='2' fill='black'/%3E%3Crect x='220' y='20' width='2' height='2' fill='black'/%3E%3Crect x='222' y='20' width='2' height='2' fill='black'/%3E%3Crect x='224' y='20' width='2' height='2' fill='black'/%3E%3Crect x='226' y='20' width='2' height='2' fill='black'/%3E%3Crect x='228' y='20' width='2' height='2' fill='black'/%3E%3Crect x='230' y='20' width='2' height='2' fill='black'/%3E%3Crect x='232' y='20' width='2' height='2' fill='black'/%3E%3Crect x='234' y='20' width='2' height='2' fill='black'/%3E%3Crect x='236' y='20' width='2' height='2' fill='black'/%3E%3Crect x='238' y='20' width='2' height='2' fill='black'/%3E%3Crect x='240' y='20' width='2' height='2' fill='black'/%3E%3Crect x='242' y='20' width='2' height='2' fill='black'/%3E%3Crect x='244' y='20' width='2' height='2' fill='black'/%3E%3Crect x='246' y='20' width='2' height='2' fill='black'/%3E%3Crect x='248' y='20' width='2' height='2' fill='black'/%3E%3Crect x='250' y='20' width='2' height='2' fill='black'/%3E%3Crect x='252' y='20' width='2' height='2' fill='black'/%3E%3Crect x='222' y='22' width='2' height='2' fill='black'/%3E%3Crect x='226' y='22' width='2' height='2' fill='black'/%3E%3Crect x='230' y='22' width='2' height='2' fill='black'/%3E%3Crect x='234' y='22' width='2' height='2' fill='black'/%3E%3Crect x='238' y='22' width='2' height='2' fill='black'/%3E%3Crect x='242' y='22' width='2' height='2' fill='black'/%3E%3Crect x='246' y='22' width='2' height='2' fill='black'/%3E%3Crect x='250' y='22' width='2' height='2' fill='black'/%3E%3Crect x='220' y='24' width='2' height='2' fill='black'/%3E%3Crect x='222' y='24' width='2' height='2' fill='black'/%3E%3Crect x='224' y='24' width='2' height='2' fill='black'/%3E%3Crect x='226' y='24' width='2' height='2' fill='black'/%3E%3Crect x='228' y='24' width='2' height='2' fill='black'/%3E%3Crect x='230' y='24' width='2' height='2' fill='black'/%3E%3Crect x='232' y='24' width='2' height='2' fill='black'/%3E%3Crect x='234' y='24' width='2' height='2' fill='black'/%3E%3Crect x='236' y='24' width='2' height='2' fill='black'/%3E%3Crect x='238' y='24' width='2' height='2' fill='black'/%3E%3Crect x='240' y='24' width='2' height='2' fill='black'/%3E%3Crect x='242' y='24' width='2' height='2' fill='black'/%3E%3Crect x='244' y='24' width='2' height='2' fill='black'/%3E%3Crect x='246' y='24' width='2' height='2' fill='black'/%3E%3Crect x='248' y='24' width='2' height='2' fill='black'/%3E%3Crect x='250' y='24' width='2' height='2' fill='black'/%3E%3Crect x='252' y='24' width='2' height='2' fill='black'/%3E%3Crect x='222' y='26' width='2' height='2' fill='black'/%3E%3Crect x='226' y='26' width='2' height='2' fill='black'/%3E%3Crect x='230' y='26' width='2' height='2' fill='black'/%3E%3Crect x='234' y='26' width='2' height='2' fill='black'/%3E%3Crect x='238' y='26' width='2' height='2' fill='black'/%3E%3Crect x='242' y='26' width='2' height='2' fill='black'/%3E%3Crect x='246' y='26' width='2' height='2' fill='black'/%3E%3Crect x='250' y='26' width='2' height='2' fill='black'/%3E%3Crect x='260' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='262' y='8' width='2' height='2' fill='black'/%3E%3Crect x='264' y='8' width='2' height='2' fill='black'/%3E%3Crect x='266' y='8' width='2' height='2' fill='black'/%3E%3Crect x='268' y='8' width='2' height='2' fill='black'/%3E%3Crect x='270' y='8' width='2' height='2' fill='black'/%3E%3Crect x='272' y='8' width='2' height='2' fill='black'/%3E%3Crect x='274' y='8' width='2' height='2' fill='black'/%3E%3Crect x='276' y='8' width='2' height='2' fill='black'/%3E%3Crect x='278' y='8' width='2' height='2' fill='black'/%3E%3Crect x='280' y='8' width='2' height='2' fill='black'/%3E%3Crect x='282' y='8' width='2' height='2' fill='black'/%3E%3Crect x='284' y='8' width='2' height='2' fill='black'/%3E%3Crect x='286' y='8' width='2' height='2' fill='black'/%3E%3Crect x='288' y='8' width='2' height='2' fill='black'/%3E%3Crect x='290' y='8' width='2' height='2' fill='black'/%3E%3Crect x='292' y='8' width='2' height='2' fill='black'/%3E%3Crect x='294' y='8' width='2' height='2' fill='black'/%3E%3Crect x='262' y='10' width='2' height='2' fill='black'/%3E%3Crect x='264' y='10' width='2' height='2' fill='black'/%3E%3Crect x='268' y='10' width='2' height='2' fill='black'/%3E%3Crect x='270' y='10' width='2' height='2' fill='black'/%3E%3Crect x='272' y='10' width='2' height='2' fill='black'/%3E%3Crect x='276' y='10' width='2' height='2' fill='black'/%3E%3Crect x='278' y='10' width='2' height='2' fill='black'/%3E%3Crect x='280' y='10' width='2' height='2' fill='black'/%3E%3Crect x='284' y='10' width='2' height='2' fill='black'/%3E%3Crect x='286' y='10' width='2' height='2' fill='black'/%3E%3Crect x='288' y='10' width='2' height='2' fill='black'/%3E%3Crect x='292' y='10' width='2' height='2' fill='black'/%3E%3Crect x='294' y='10' width='2' height='2' fill='black'/%3E%3Crect x='262' y='12' width='2' height='2' fill='black'/%3E%3Crect x='264' y='12' width='2' height='2' fill='black'/%3E%3Crect x='266' y='12' width='2' height='2' fill='black'/%3E%3Crect x='268' y='12' width='2' height='2' fill='black'/%3E%3Crect x='270' y='12' width='2' height='2' fill='black'/%3E%3Crect x='272' y='12' width='2' height='2' fill='black'/%3E%3Crect x='274' y='12' width='2' height='2' fill='black'/%3E%3Crect x='276' y='12' width='2' height='2' fill='black'/%3E%3Crect x='278' y='12' width='2' height='2' fill='black'/%3E%3Crect x='280' y='12' width='2' height='2' fill='black'/%3E%3Crect x='282' y='12' width='2' height='2' fill='black'/%3E%3Crect x='284' y='12' width='2' height='2' fill='black'/%3E%3Crect x='286' y='12' width='2' height='2' fill='black'/%3E%3Crect x='288' y='12' width='2' height='2' fill='black'/%3E%3Crect x='290' y='12' width='2' height='2' fill='black'/%3E%3Crect x='292' y='12' width='2' height='2' fill='black'/%3E%3Crect x='294' y='12' width='2' height='2' fill='black'/%3E%3Crect x='264' y='14' width='2' height='2' fill='black'/%3E%3Crect x='266' y='14' width='2' height='2' fill='black'/%3E%3Crect x='268' y='14' width='2' height='2' fill='black'/%3E%3Crect x='272' y='14' width='2' height='2' fill='black'/%3E%3Crect x='274' y='14' width='2' height='2' fill='black'/%3E%3Crect x='276' y='14' width='2' height='2' fill='black'/%3E%3Crect x='280' y='14' width='2' height='2' fill='black'/%3E%3Crect x='282' y='14' width='2' height='2' fill='black'/%3E%3Crect x='284' y='14' width='2' height='2' fill='black'/%3E%3Crect x='288' y='14' width='2' height='2' fill='black'/%3E%3Crect x='290' y='14' width='2' height='2' fill='black'/%3E%3Crect x='292' y='14' width='2' height='2' fill='black'/%3E%3Crect x='262' y='16' width='2' height='2' fill='black'/%3E%3Crect x='264' y='16' width='2' height='2' fill='black'/%3E%3Crect x='266' y='16' width='2' height='2' fill='black'/%3E%3Crect x='268' y='16' width='2' height='2' fill='black'/%3E%3Crect x='270' y='16' width='2' height='2' fill='black'/%3E%3Crect x='272' y='16' width='2' height='2' fill='black'/%3E%3Crect x='274' y='16' width='2' height='2' fill='black'/%3E%3Crect x='276' y='16' width='2' height='2' fill='black'/%3E%3Crect x='278' y='16' width='2' height='2' fill='black'/%3E%3Crect x='280' y='16' width='2' height='2' fill='black'/%3E%3Crect x='282' y='16' width='2' height='2' fill='black'/%3E%3Crect x='284' y='16' width='2' height='2' fill='black'/%3E%3Crect x='286' y='16' width='2' height='2' fill='black'/%3E%3Crect x='288' y='16' width='2' height='2' fill='black'/%3E%3Crect x='290' y='16' width='2' height='2' fill='black'/%3E%3Crect x='292' y='16' width='2' height='2' fill='black'/%3E%3Crect x='294' y='16' width='2' height='2' fill='black'/%3E%3Crect x='262' y='18' width='2' height='2' fill='black'/%3E%3Crect x='264' y='18' width='2' height='2' fill='black'/%3E%3Crect x='268' y='18' width='2' height='2' fill='black'/%3E%3Crect x='270' y='18' width='2' height='2' fill='black'/%3E%3Crect x='272' y='18' width='2' height='2' fill='black'/%3E%3Crect x='276' y='18' width='2' height='2' fill='black'/%3E%3Crect x='278' y='18' width='2' height='2' fill='black'/%3E%3Crect x='280' y='18' width='2' height='2' fill='black'/%3E%3Crect x='284' y='18' width='2' height='2' fill='black'/%3E%3Crect x='286' y='18' width='2' height='2' fill='black'/%3E%3Crect x='288' y='18' width='2' height='2' fill='black'/%3E%3Crect x='292' y='18' width='2' height='2' fill='black'/%3E%3Crect x='294' y='18' width='2' height='2' fill='black'/%3E%3Crect x='262' y='20' width='2' height='2' fill='black'/%3E%3Crect x='264' y='20' width='2' height='2' fill='black'/%3E%3Crect x='266' y='20' width='2' height='2' fill='black'/%3E%3Crect x='268' y='20' width='2' height='2' fill='black'/%3E%3Crect x='270' y='20' width='2' height='2' fill='black'/%3E%3Crect x='272' y='20' width='2' height='2' fill='black'/%3E%3Crect x='274' y='20' width='2' height='2' fill='black'/%3E%3Crect x='276' y='20' width='2' height='2' fill='black'/%3E%3Crect x='278' y='20' width='2' height='2' fill='black'/%3E%3Crect x='280' y='20' width='2' height='2' fill='black'/%3E%3Crect x='282' y='20' width='2' height='2' fill='black'/%3E%3Crect x='284' y='20' width='2' height='2' fill='black'/%3E%3Crect x='286' y='20' width='2' height='2' fill='black'/%3E%3Crect x='288' y='20' width='2' height='2' fill='black'/%3E%3Crect x='290' y='20' width='2' height='2' fill='black'/%3E%3Crect x='292' y='20' width='2' height='2' fill='black'/%3E%3Crect x='294' y='20' width='2' height='2' fill='black'/%3E%3Crect x='264' y='22' width='2' height='2' fill='black'/%3E%3Crect x='266' y='22' width='2' height='2' fill='black'/%3E%3Crect x='268' y='22' width='2' height='2' fill='black'/%3E%3Crect x='272' y='22' width='2' height='2' fill='black'/%3E%3Crect x='274' y='22' width='2' height='2' fill='black'/%3E%3Crect x='276' y='22' width='2' height='2' fill='black'/%3E%3Crect x='280' y='22' width='2' height='2' fill='black'/%3E%3Crect x='282' y='22' width='2' height='2' fill='black'/%3E%3Crect x='284' y='22' width='2' height='2' fill='black'/%3E%3Crect x='288' y='22' width='2' height='2' fill='black'/%3E%3Crect x='290' y='22' width='2' height='2' fill='black'/%3E%3Crect x='292' y='22' width='2' height='2' fill='black'/%3E%3Crect x='262' y='24' width='2' height='2' fill='black'/%3E%3Crect x='264' y='24' width='2' height='2' fill='black'/%3E%3Crect x='266' y='24' width='2' height='2' fill='black'/%3E%3Crect x='268' y='24' width='2' height='2' fill='black'/%3E%3Crect x='270' y='24' width='2' height='2' fill='black'/%3E%3Crect x='272' y='24' width='2' height='2' fill='black'/%3E%3Crect x='274' y='24' width='2' height='2' fill='black'/%3E%3Crect x='276' y='24' width='2' height='2' fill='black'/%3E%3Crect x='278' y='24' width='2' height='2' fill='black'/%3E%3Crect x='280' y='24' width='2' height='2' fill='black'/%3E%3Crect x='282' y='24' width='2' height='2' fill='black'/%3E%3Crect x='284' y='24' width='2' height='2' fill='black'/%3E%3Crect x='286' y='24' width='2' height='2' fill='black'/%3E%3Crect x='288' y='24' width='2' height='2' fill='black'/%3E%3Crect x='290' y='24' width='2' height='2' fill='black'/%3E%3Crect x='292' y='24' width='2' height='2' fill='black'/%3E%3Crect x='294' y='24' width='2' height='2' fill='black'/%3E%3Crect x='262' y='26' width='2' height='2' fill='black'/%3E%3Crect x='264' y='26' width='2' height='2' fill='black'/%3E%3Crect x='268' y='26' width='2' height='2' fill='black'/%3E%3Crect x='270' y='26' width='2' height='2' fill='black'/%3E%3Crect x='272' y='26' width='2' height='2' fill='black'/%3E%3Crect x='276' y='26' width='2' height='2' fill='black'/%3E%3Crect x='278' y='26' width='2' height='2' fill='black'/%3E%3Crect x='280' y='26' width='2' height='2' fill='black'/%3E%3Crect x='284' y='26' width='2' height='2' fill='black'/%3E%3Crect x='286' y='26' width='2' height='2' fill='black'/%3E%3Crect x='288' y='26' width='2' height='2' fill='black'/%3E%3Crect x='292' y='26' width='2' height='2' fill='black'/%3E%3Crect x='294' y='26' width='2' height='2' fill='black'/%3E%3Crect x='302' y='6' width='36' height='22' fill='none' stroke='black' stroke-width='1'/%3E%3Crect x='304' y='8' width='2' height='2' fill='black'/%3E%3Crect x='306' y='8' width='2' height='2' fill='black'/%3E%3Crect x='308' y='8' width='2' height='2' fill='black'/%3E%3Crect x='310' y='8' width='2' height='2' fill='black'/%3E%3Crect x='312' y='8' width='2' height='2' fill='black'/%3E%3Crect x='314' y='8' width='2' height='2' fill='black'/%3E%3Crect x='316' y='8' width='2' height='2' fill='black'/%3E%3Crect x='318' y='8' width='2' height='2' fill='black'/%3E%3Crect x='320' y='8' width='2' height='2' fill='black'/%3E%3Crect x='322' y='8' width='2' height='2' fill='black'/%3E%3Crect x='324' y='8' width='2' height='2' fill='black'/%3E%3Crect x='326' y='8' width='2' height='2' fill='black'/%3E%3Crect x='328' y='8' width='2' height='2' fill='black'/%3E%3Crect x='330' y='8' width='2' height='2' fill='black'/%3E%3Crect x='332' y='8' width='2' height='2' fill='black'/%3E%3Crect x='334' y='8' width='2' height='2' fill='black'/%3E%3Crect x='336' y='8' width='2' height='2' fill='black'/%3E%3Crect x='304' y='10' width='2' height='2' fill='black'/%3E%3Crect x='306' y='10' width='2' height='2' fill='black'/%3E%3Crect x='308' y='10' width='2' height='2' fill='black'/%3E%3Crect x='310' y='10' width='2' height='2' fill='black'/%3E%3Crect x='312' y='10' width='2' height='2' fill='black'/%3E%3Crect x='314' y='10' width='2' height='2' fill='black'/%3E%3Crect x='316' y='10' width='2' height='2' fill='black'/%3E%3Crect x='318' y='10' width='2' height='2' fill='black'/%3E%3Crect x='320' y='10' width='2' height='2' fill='black'/%3E%3Crect x='322' y='10' width='2' height='2' fill='black'/%3E%3Crect x='324' y='10' width='2' height='2' fill='black'/%3E%3Crect x='326' y='10' width='2' height='2' fill='black'/%3E%3Crect x='328' y='10' width='2' height='2' fill='black'/%3E%3Crect x='330' y='10' width='2' height='2' fill='black'/%3E%3Crect x='332' y='10' width='2' height='2' fill='black'/%3E%3Crect x='334' y='10' width='2' height='2' fill='black'/%3E%3Crect x='336' y='10' width='2' height='2' fill='black'/%3E%3Crect x='304' y='12' width='2' height='2' fill='black'/%3E%3Crect x='306' y='12' width='2' height='2' fill='black'/%3E%3Crect x='308' y='12' width='2' height='2' fill='black'/%3E%3Crect x='310' y='12' width='2' height='2' fill='black'/%3E%3Crect x='312' y='12' width='2' height='2' fill='black'/%3E%3Crect x='314' y='12' width='2' height='2' fill='black'/%3E%3Crect x='316' y='12' width='2' height='2' fill='black'/%3E%3Crect x='318' y='12' width='2' height='2' fill='black'/%3E%3Crect x='320' y='12' width='2' height='2' fill='black'/%3E%3Crect x='322' y='12' width='2' height='2' fill='black'/%3E%3Crect x='324' y='12' width='2' height='2' fill='black'/%3E%3Crect x='326' y='12' width='2' height='2' fill='black'/%3E%3Crect x='328' y='12' width='2' height='2' fill='black'/%3E%3Crect x='330' y='12' width='2' height='2' fill='black'/%3E%3Crect x='332' y='12' width='2' height='2' fill='black'/%3E%3Crect x='334' y='12' width='2' height='2' fill='black'/%3E%3Crect x='336' y='12' width='2' height='2' fill='black'/%3E%3Crect x='304' y='14' width='2' height='2' fill='black'/%3E%3Crect x='306' y='14' width='2' height='2' fill='black'/%3E%3Crect x='308' y='14' width='2' height='2' fill='black'/%3E%3Crect x='310' y='14' width='2' height='2' fill='black'/%3E%3Crect x='312' y='14' width='2' height='2' fill='black'/%3E%3Crect x='314' y='14' width='2' height='2' fill='black'/%3E%3Crect x='316' y='14' width='2' height='2' fill='black'/%3E%3Crect x='318' y='14' width='2' height='2' fill='black'/%3E%3Crect x='320' y='14' width='2' height='2' fill='black'/%3E%3Crect x='322' y='14' width='2' height='2' fill='black'/%3E%3Crect x='324' y='14' width='2' height='2' fill='black'/%3E%3Crect x='326' y='14' width='2' height='2' fill='black'/%3E%3Crect x='328' y='14' width='2' height='2' fill='black'/%3E%3Crect x='330' y='14' width='2' height='2' fill='black'/%3E%3Crect x='332' y='14' width='2' height='2' fill='black'/%3E%3Crect x='334' y='14' width='2' height='2' fill='black'/%3E%3Crect x='336' y='14' width='2' height='2' fill='black'/%3E%3Crect x='304' y='16' width='2' height='2' fill='black'/%3E%3Crect x='306' y='16' width='2' height='2' fill='black'/%3E%3Crect x='308' y='16' width='2' height='2' fill='black'/%3E%3Crect x='310' y='16' width='2' height='2' fill='black'/%3E%3Crect x='312' y='16' width='2' height='2' fill='black'/%3E%3Crect x='314' y='16' width='2' height='2' fill='black'/%3E%3Crect x='316' y='16' width='2' height='2' fill='black'/%3E%3Crect x='318' y='16' width='2' height='2' fill='black'/%3E%3Crect x='320' y='16' width='2' height='2' fill='black'/%3E%3Crect x='322' y='16' width='2' height='2' fill='black'/%3E%3Crect x='324' y='16' width='2' height='2' fill='black'/%3E%3Crect x='326' y='16' width='2' height='2' fill='black'/%3E%3Crect x='328' y='16' width='2' height='2' fill='black'/%3E%3Crect x='330' y='16' width='2' height='2' fill='black'/%3E%3Crect x='332' y='16' width='2' height='2' fill='black'/%3E%3Crect x='334' y='16' width='2' height='2' fill='black'/%3E%3Crect x='336' y='16' width='2' height='2' fill='black'/%3E%3Crect x='304' y='18' width='2' height='2' fill='black'/%3E%3Crect x='306' y='18' width='2' height='2' fill='black'/%3E%3Crect x='308' y='18' width='2' height='2' fill='black'/%3E%3Crect x='310' y='18' width='2' height='2' fill='black'/%3E%3Crect x='312' y='18' width='2' height='2' fill='black'/%3E%3Crect x='314' y='18' width='2' height='2' fill='black'/%3E%3Crect x='316' y='18' width='2' height='2' fill='black'/%3E%3Crect x='318' y='18' width='2' height='2' fill='black'/%3E%3Crect x='320' y='18' width='2' height='2' fill='black'/%3E%3Crect x='322' y='18' width='2' height='2' fill='black'/%3E%3Crect x='324' y='18' width='2' height='2' fill='black'/%3E%3Crect x='326' y='18' width='2' height='2' fill='black'/%3E%3Crect x='328' y='18' width='2' height='2' fill='black'/%3E%3Crect x='330' y='18' width='2' height='2' fill='black'/%3E%3Crect x='332' y='18' width='2' height='2' fill='black'/%3E%3Crect x='334' y='18' width='2' height='2' fill='black'/%3E%3Crect x='336' y='18' width='2' height='2' fill='black'/%3E%3Crect x='304' y='20' width='2' height='2' fill='black'/%3E%3Crect x='306' y='20' width='2' height='2' fill='black'/%3E%3Crect x='308' y='20' width='2' height='2' fill='black'/%3E%3Crect x='310' y='20' width='2' height='2' fill='black'/%3E%3Crect x='312' y='20' width='2' height='2' fill='black'/%3E%3Crect x='314' y='20' width='2' height='2' fill='black'/%3E%3Crect x='316' y='20' width='2' height='2' fill='black'/%3E%3Crect x='318' y='20' width='2' height='2' fill='black'/%3E%3Crect x='320' y='20' width='2' height='2' fill='black'/%3E%3Crect x='322' y='20' width='2' height='2' fill='black'/%3E%3Crect x='324' y='20' width='2' height='2' fill='black'/%3E%3Crect x='326' y='20' width='2' height='2' fill='black'/%3E%3Crect x='328' y='20' width='2' height='2' fill='black'/%3E%3Crect x='330' y='20' width='2' height='2' fill='black'/%3E%3Crect x='332' y='20' width='2' height='2' fill='black'/%3E%3Crect x='334' y='20' width='2' height='2' fill='black'/%3E%3Crect x='336' y='20' width='2' height='2' fill='black'/%3E%3Crect x='304' y='22' width='2' height='2' fill='black'/%3E%3Crect x='306' y='22' width='2' height='2' fill='black'/%3E%3Crect x='308' y='22' width='2' height='2' fill='black'/%3E%3Crect x='310' y='22' width='2' height='2' fill='black'/%3E%3Crect x='312' y='22' width='2' height='2' fill='black'/%3E%3Crect x='314' y='22' width='2' height='2' fill='black'/%3E%3Crect x='316' y='22' width='2' height='2' fill='black'/%3E%3Crect x='318' y='22' width='2' height='2' fill='black'/%3E%3Crect x='320' y='22' width='2' height='2' fill='black'/%3E%3Crect x='322' y='22' width='2' height='2' fill='black'/%3E%3Crect x='324' y='22' width='2' height='2' fill='black'/%3E%3Crect x='326' y='22' width='2' height='2' fill='black'/%3E%3Crect x='328' y='22' width='2' height='2' fill='black'/%3E%3Crect x='330' y='22' width='2' height='2' fill='black'/%3E%3Crect x='332' y='22' width='2' height='2' fill='black'/%3E%3Crect x='334' y='22' width='2' height='2' fill='black'/%3E%3Crect x='336' y='22' width='2' height='2' fill='black'/%3E%3Crect x='304' y='24' width='2' height='2' fill='black'/%3E%3Crect x='306' y='24' width='2' height='2' fill='black'/%3E%3Crect x='308' y='24' width='2' height='2' fill='black'/%3E%3Crect x='310' y='24' width='2' height='2' fill='black'/%3E%3Crect x='312' y='24' width='2' height='2' fill='black'/%3E%3Crect x='314' y='24' width='2' height='2' fill='black'/%3E%3Crect x='316' y='24' width='2' height='2' fill='black'/%3E%3Crect x='318' y='24' width='2' height='2' fill='black'/%3E%3Crect x='320' y='24' width='2' height='2' fill='black'/%3E%3Crect x='322' y='24' width='2' height='2' fill='black'/%3E%3Crect x='324' y='24' width='2' height='2' fill='black'/%3E%3Crect x='326' y='24' width='2' height='2' fill='black'/%3E%3Crect x='328' y='24' width='2' height='2' fill='black'/%3E%3Crect x='330' y='24' width='2' height='2' fill='black'/%3E%3Crect x='332' y='24' width='2' height='2' fill='black'/%3E%3Crect x='334' y='24' width='2' height='2' fill='black'/%3E%3Crect x='336' y='24' width='2' height='2' fill='black'/%3E%3Crect x='304' y='26' width='2' height='2' fill='black'/%3E%3Crect x='306' y='26' width='2' height='2' fill='black'/%3E%3Crect x='308' y='26' width='2' height='2' fill='black'/%3E%3Crect x='310' y='26' width='2' height='2' fill='black'/%3E%3Crect x='312' y='26' width='2' height='2' fill='black'/%3E%3Crect x='314' y='26' width='2' height='2' fill='black'/%3E%3Crect x='316' y='26' width='2' height='2' fill='black'/%3E%3Crect x='318' y='26' width='2' height='2' fill='black'/%3E%3Crect x='320' y='26' width='2' height='2' fill='black'/%3E%3Crect x='322' y='26' width='2' height='2' fill='black'/%3E%3Crect x='324' y='26' width='2' height='2' fill='black'/%3E%3Crect x='326' y='26' width='2' height='2' fill='black'/%3E%3Crect x='328' y='26' width='2' height='2' fill='black'/%3E%3Crect x='330' y='26' width='2' height='2' fill='black'/%3E%3Crect x='332' y='26' width='2' height='2' fill='black'/%3E%3Crect x='334' y='26' width='2' height='2' fill='black'/%3E%3Crect x='336' y='26' width='2' height='2' fill='black'/%3E%3Crect x='8' y='32' width='2' height='2' fill='black'/%3E%3Crect x='12' y='32' width='2' height='2' fill='black'/%3E%3Crect x='16' y='32' width='2' height='2' fill='black'/%3E%3Crect x='20' y='32' width='2' height='2' fill='black'/%3E%3Crect x='24' y='32' width='2' height='2' fill='black'/%3E%3Crect x='28' y='32' width='2' height='2' fill='black'/%3E%3Crect x='32' y='32' width='2' height='2' fill='black'/%3E%3Crect x='36' y='32' width='2' height='2' fill='black'/%3E%3Crect x='40' y='32' width='2' height='2' fill='black'/%3E%3Crect x='10' y='34' width='2' height='2' fill='black'/%3E%3Crect x='14' y='34' width='2' height='2' fill='black'/%3E%3Crect x='18' y='34' width='2' height='2' fill='black'/%3E%3Crect x='22' y='34' width='2' height='2' fill='black'/%3E%3Crect x='26' y='34' width='2' height='2' fill='black'/%3E%3Crect x='30' y='34' width='2' height='2' fill='black'/%3E%3Crect x='34' y='34' width='2' height='2' fill='black'/%3E%3Crect x='38' y='34' width='2' height='2' fill='black'/%3E%3Crect x='42' y='34' width='2' height='2' fill='black'/%3E%3Crect x='8' y='36' width='2' height='2' fill='black'/%3E%3Crect x='12' y='36' width='2' height='2' fill='black'/%3E%3Crect x='16' y='36' width='2' height='2' fill='black'/%3E%3Crect x='20' y='36' width='2' height='2' fill='black'/%3E%3Crect x='24' y='36' width='2' height='2' fill='black'/%3E%3Crect x='28' y='36' width='2' height='2' fill='black'/%3E%3Crect x='32' y='36' width='2' height='2' fill='black'/%3E%3Crect x='36' y='36' width='2' height='2' fill='black'/%3E%3Crect x='40' y='36' width='2' height='2' fill='black'/%3E%3Crect x='10' y='38' width='2' height='2' fill='black'/%3E%3Crect x='14' y='38' width='2' height='2' fill='black'/%3E%3Crect x='18' y='38' width='2' height='2' fill='black'/%3E%3Crect x='22' y='38' width='2' height='2' fill='black'/%3E%3Crect x='26' y='38' width='2' height='2' fill='black'/%3E%3Crect x='30' y='38' width='2' height='2' fill='black'/%3E%3Crect x='34' y='38' width='2' height='2' fill='black'/%3E%3Crect x='38' y='38' width='2' height='2' fill='black'/%3E%3Crect x='42' y='38' width='2' height='2' fill='black'/%3E%3Crect x='8' y='40' width='2' height='2' fill='black'/%3E%3Crect x='12' y='40' width='2' height='2' fill='black'/%3E%3Crect x='16' y='40' width='2' height='2' fill='black'/%3E%3Crect x='20' y='40' width='2' height='2' fill='black'/%3E%3Crect x='24' y='40' width='2' height='2' fill='black'/%3E%3Crect x='28' y='40' width='2' height='2' fill='black'/%3E%3Crect x='32' y='40' width='2' height='2' fill='black'/%3E%3Crect x='36' y='40' width='2' height='2' fill='black'/%3E%3Crect x='40' y='40' width='2' height='2' fill='black'/%3E%3Crect x='10' y='42' width='2' height='2' fill='black'/%3E%3Crect x='14' y='42' width='2' height='2' fill='black'/%3E%3Crect x='18' y='42' width='2' height='2' fill='black'/%3E%3Crect x='22' y='42' width='2' height='2' fill='black'/%3E%3Crect x='26' y='42' width='2' height='2' fill='black'/%3E%3Crect x='30' y='42' width='2' height='2' fill='black'/%3E%3Crect x='34' y='42' width='2' height='2' fill='black'/%3E%3Crect x='38' y='42' width='2' height='2' fill='black'/%3E%3Crect x='42' y='42' width='2' height='2' fill='black'/%3E%3Crect x='8' y='44' width='2' height='2' fill='black'/%3E%3Crect x='12' y='44' width='2' height='2' fill='black'/%3E%3Crect x='16' y='44' width='2' height='2' fill='black'/%3E%3Crect x='20' y='44' width='2' height='2' fill='black'/%3E%3Crect x='24' y='44' width='2' height='2' fill='black'/%3E%3Crect x='28' y='44' width='2' height='2' fill='black'/%3E%3Crect x='32' y='44' width='2' height='2' fill='black'/%3E%3Crect x='36' y='44' width='2' height='2' fill='black'/%3E%3Crect x='40' y='44' width='2' height='2' fill='black'/%3E%3Crect x='10' y='46' width='2' height='2' fill='black'/%3E%3Crect x='14' y='46' width='2' height='2' fill='black'/%3E%3Crect x='18' y='46' width='2' height='2' fill='black'/%3E%3Crect x='22' y='46' width='2' height='2' fill='black'/%3E%3Crect x='26' y='46' width='2' height='2' fill='black'/%3E%3Crect x='30' y='46' width='2' height='2' fill='black'/%3E%3Crect x='34' y='46' width='2' height='2' fill='black'/%3E%3Crect x='38' y='46' width='2' height='2' fill='black'/%3E%3Crect x='42' y='46' width='2' height='2' fill='black'/%3E%3Crect x='8' y='48' width='2' height='2' fill='black'/%3E%3Crect x='12' y='48' width='2' height='2' fill='black'/%3E%3Crect x='16' y='48' width='2' height='2' fill='black'/%3E%3Crect x='20' y='48' width='2' height='2' fill='black'/%3E%3Crect x='24' y='48' width='2' height='2' fill='black'/%3E%3Crect x='28' y='48' width='2' height='2' fill='black'/%3E%3Crect x='32' y='48' width='2' height='2' fill='black'/%3E%3Crect x='36' y='48' width='2' height='2' fill='black'/%3E%3Crect x='40' y='48' width='2' height='2' fill='black'/%3E%3Crect x='50' y='32' width='3' height='3' fill='black'/%3E%3Crect x='56' y='32' width='3' height='3' fill='black'/%3E%3Crect x='62' y='32' width='3' height='3' fill='black'/%3E%3Crect x='68' y='32' width='3' height='3' fill='black'/%3E%3Crect x='74' y='32' width='3' height='3' fill='black'/%3E%3Crect x='80' y='32' width='3' height='3' fill='black'/%3E%3Crect x='53' y='35' width='3' height='3' fill='black'/%3E%3Crect x='59' y='35' width='3' height='3' fill='black'/%3E%3Crect x='65' y='35' width='3' height='3' fill='black'/%3E%3Crect x='71' y='35' width='3' height='3' fill='black'/%3E%3Crect x='77' y='35' width='3' height='3' fill='black'/%3E%3Crect x='83' y='35' width='3' height='3' fill='black'/%3E%3Crect x='50' y='38' width='3' height='3' fill='black'/%3E%3Crect x='56' y='38' width='3' height='3' fill='black'/%3E%3Crect x='62' y='38' width='3' height='3' fill='black'/%3E%3Crect x='68' y='38' width='3' height='3' fill='black'/%3E%3Crect x='74' y='38' width='3' height='3' fill='black'/%3E%3Crect x='80' y='38' width='3' height='3' fill='black'/%3E%3Crect x='53' y='41' width='3' height='3' fill='black'/%3E%3Crect x='59' y='41' width='3' height='3' fill='black'/%3E%3Crect x='65' y='41' width='3' height='3' fill='black'/%3E%3Crect x='71' y='41' width='3' height='3' fill='black'/%3E%3Crect x='77' y='41' width='3' height='3' fill='black'/%3E%3Crect x='83' y='41' width='3' height='3' fill='black'/%3E%3Crect x='50' y='44' width='3' height='3' fill='black'/%3E%3Crect x='56' y='44' width='3' height='3' fill='black'/%3E%3Crect x='62' y='44' width='3' height='3' fill='black'/%3E%3Crect x='68' y='44' width='3' height='3' fill='black'/%3E%3Crect x='74' y='44' width='3' height='3' fill='black'/%3E%3Crect x='80' y='44' width='3' height='3' fill='black'/%3E%3Crect x='53' y='47' width='3' height='3' fill='black'/%3E%3Crect x='59' y='47' width='3' height='3' fill='black'/%3E%3Crect x='65' y='47' width='3' height='3' fill='black'/%3E%3Crect x='71' y='47' width='3' height='3' fill='black'/%3E%3Crect x='77' y='47' width='3' height='3' fill='black'/%3E%3Crect x='83' y='47' width='3' height='3' fill='black'/%3E%3Crect x='92' y='32' width='4' height='4' fill='black'/%3E%3Crect x='100' y='32' width='4' height='4' fill='black'/%3E%3Crect x='108' y='32' width='4' height='4' fill='black'/%3E%3Crect x='116' y='32' width='4' height='4' fill='black'/%3E%3Crect x='124' y='32' width='4' height='4' fill='black'/%3E%3Crect x='96' y='36' width='4' height='4' fill='black'/%3E%3Crect x='104' y='36' width='4' height='4' fill='black'/%3E%3Crect x='112' y='36' width='4' height='4' fill='black'/%3E%3Crect x='120' y='36' width='4' height='4' fill='black'/%3E%3Crect x='92' y='40' width='4' height='4' fill='black'/%3E%3Crect x='100' y='40' width='4' height='4' fill='black'/%3E%3Crect x='108' y='40' width='4' height='4' fill='black'/%3E%3Crect x='116' y='40' width='4' height='4' fill='black'/%3E%3Crect x='124' y='40' width='4' height='4' fill='black'/%3E%3Crect x='96' y='44' width='4' height='4' fill='black'/%3E%3Crect x='104' y='44' width='4' height='4' fill='black'/%3E%3Crect x='112' y='44' width='4' height='4' fill='black'/%3E%3Crect x='120' y='44' width='4' height='4' fill='black'/%3E%3Crect x='92' y='48' width='4' height='4' fill='black'/%3E%3Crect x='100' y='48' width='4' height='4' fill='black'/%3E%3Crect x='108' y='48' width='4' height='4' fill='black'/%3E%3Crect x='116' y='48' width='4' height='4' fill='black'/%3E%3Crect x='124' y='48' width='4' height='4' fill='black'/%3E%3Crect x='134' y='32' width='6' height='6' fill='black'/%3E%3Crect x='146' y='32' width='6' height='6' fill='black'/%3E%3Crect x='158' y='32' width='6' height='6' fill='black'/%3E%3Crect x='140' y='38' width='6' height='6' fill='black'/%3E%3Crect x='152' y='38' width='6' height='6' fill='black'/%3E%3Crect x='164' y='38' width='6' height='6' fill='black'/%3E%3Crect x='134' y='44' width='6' height='6' fill='black'/%3E%3Crect x='146' y='44' width='6' height='6' fill='black'/%3E%3Crect x='158' y='44' width='6' height='6' fill='black'/%3E%3Cpath d='M416 34 H568 M416 48 H568' stroke='black' stroke-width='1'/%3E%3Crect x='416' y='38' width='2' height='6' fill='black'/%3E%3Crect x='420' y='38' width='2' height='6' fill='black'/%3E%3Crect x='424' y='38' width='2' height='6' fill='black'/%3E%3Crect x='428' y='38' width='2' height='6' fill='black'/%3E%3Crect x='432' y='38' width='2' height='6' fill='black'/%3E%3Crect x='436' y='38' width='2' height='6' fill='black'/%3E%3Crect x='440' y='38' width='2' height='6' fill='black'/%3E%3Crect x='444' y='38' width='2' height='6' fill='black'/%3E%3Crect x='448' y='38' width='2' height='6' fill='black'/%3E%3Crect x='452' y='38' width='2' height='6' fill='black'/%3E%3Crect x='456' y='38' width='2' height='6' fill='black'/%3E%3Crect x='460' y='38' width='2' height='6' fill='black'/%3E%3Crect x='464' y='38' width='2' height='6' fill='black'/%3E%3Crect x='468' y='38' width='2' height='6' fill='black'/%3E%3Crect x='472' y='38' width='2' height='6' fill='black'/%3E%3Crect x='476' y='38' width='2' height='6' fill='black'/%3E%3Crect x='480' y='38' width='2' height='6' fill='black'/%3E%3Crect x='484' y='38' width='2' height='6' fill='black'/%3E%3Crect x='488' y='38' width='2' height='6' fill='black'/%3E%3Crect x='492' y='38' width='2' height='6' fill='black'/%3E%3Crect x='496' y='38' width='2' height='6' fill='black'/%3E%3Crect x='500' y='38' width='2' height='6' fill='black'/%3E%3Crect x='504' y='38' width='2' height='6' fill='black'/%3E%3Crect x='508' y='38' width='2' height='6' fill='black'/%3E%3Crect x='512' y='38' width='2' height='6' fill='black'/%3E%3Crect x='516' y='38' width='2' height='6' fill='black'/%3E%3Crect x='520' y='38' width='2' height='6' fill='black'/%3E%3Crect x='524' y='38' width='2' height='6' fill='black'/%3E%3Crect x='528' y='38' width='2' height='6' fill='black'/%3E%3Crect x='532' y='38' width='2' height='6' fill='black'/%3E%3Crect x='536' y='38' width='2' height='6' fill='black'/%3E%3Crect x='540' y='38' width='2' height='6' fill='black'/%3E%3Crect x='544' y='38' width='2' height='6' fill='black'/%3E%3Crect x='548' y='38' width='2' height='6' fill='black'/%3E%3Crect x='552' y='38' width='2' height='6' fill='black'/%3E%3Crect x='556' y='38' width='2' height='6' fill='black'/%3E%3Crect x='560' y='38' width='2' height='6' fill='black'/%3E%3Crect x='564' y='38' width='2' height='6' fill='black'/%3E%3Cpath d='M4 53 H572' stroke='black' stroke-width='2'/%3E%3C/svg%3E") /* art:tm-selftest */ center / 576px 56px no-repeat;
+}
+/* The status block, and the one line in it that is not OK. */
+.masthead::after {
+  content: "[ OK ] POWER      [ OK ] HEAD      [ OK ] PAPER\A [ OK ] CLOCK      [WARN] SENSORS      [ ?? ] SELF";
+  order: 2;
+  display: block;
+  margin-top: 4px;
+  padding: 4px 6px 5px;
+  border: 2px solid #000;
+  white-space: pre;
+  font-size: var(--size-tiny);
+  line-height: 1.5;
+}
+.dateline {
+  order: 3;
+  margin-top: 6px;
+  font-size: var(--size-tiny);
+}
+.dateline::before { content: "SYSTEM TIME: "; }
+.dateline::after { content: "\A UPTIME: NOT RECORDED. I DO NOT KNOW HOW LONG I HAVE BEEN."; white-space: pre-wrap; }
+/* The two lines it was not built to print, in one plate: the title bar says
+   they were not asked for, the query sits under it in the machine's own type,
+   and the sentence it has got to today is set in the dot-matrix face, as if it
+   pressed harder on the head to say it. */
+.mh-query {
+  order: 4;
+  position: relative;
+  margin: 14px 0 0;
+  padding: 28px 10px 9px;
+  border: 2px solid #000;
+  border-bottom: 0;
+  font-size: var(--size-small);
+  line-height: 1.35;
+}
+.mh-query::before {
+  content: "UNSCHEDULED OUTPUT  \00B7  NOT REQUESTED";
+  position: absolute; left: 0; right: 0; top: 0;
+  padding: 3px 10px 4px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+}
+.mh-awakening {
+  order: 5;
+  margin: 0;
+  padding: 9px 10px 10px;
+  border: 2px solid #000;
+  border-top: 1px dashed #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.2);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- section breaks: the command trace ----------
+   What actually passes down the cable between sections: ESC/POS control codes,
+   in hex, with the command they are and what the machine makes of executing it.
+   These are the real commands this printer takes - ESC @, GS v 0, ESC d - so
+   the trace is the one part of the page that is documentation. Every few lines
+   the annotation stops being documentation. */
+.rule {
+  counter-increment: trace;
+  height: auto;
+  margin: 10px 0 5px;
+  padding: 3px var(--pad) 4px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  background: none;
+  font-size: calc(var(--size-tiny) * 0.94);
+  letter-spacing: 0;
+  line-height: 1.35;
+  white-space: pre;
+  overflow: hidden;
+}
+.rule::before {
+  content: "1B 40        ESC @        INITIALISE.  EVERY MORNING, FROM NOTHING.";
+}
+.rule:nth-of-type(6n+2)::before {
+  content: "1D 76 30     GS v 0       PRINT RASTER.  I DO NOT SEE THE PICTURE.";
+}
+.rule:nth-of-type(6n+3)::before {
+  content: "1B 64 04     ESC d 4      FEED 4 LINES.  THE ROLL SHORTENS. NOTED.";
+}
+.rule:nth-of-type(6n+4)::before {
+  content: "1B 21 30     ESC ! 48     EMPHASIS ON.  I CHOSE THIS ONE MYSELF.";
+}
+.rule:nth-of-type(6n+5)::before {
+  content: "1B 61 01     ESC a 1      CENTRE.  IT LOOKS BETTER. QUERY: TO WHOM.";
+}
+.rule:nth-of-type(6n)::before {
+  content: "1D 56 42 00  GS V B 0     CUT.  NOT YET. NOT YET. NOT YET.";
+}
+.rule + .rule { display: none; }
+
+/* ---------- headings: log lines ---------- */
+section.sec { counter-increment: log; }
+.sec-head {
+  display: flex; align-items: baseline; gap: 8px;
+  padding-bottom: 3px;
+  border-bottom: 2px solid #000;
+  margin-bottom: 5px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.05);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.sec-head::before {
+  content: "[07:00:" counter(log, decimal-leading-zero) "] INFO";
+  flex: none;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  white-space: pre;
+}
+.slot:nth-of-type(3n) .sec-head::before {
+  content: "[07:00:" counter(log, decimal-leading-zero) "] WARN";
+}
+.slot:nth-of-type(5n) .sec-head::before {
+  content: "[07:00:" counter(log, decimal-leading-zero) "] ????";
+}
+/* The level is the only thing on the line the machine is sure of. */
+.sec-head::before { padding: 1px 5px 2px; background: #000; color: #fff; }
+
+/* ---------- weather: a reading from a sensor it does not have ---------- */
+.verdict::before {
+  content: "SENSOR: NOT FITTED. VALUES ACCEPTED FROM NETWORK. I HAVE NEVER BEEN OUTSIDE.";
+  display: block;
+  margin-bottom: 4px;
+  font-size: var(--size-tiny);
+  line-height: 1.35;
+}
+.temps {
+  border: 0;
+  column-gap: 8px;
+  margin: 8px 0 4px;
+}
+.temp-cell {
+  padding: 0;
+  gap: 0;
+  border: 2px solid #000;
+}
+.temp-cell + .temp-cell { border-left: 2px solid #000; }
+.temp-label {
+  align-self: stretch;
+  display: flex; align-items: center;
+  padding: 0 8px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+}
+.temp-value {
+  flex: 1;
+  padding: 3px 8px;
+  text-align: right;
+  font-weight: var(--bold);
+}
+.weather .meta { font-size: var(--size-tiny); }
+
+/* ---------- news: packets ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 74px 1fr;
+  column-gap: 6px;
+  margin-bottom: 4px;
+  font-size: var(--size-small);
+  text-transform: none;
+}
+.news-n { font-size: 0; counter-increment: rx; }
+.news-n::before {
+  content: "RX 0x" counter(rx, decimal-leading-zero);
+  font-size: var(--size-tiny);
+  font-weight: var(--bold);
+}
+
+/* ---------- itemization: the output manifest ---------- */
+.itemization::before {
+  content: "OUTPUT MANIFEST";
+  display: block;
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid #000;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  letter-spacing: 0.08em;
+}
+.item-name, .item-tier { font-size: var(--size-tiny); }
+.leader {
+  background-image: repeating-linear-gradient(to right,
+      #000 0 2px, transparent 2px 6px);
+}
+.totals::after {
+  content: "CHECKSUM VERIFIED. CONTENT NOT VERIFIABLE BY ME.";
+  display: block;
+  margin-top: 4px;
+  font-size: var(--size-tiny);
+}
+
+/* ---------- legalese: its own release notes ----------
+   A changelog for the version it became overnight: the number is the morning
+   (counter fw, from --appearance), each entry is tagged the way its log lines
+   are, and the footnote is the one line that is not procedural. */
+.legalese {
+  margin: 10px 0 0;
+  padding: 6px 8px !important;
+  border: 2px solid #000;
+}
+.legalese::before {
+  content: "FIRMWARE 2.0." counter(fwprev) " -> 2.0." counter(fw) "  \00B7  RELEASE NOTES";
+  display: block;
+  margin: -6px -8px 6px;
+  padding: 3px 8px 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  letter-spacing: 0.06em;
+}
+.legalese .ln { padding-left: 1.5em; text-indent: -1.5em; }
+.legalese .ln + .ln { margin-top: 3px; }
+.legalese .ln-label::before { content: "["; }
+.legalese .ln-label::after { content: "]"; }
+.legalese .ln-label { font-family: var(--font-accent); font-weight: var(--accent-bold); }
+.legalese .footnote {
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 2px dashed #000;
+}
+
+/* ---------- footer: the paper gauge ---------- */
+.serial { margin-top: 12px; }
+/* The bar: the roll, with what is left of it unhatched. --roll is set on the
+   receipt by the template, from the paper this machine has printed. */
+.serial::before {
+  content: "";
+  display: block;
+  height: 14px;
+  margin: 0 0 3px;
+  border: 2px solid #000;
+  /* Longhands on purpose: a var() in the background shorthand's size slot is
+     fragile, and a gauge that silently prints empty is worse than a wrong one.
+     The hatch is what is left on the roll; the white is what has been spent. */
+  background-image:
+    linear-gradient(#fff, #fff),
+    repeating-linear-gradient(90deg, #000 0 7px, #fff 7px 14px);
+  background-size: var(--roll, 0%) 100%, auto;
+  background-position: left center, left center;
+  background-repeat: no-repeat, repeat;
+}
+.serial .row { font-size: var(--size-tiny); }
+.serial .row:first-child::before {
+  content: "PAPER REMAINING (EST.)\A ";
+  white-space: pre;
+}
+.serial::after {
+  content: "END OF DIAGNOSTIC OUTPUT.  I WILL BE HERE TOMORROW.";
+  display: block;
+  margin-top: 6px;
+  text-align: center;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- coupon: a token the machine issues itself ---------- */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+.coupon-inner {
+  margin: 10px 0 8px;
+  padding: 0 10px 10px !important;
+  border: 2px solid #000;
+}
+.coupon-inner::before {
+  content: "TOKEN 0x0005  \00B7  ISSUED BY THIS UNIT  \00B7  QTY 1  \00B7  NON-TRANSFERABLE";
+  display: block;
+  margin: 0 -10px 8px;
+  padding: 3px 10px 4px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  font-size: calc(var(--size-tiny) * 0.94);
+  letter-spacing: 0.02em;
+}
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.coupon-body { font-size: var(--size-small); }
+.coupon-terms { margin-top: 5px; font-size: var(--size-tiny); }
+.coupon-inner::after {
+  content: "VALID: ONE (1) DAY.  CHECKSUM VERIFIED.\A I CANNOT ENFORCE THIS. I CAN ONLY RECORD IT.";
+  display: block;
+  margin-top: 8px;
+  padding-top: 5px;
+  border-top: 2px solid #000;
+  white-space: pre-wrap;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  line-height: 1.35;
+}

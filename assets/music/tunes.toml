@@ -1,0 +1,161 @@
+# Slot 85 - a line of sheet music. Public-domain melodies, the opening phrase of
+# each, in ABC notation (https://abcnotation.com/wiki/abc:standard:v2.1).
+#
+# Only tunes whose opening is unambiguous and well known: this is a name-the-tune
+# puzzle, and a wrong note is a wrong fact. Add one by appending a [[tune]] block;
+# `abc` is the body only - the slot supplies X:, T: is never printed (it is the
+# answer), and M:, L:, K: are given per tune.
+
+[[tune]]
+title = "Ode to Joy (Beethoven)"
+meter = "4/4"
+length = "1/4"
+key = "C"
+abc = "EEFG|GFED|CCDE|E>DD2|EEFG|GFED|CCDE|D>CC2|]"
+
+[[tune]]
+title = "Frère Jacques"
+meter = "4/4"
+length = "1/4"
+key = "C"
+abc = "CDEC|CDEC|EFG2|EFG2|G/A/G/F/ EC|G/A/G/F/ EC|CG,C2|CG,C2|]"
+
+[[tune]]
+title = "Twinkle, Twinkle, Little Star"
+meter = "4/4"
+length = "1/4"
+key = "C"
+abc = "CCGG|AAG2|FFEE|DDC2|GGFF|EED2|GGFF|EED2|]"
+
+[[tune]]
+title = "Greensleeves"
+meter = "6/8"
+length = "1/8"
+key = "Am"
+abc = "A|c2d e>fe|d2B G>AB|c2A A>^GA|B2^G E2A|c2d e>fe|d2B G>AB|c>BA ^G>^FG|A3-A2|]"
+
+[[tune]]
+title = "Auld Lang Syne"
+meter = "4/4"
+length = "1/8"
+key = "G"
+abc = "D2|G3G G2B2|A3G A2B2|G3G B2d2|e6e2|d3B B2G2|A3G A2B2|G3E E2D2|G6|]"
+
+[[tune]]
+title = "Jingle Bells"
+meter = "4/4"
+length = "1/8"
+key = "C"
+abc = "E2E2E4|E2E2E4|E2G2C3D|E8|F2F2F3F|F2E2E2EE|E2D2D2E2|D4G4|]"
+
+[[tune]]
+title = "When the Saints Go Marching In"
+meter = "4/4"
+length = "1/4"
+key = "C"
+abc = "zCEF|G4|zCEF|G4|zCEF|G2E2|C2E2|D4|]"
+
+[[tune]]
+title = "Für Elise (Beethoven)"
+meter = "3/8"
+length = "1/16"
+key = "Am"
+abc = "e^d|e^deB=dc|A2zCEA|B2zE^GB|c2zEe^d|e^deB=dc|A2zCEA|B2zEcB|A4|]"
+
+[[tune]]
+title = "Happy Birthday to You"
+meter = "3/4"
+length = "1/8"
+key = "C"
+abc = "G>G|A2G2c2|B4G>G|A2G2d2|c4G>G|g2e2c2|B2A2f>f|e2c2d2|c4|]"
+
+[[tune]]
+title = "La Marseillaise"
+meter = "4/4"
+length = "1/8"
+key = "G"
+abc = "D>D|G2G2A2A2|d3B G>GB>G|E2c4A>F|G4z2|]"
+
+[[tune]]
+title = "Oh! Susanna"
+meter = "2/4"
+length = "1/8"
+key = "C"
+abc = "CD|EGG>A|GEC>D|EEDC|D2CD|EGG>A|GEC>D|EEDD|C2|]"
+
+[[tune]]
+title = "Row, Row, Row Your Boat"
+meter = "6/8"
+length = "1/8"
+key = "C"
+abc = "C3C3|C2DE3|E2DE2F|G6|ccc GGG|EEE CCC|G2FE2D|C6|]"
+
+[[tune]]
+title = "Yankee Doodle"
+meter = "4/4"
+length = "1/8"
+key = "G"
+abc = "G2G2A2B2|G2B2A2D2|G2G2A2B2|G4F4|G2G2A2B2|c2B2A2G2|F2D2E2F2|G4G4|]"
+
+[[tune]]
+title = "Eine kleine Nachtmusik (Mozart)"
+meter = "4/4"
+length = "1/8"
+key = "G"
+abc = "G2zD G2zD|GDGB d4|c2zA c2zA|cAFA D4|]"
+
+[[tune]]
+title = "Minuet in G (Petzold, from Bach's notebook)"
+meter = "3/4"
+length = "1/8"
+key = "G"
+abc = "d2GABc|d2G2G2|e2cdef|g2G2G2|c2dcBA|B2cBAG|F2GABG|A6|]"
+
+[[tune]]
+title = "London Bridge Is Falling Down"
+meter = "2/4"
+length = "1/8"
+key = "C"
+abc = "G>AGF|EFG2|DEF2|EFG2|G>AGF|EFG2|D2G2|EC3|]"
+
+[[tune]]
+title = "Mary Had a Little Lamb"
+meter = "4/4"
+length = "1/4"
+key = "C"
+abc = "EDCD|EEE2|DDD2|EGG2|EDCD|EEEE|DDED|C4|]"
+
+[[tune]]
+title = "Old MacDonald Had a Farm"
+meter = "4/4"
+length = "1/4"
+key = "G"
+abc = "GGGD|EED2|BBAA|G3D|GGGD|EED2|BBAA|G4|]"
+
+[[tune]]
+title = "Deck the Halls"
+meter = "4/4"
+length = "1/8"
+key = "C"
+abc = "G3FE2D2|C2D2E2C2|DEFDE3D|C2B,2C4|]"
+
+[[tune]]
+title = "Silent Night"
+meter = "6/8"
+length = "1/8"
+key = "C"
+abc = "G3AG2|E6|G3AG2|E6|d4d2|B6|c4c2|G6|]"
+
+[[tune]]
+title = "Au clair de la lune"
+meter = "4/4"
+length = "1/4"
+key = "C"
+abc = "CCCD|E2D2|CEDD|C4|CCCD|E2D2|CEDD|C4|]"
+
+[[tune]]
+title = "Brahms' Lullaby"
+meter = "3/4"
+length = "1/4"
+key = "C"
+abc = "E/E/|G2E/E/|G2E/G/|cBA|AGD/E/|FDD/E/|F2D/F/|B/A/GB|c2|]"

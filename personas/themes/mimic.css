@@ -1,0 +1,374 @@
+/* Weights come from --bold, never a literal 700 - and on this page --bold is
+   whoever's face has been borrowed, so nothing here assumes it is 700. The one
+   exception is var(--own-bold), which is this persona's own face and is 400,
+   since Kablammo ships a 400 alone. See the font-synthesis note in the base
+   stylesheet. */
+/* The Mimic.
+ *
+ * Not a theme: a costume, and deliberately a thin one. `main.mimicry` hands this
+ * persona the most recent persona's stylesheet, body face, display face, accent
+ * face, variant count, section names and masthead fields, and this file is
+ * appended after all of it - so everything below is layered over somebody else's
+ * page and has to work on any of them. Nothing in here may assume a layout, a
+ * face, a rule height or a colour beyond black on white.
+ *
+ * **It brings almost nothing of its own.** The disguise is the point, so the
+ * page is the worn persona's page and the mistakes are made IN it - in the
+ * words the narrator writes, and in the shape of the thing it is wearing. Its
+ * own nameplate or lettering on top of a borrowed theme reads as two personas
+ * arguing rather than as one badly worn.
+ *
+ * What is left, in order down the page:
+ *   - the name misspelled, wherever the worn theme prints a name at all. Not
+ *     forced: a theme that leaves its name off keeps leaving it off, and the
+ *     misspelling rides on that theme's own lettering when it does print one.
+ *   - the whole head crooked, the way a page fed in wrong is, and on some
+ *     mornings the name stretched or spaced wrong on top of that.
+ *   - one line in its own voice at the foot of the masthead, in the one face on
+ *     the page that is not borrowed.
+ *   - one heading upside down.
+ *   - one rule stood on its end.
+ *   - one whole section moved somewhere senseless.
+ *   - one section copied out at the wrong width.
+ *   - a second tear line across the middle of the page, offering to take half
+ *     the receipt with it, and beside it a hand with six fingers.
+ *   - an anatomical diagram of a human, on about half of its mornings.
+ *   - a second barcode above the tear line, which really scans, and says HELLO.
+ *
+ * One mistake per area, never two, and none of them announced. Which lands where
+ * is keyed to data-moon and data-dd, so no two mornings are wrong in the same
+ * places. data-wears carries whoever is being worn, and is empty on a morning
+ * with nobody to copy - the one case where this file is the whole stylesheet.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+/* ---------- the page, re-ordered ----------
+   Flex is here for one reason: a section can be put in the wrong place, and
+   `order` is the only way to move one without touching the template. Everything
+   keeps its own look; only the sequence is interfered with. The coupon stays
+   last whatever happens - even the Mimic knows the coupon goes last. */
+.receipt { display: flex; flex-direction: column; }
+.receipt > * { order: 2; }
+.receipt > .masthead { order: 0; }
+.receipt > .serial { order: 6; }
+.receipt > .coupon { order: 8; }
+
+/* ---------- the head, slightly crooked ----------
+   The only thing done to the masthead, and it is done to the WHOLE of it: the
+   borrowed head prints exactly as its own persona designed it, a degree off
+   true. It has studied the page and reproduced it and cannot quite work out why
+   this keeps happening.
+
+   A rotation keeps its box, so nothing below moves and the page is the right
+   length. Half a degree lifts a corner by two pixels, which on a masthead as
+   short as the Clerk's cannot be seen on paper at all. At a degree and a
+   quarter a corner moves six or seven pixels, which reads as a sheet fed in
+   crooked. Past about two it stops reading as a
+   mistake and starts reading as a broken renderer. */
+.masthead { transform-origin: 50% 0; }
+.masthead[data-dd$="0"], .masthead[data-dd$="5"] { transform: rotate(-1.15deg); }
+.masthead[data-dd$="1"], .masthead[data-dd$="6"] { transform: rotate(1.0deg); }
+.masthead[data-dd$="2"], .masthead[data-dd$="7"] { transform: rotate(-1.4deg); }
+.masthead[data-dd$="3"], .masthead[data-dd$="8"] { transform: rotate(1.25deg); }
+.masthead[data-dd$="4"], .masthead[data-dd$="9"] { transform: rotate(-0.9deg); }
+
+/* And on three mornings in ten the name is stretched as well, the way a thing
+   copied by eye comes out when the eye was wrong about how tall it went. Only
+   where the worn theme prints a name at all - on the ones that do not, the tilt
+   above is the whole of the head's mistake, which is enough. */
+.masthead[data-dd$="1"] .wordmark,
+.masthead[data-dd$="4"] .wordmark,
+.masthead[data-dd$="7"] .wordmark {
+  transform: scaleY(1.22);
+  transform-origin: 50% 40%;
+}
+/* On three others it is the spacing that is wrong instead. */
+.masthead[data-dd$="2"] .wordmark,
+.masthead[data-dd$="5"] .wordmark,
+.masthead[data-dd$="8"] .wordmark {
+  letter-spacing: 0.16em;
+  word-spacing: 0.3em;
+}
+
+/* ---------- its moment ----------
+   The one line on the page where it forgets it is wearing anybody, and the one
+   place its own hand shows. Every other face here is borrowed; var(--font-own)
+   is the third font role (main.build_html), declared by this persona and never
+   given up, so on a page that is otherwise entirely somebody else's this is the
+   only lettering that is the creature's.
+
+   It was set plainly for a while, in the host's own type, which was the most
+   faithful version of "wear the costume" and also the quietest that line has
+   ever been - you could read past it. It is a moment now: its own face, bigger
+   than the small print, hanging off the left where nothing else on the page
+   hangs. Still only one line, and still no label on it - it never announces a
+   question, because it is not a machine.
+
+   The order keeps it last inside a borrowed masthead that lays its lines out by
+   order; without it, a head with explicit orders would float this to the top. */
+.mh-slip {
+  order: 50;
+  margin: 9px 12px 2px -2px;
+  padding-left: 14px;
+  border-left: 4px solid #000;
+  font-family: var(--font-own);
+  font-weight: var(--own-bold);
+  font-size: var(--size-small);
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ---------- the questions ----------
+   The brackets it cannot stop putting in. `main.asides()` wraps them after the
+   narrator has written the sentence they sit in, because a stylesheet cannot
+   otherwise reach a substring of a narrated body - the same trick `dialogue()`
+   uses for a persona whose sections are an exchange.
+
+   Set in the face it never borrows, so the page reads as somebody else's
+   document with one creature's voice coming up through it in the same lettering
+   every time: the slip line at the top, these, and the tear line it got wrong.
+   Not boxed, not reversed out, not on its own line - it happens mid-sentence
+   and should look like it happened mid-sentence. */
+.aside {
+  font-family: var(--font-own);
+  font-weight: var(--own-bold);
+  letter-spacing: 0;
+  text-transform: none;
+  font-style: normal;
+}
+
+/* ---------- one heading, upside down ----------
+   It has seen headings. It has not established which way up they go. Rotating
+   keeps the box, so nothing below it moves - the page is the right length and
+   one line of it is simply wrong.
+
+   Sections 2, 3 and 4 and no further, which costs some variety and buys the
+   thing actually being bought: 1 is the weather, 2 the news, and 3 onwards are
+   the day's slots. A quiet morning draws two slots, and a mistake aimed at the
+   sixth section lands on the totals, which have no heading to turn over - so the
+   page prints with nothing wrong on it at all, which is the one thing this
+   persona must never do. */
+.masthead[data-moon="0"] ~ section:nth-of-type(2) .sec-head,
+.masthead[data-moon="3"] ~ section:nth-of-type(2) .sec-head,
+.masthead[data-moon="6"] ~ section:nth-of-type(2) .sec-head,
+.masthead[data-moon="1"] ~ section:nth-of-type(3) .sec-head,
+.masthead[data-moon="4"] ~ section:nth-of-type(3) .sec-head,
+.masthead[data-moon="7"] ~ section:nth-of-type(3) .sec-head,
+.masthead[data-moon="2"] ~ section:nth-of-type(4) .sec-head,
+.masthead[data-moon="5"] ~ section:nth-of-type(4) .sec-head {
+  transform: rotate(180deg);
+}
+
+/* ---------- one rule, stood on its end ----------
+   By the last figure of the date, so it walks down the page over a month. The
+   background is restated because a borrowed rule may be an image - the Machine
+   rules in dots, the Revolutionary in static - and a band of static stood
+   upright is not the joke. */
+.masthead[data-dd$="0"] ~ div.rule:nth-of-type(2),
+.masthead[data-dd$="1"] ~ div.rule:nth-of-type(3),
+.masthead[data-dd$="2"] ~ div.rule:nth-of-type(4),
+.masthead[data-dd$="3"] ~ div.rule:nth-of-type(5),
+.masthead[data-dd$="4"] ~ div.rule:nth-of-type(6),
+.masthead[data-dd$="5"] ~ div.rule:nth-of-type(2),
+.masthead[data-dd$="6"] ~ div.rule:nth-of-type(3),
+.masthead[data-dd$="7"] ~ div.rule:nth-of-type(4),
+.masthead[data-dd$="8"] ~ div.rule:nth-of-type(5),
+.masthead[data-dd$="9"] ~ div.rule:nth-of-type(6) {
+  width: 6px;
+  height: 46px;
+  margin: 10px auto;
+  background: #000;
+  background-image: none;
+  border: 0;
+}
+
+/* ---------- one section, in the wrong place ----------
+   Moved to directly under the masthead, where it makes no sense at all. Not a
+   swap: a swap reads as a printer fault, and this has to read as a decision
+   somebody made. */
+.masthead[data-dd$="1"] ~ .legalese,
+.masthead[data-dd$="4"] ~ .legalese,
+.masthead[data-dd$="7"] ~ .legalese,
+.masthead[data-dd$="2"] ~ .itemization,
+.masthead[data-dd$="5"] ~ .itemization,
+.masthead[data-dd$="8"] ~ .itemization,
+.masthead[data-dd$="3"] ~ .totals,
+.masthead[data-dd$="6"] ~ .totals,
+.masthead[data-dd$="9"] ~ .totals,
+.masthead[data-dd$="0"] ~ .answers {
+  order: 1;
+}
+
+/* ---------- one section, stretched ----------
+   Copied out at the wrong width. Tracking rather than a transform, so the text
+   still wraps inside the paper instead of walking off the edge of it. */
+.masthead[data-moon="0"] ~ section:nth-of-type(5) .slot-body,
+.masthead[data-moon="4"] ~ section:nth-of-type(5) .slot-body,
+.masthead[data-moon="1"] ~ section:nth-of-type(4) .slot-body,
+.masthead[data-moon="5"] ~ section:nth-of-type(4) .slot-body,
+.masthead[data-moon="2"] ~ section:nth-of-type(3) .slot-body,
+.masthead[data-moon="6"] ~ section:nth-of-type(3) .slot-body,
+.masthead[data-moon="3"] ~ section:nth-of-type(6) .slot-body,
+.masthead[data-moon="7"] ~ section:nth-of-type(6) .slot-body {
+  letter-spacing: 0.17em;
+  word-spacing: 0.34em;
+}
+
+/* ---------- a second tear line, in the wrong place ----------
+   The original note for this persona asked for a tear line apologising for
+   being somewhere it should not be, and this is it: a dashed rule straight
+   across the middle of the receipt, offering a tear that would take half the
+   page with it. Beside it, a hand it has drawn from life, with six fingers,
+   because it counted. Nothing on this page says out loud what is wearing the
+   costume and this does not say it either - it is simply a hand, drawn
+   carefully, with one finger too many.
+
+   The two travel together on purpose: a false tear line on its own reads as a
+   rendering fault, and a hand on its own reads as decoration. Together they
+   read as somebody helpfully showing you where to tear, who has never seen a
+   hand. */
+.masthead[data-moon="1"] ~ section:nth-of-type(3)::after,
+.masthead[data-moon="4"] ~ section:nth-of-type(3)::after,
+.masthead[data-moon="0"] ~ section:nth-of-type(4)::after,
+.masthead[data-moon="3"] ~ section:nth-of-type(4)::after,
+.masthead[data-moon="6"] ~ section:nth-of-type(4)::after,
+.masthead[data-moon="2"] ~ section:nth-of-type(5)::after,
+.masthead[data-moon="5"] ~ section:nth-of-type(5)::after,
+.masthead[data-moon="7"] ~ section:nth-of-type(5)::after {
+  content: "* * *  (YOU MAY ALSO TEAR HERE)  * * *";
+  display: block;
+  margin-top: 12px;
+  padding: 7px 78px 0 12px;
+  border-top: 2px dashed #000;
+  min-height: 82px;
+  font-family: var(--font-own);
+  font-weight: var(--own-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  text-transform: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='136' height='162' viewBox='0 0 136 162'%3E%3Cpath d='M26 120V63q0-9 8-9t8 9V120Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M43 120V39q0-9 8-9t8 9V120Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M60 120V29q0-9 8-9t8 9V120Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M77 120V39q0-9 8-9t8 9V120Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M94 120V61q0-9 8-9t8 9V120Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M111 120V79q0-9 8-9t8 9V120Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M28 114q0-10 10-12h84q10 2 10 12v20q0 14-6 24l-5 16H39l-5-16q-6-10-6-24Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M40 118L12 140q-9 8-3 17t18 2l26-19Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") /* art:mimic-hand */;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  background-position: right 12px top 6px;
+  background-size: 58px 69px;
+  position: static;
+  width: auto;
+  inset: auto;
+  transform: none;
+}
+
+/* ---------- the anatomical diagram ----------
+   At the foot of the page, above the serial. Drawn with enormous care from a
+   plate it has studied, and labelled with total confidence: ELBOW, SECOND
+   ELBOW, FORK HOLE, THE GRIEF ONE. It is not a joke the Mimic is in on, which
+   is why it is drawn properly rather than scrawled.
+
+   On four moons in eight rather than every morning. It is the one large thing
+   this persona brings of its own, and a large thing that arrives every single
+   time stops being a mistake and becomes a feature of the page - which is the
+   opposite of what this persona is. */
+.masthead[data-moon="0"] ~ .serial::before,
+.masthead[data-moon="2"] ~ .serial::before,
+.masthead[data-moon="5"] ~ .serial::before,
+.masthead[data-moon="7"] ~ .serial::before {
+  content: "";
+  display: block;
+  height: 352px;
+  margin: 10px 0 4px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='352' viewBox='0 0 576 352'%3E%3Cpath d='M295.0 20.2 L297.0 20.8 L298.8 21.6 L300.5 22.5 L302.0 23.6 L303.3 24.9 L304.4 26.3 L305.4 27.8 L306.2 29.6 L306.8 31.4 L307.3 33.3 L307.7 35.2 L307.9 37.1 L308.1 38.9 L308.1 40.8 L307.9 42.7 L307.7 44.6 L307.3 46.4 L306.9 48.2 L306.4 49.9 L305.8 51.4 L305.2 52.8 L304.5 54.2 L303.8 55.4 L302.9 56.5 L302.1 57.5 L301.6 58.5 L301.5 59.4 L301.8 60.2 L302.5 61.0 L303.5 61.8 L305.0 62.5 L306.9 63.2 L309.1 63.8 L311.4 64.5 L313.6 65.2 L315.8 65.9 L318.0 66.6 L320.1 67.4 L322.3 68.2 L324.4 69.1 L326.6 69.9 L328.5 71.0 L330.4 72.4 L332.1 74.0 L333.7 75.8 L335.1 77.8 L336.4 80.1 L337.5 82.6 L338.5 85.4 L339.4 88.2 L340.3 91.2 L341.1 94.2 L341.9 97.3 L342.6 100.5 L343.2 103.8 L343.8 107.2 L344.2 110.8 L344.6 114.2 L344.9 117.7 L345.1 121.1 L345.2 124.4 L345.1 127.8 L345.0 131.1 L344.7 134.4 L344.3 137.6 L344.1 140.9 L343.9 144.2 L343.9 147.6 L344.1 150.9 L344.3 154.3 L344.7 157.8 L345.2 161.2 L345.8 164.8 L346.3 168.2 L346.7 171.5 L346.9 174.7 L347.1 177.8 L347.1 180.8 L346.9 183.8 L346.7 186.6 L346.3 189.4 L346.1 192.0 L346.0 194.5 L346.0 196.9 L346.2 199.1 L346.5 201.2 L347.0 203.2 L347.6 205.1 L348.4 206.9 L348.8 208.5 L348.9 210.0 L348.8 211.4 L348.2 212.6 L347.4 213.8 L346.3 214.8 L344.9 215.6 L343.1 216.4 L341.5 216.8 L340.0 216.8 L338.6 216.4 L337.4 215.6 L336.2 214.5 L335.2 213.0 L334.4 211.1 L333.6 208.9 L332.9 206.5 L332.3 204.1 L331.8 201.6 L331.2 198.9 L330.8 196.2 L330.4 193.4 L330.1 190.5 L329.9 187.5 L329.6 184.4 L329.3 181.3 L328.9 178.1 L328.6 174.9 L328.2 171.6 L327.7 168.2 L327.2 164.8 L326.8 161.2 L326.3 157.8 L325.8 154.2 L325.3 150.8 L324.9 147.2 L324.5 143.8 L324.1 140.2 L323.7 136.8 L323.3 133.2 L322.9 129.8 L322.5 126.3 L322.1 122.9 L321.7 119.6 L321.2 116.2 L320.7 112.9 L320.2 109.6 L319.8 106.4 L319.3 103.4 L318.8 100.6 L318.4 98.1 L318.1 95.9 L317.7 93.9 L317.4 92.1 L317.1 90.6 L316.9 89.4 L316.7 88.5 L316.6 87.9 L316.6 87.7 L316.7 87.8 L316.8 88.3 L317.0 89.1 L317.3 90.2 L317.7 91.8 L318.1 93.6 L318.5 95.7 L318.9 98.1 L319.3 100.9 L319.8 103.9 L320.3 107.3 L320.8 111.0 L321.2 115.0 L321.6 118.9 L321.8 122.8 L321.8 126.6 L321.7 130.4 L321.4 134.1 L321.0 137.7 L320.4 141.2 L319.6 144.8 L318.9 148.1 L318.3 151.3 L317.7 154.3 L317.1 157.2 L316.6 159.9 L316.1 162.5 L315.7 164.9 L315.3 167.1 L315.1 169.3 L315.1 171.4 L315.2 173.5 L315.5 175.5 L316.0 177.4 L316.7 179.3 L317.5 181.1 L318.5 182.9 L319.4 184.9 L320.3 187.1 L321.1 189.6 L321.9 192.4 L322.6 195.4 L323.2 198.6 L323.8 202.1 L324.2 205.9 L324.6 209.8 L324.9 213.8 L325.1 217.9 L325.2 222.1 L325.1 226.5 L325.0 231.0 L324.7 235.6 L324.3 240.4 L323.9 245.1 L323.6 249.7 L323.2 254.2 L322.8 258.8 L322.4 263.2 L322.1 267.6 L321.7 271.9 L321.3 276.1 L321.0 280.2 L320.9 284.2 L320.8 288.1 L320.9 291.9 L321.1 295.5 L321.4 299.0 L321.8 302.4 L322.2 305.6 L322.5 308.5 L322.4 311.1 L322.0 313.3 L321.3 315.2 L320.3 316.7 L319.0 317.9 L317.4 318.8 L315.6 319.2 L313.8 319.2 L312.2 318.7 L310.8 317.6 L309.5 315.9 L308.3 313.8 L307.3 311.1 L306.4 307.9 L305.6 304.1 L304.9 300.2 L304.3 296.2 L303.7 292.1 L303.1 287.9 L302.6 283.5 L302.1 279.0 L301.7 274.4 L301.3 269.6 L300.9 264.8 L300.6 260.0 L300.2 255.2 L299.8 250.3 L299.4 245.4 L299.1 240.5 L298.7 235.5 L298.3 230.5 L297.8 225.8 L297.3 221.5 L296.6 217.6 L295.9 213.9 L295.0 210.7 L294.1 207.7 L293.1 205.1 L291.9 202.9 L290.8 201.2 L289.7 200.1 L288.6 199.5 L287.4 199.5 L286.3 200.1 L285.2 201.2 L284.1 202.9 L282.9 205.1 L281.9 207.7 L281.0 210.7 L280.1 213.9 L279.4 217.6 L278.7 221.5 L278.2 225.8 L277.7 230.5 L277.3 235.5 L276.9 240.5 L276.6 245.4 L276.2 250.3 L275.8 255.2 L275.4 260.0 L275.1 264.8 L274.7 269.6 L274.3 274.4 L273.9 279.0 L273.4 283.5 L272.9 287.9 L272.3 292.1 L271.7 296.2 L271.1 300.2 L270.4 304.1 L269.6 307.9 L268.7 311.1 L267.7 313.8 L266.5 315.9 L265.2 317.6 L263.8 318.7 L262.2 319.2 L260.4 319.2 L258.6 318.8 L257.0 317.9 L255.7 316.7 L254.7 315.2 L254.0 313.3 L253.6 311.1 L253.5 308.5 L253.8 305.6 L254.2 302.4 L254.6 299.0 L254.9 295.5 L255.1 291.9 L255.2 288.1 L255.1 284.2 L255.0 280.2 L254.7 276.1 L254.3 271.9 L253.9 267.6 L253.6 263.2 L253.2 258.8 L252.8 254.2 L252.4 249.7 L252.1 245.1 L251.7 240.4 L251.3 235.6 L251.0 231.0 L250.9 226.5 L250.8 222.1 L250.9 217.9 L251.1 213.8 L251.4 209.8 L251.8 205.9 L252.2 202.1 L252.8 198.6 L253.4 195.4 L254.1 192.4 L254.9 189.6 L255.7 187.1 L256.6 184.9 L257.5 182.9 L258.5 181.1 L259.3 179.3 L260.0 177.4 L260.5 175.5 L260.8 173.5 L260.9 171.4 L260.9 169.3 L260.7 167.1 L260.3 164.9 L259.9 162.5 L259.4 159.9 L258.9 157.2 L258.3 154.3 L257.7 151.3 L257.1 148.1 L256.4 144.8 L255.6 141.2 L255.0 137.7 L254.6 134.1 L254.3 130.4 L254.2 126.6 L254.2 122.8 L254.4 118.9 L254.8 115.0 L255.2 111.0 L255.7 107.3 L256.2 103.9 L256.7 100.9 L257.1 98.1 L257.5 95.7 L257.9 93.6 L258.3 91.8 L258.7 90.2 L259.0 89.1 L259.2 88.3 L259.3 87.8 L259.4 87.7 L259.4 87.9 L259.3 88.5 L259.1 89.4 L258.9 90.6 L258.6 92.1 L258.3 93.9 L257.9 95.9 L257.6 98.1 L257.2 100.6 L256.7 103.4 L256.2 106.4 L255.8 109.6 L255.3 112.9 L254.8 116.2 L254.3 119.6 L253.9 122.9 L253.5 126.3 L253.1 129.8 L252.7 133.2 L252.3 136.8 L251.9 140.2 L251.5 143.8 L251.1 147.2 L250.7 150.8 L250.2 154.2 L249.7 157.8 L249.2 161.2 L248.8 164.8 L248.3 168.2 L247.8 171.6 L247.4 174.9 L247.1 178.1 L246.7 181.3 L246.4 184.4 L246.1 187.5 L245.9 190.5 L245.6 193.4 L245.2 196.2 L244.8 198.9 L244.2 201.6 L243.7 204.1 L243.1 206.5 L242.4 208.9 L241.6 211.1 L240.8 213.0 L239.8 214.5 L238.6 215.6 L237.4 216.4 L236.0 216.8 L234.5 216.8 L232.9 216.4 L231.1 215.6 L229.7 214.8 L228.6 213.8 L227.8 212.6 L227.2 211.4 L227.1 210.0 L227.2 208.5 L227.6 206.9 L228.4 205.1 L229.0 203.2 L229.5 201.2 L229.8 199.1 L230.0 196.9 L230.0 194.5 L229.9 192.0 L229.7 189.4 L229.3 186.6 L229.1 183.8 L228.9 180.8 L228.9 177.8 L229.1 174.7 L229.3 171.5 L229.7 168.2 L230.2 164.8 L230.8 161.2 L231.3 157.8 L231.7 154.3 L231.9 150.9 L232.1 147.6 L232.1 144.2 L231.9 140.9 L231.7 137.6 L231.3 134.4 L231.0 131.1 L230.9 127.8 L230.8 124.4 L230.9 121.1 L231.1 117.7 L231.4 114.2 L231.8 110.8 L232.2 107.2 L232.8 103.8 L233.4 100.5 L234.1 97.3 L234.9 94.2 L235.7 91.2 L236.6 88.2 L237.5 85.4 L238.5 82.6 L239.6 80.1 L240.9 77.8 L242.3 75.8 L243.9 74.0 L245.6 72.4 L247.5 71.0 L249.4 69.9 L251.6 69.1 L253.7 68.2 L255.9 67.4 L258.0 66.6 L260.2 65.9 L262.4 65.2 L264.6 64.5 L266.9 63.8 L269.1 63.2 L271.0 62.5 L272.5 61.8 L273.5 61.0 L274.2 60.2 L274.5 59.4 L274.4 58.5 L273.9 57.5 L273.1 56.5 L272.2 55.4 L271.5 54.2 L270.8 52.8 L270.2 51.4 L269.6 49.9 L269.1 48.2 L268.7 46.4 L268.3 44.6 L268.1 42.7 L267.9 40.8 L267.9 38.9 L268.1 37.1 L268.3 35.2 L268.7 33.3 L269.2 31.4 L269.8 29.6 L270.6 27.8 L271.6 26.3 L272.7 24.9 L274.0 23.6 L275.5 22.5 L277.2 21.6 L279.0 20.8 L281.0 20.2 L283.0 19.7 L285.0 19.4 L287.0 19.2 L289.0 19.2 L291.0 19.4 L293.0 19.7 Z' fill='none' stroke='black' stroke-width='3'/%3E%3Cpath d='M288 14V330' stroke='black' stroke-width='1.5' stroke-dasharray='5 7'/%3E%3Cpath d='M258 64h60M258 176h60' stroke='black' stroke-width='1.5' stroke-dasharray='3 5'/%3E%3Cpath d='M374 46L300 40' stroke='black' stroke-width='2'/%3E%3Ccircle cx='300' cy='40' r='4.5' fill='black'/%3E%3Cpath d='M366 102L306 104' stroke='black' stroke-width='2'/%3E%3Ccircle cx='306' cy='104' r='4.5' fill='black'/%3E%3Cpath d='M386 182L346 186' stroke='black' stroke-width='2'/%3E%3Ccircle cx='346' cy='186' r='4.5' fill='black'/%3E%3Cpath d='M158 148L233 150' stroke='black' stroke-width='2'/%3E%3Ccircle cx='233' cy='150' r='4.5' fill='black'/%3E%3Cpath d='M160 202L231 176' stroke='black' stroke-width='2'/%3E%3Ccircle cx='231' cy='176' r='4.5' fill='black'/%3E%3Cpath d='M160 264L256 258' stroke='black' stroke-width='2'/%3E%3Ccircle cx='256' cy='258' r='4.5' fill='black'/%3E%3Cpath d='M324 306L318 292' stroke='black' stroke-width='2'/%3E%3Ccircle cx='318' cy='292' r='4.5' fill='black'/%3E%3Cpath d='M380 40h10v2h-10zM380 42h2v2h-2zM380 44h2v2h-2zM380 46h8v2h-8zM380 48h2v2h-2zM380 50h2v2h-2zM380 52h2v2h-2zM394 40h6v2h-6zM392 42h2v2h-2zM400 42h2v2h-2zM392 44h2v2h-2zM400 44h2v2h-2zM392 46h2v2h-2zM400 46h2v2h-2zM392 48h2v2h-2zM400 48h2v2h-2zM392 50h2v2h-2zM400 50h2v2h-2zM394 52h6v2h-6zM404 40h8v2h-8zM404 42h2v2h-2zM412 42h2v2h-2zM404 44h2v2h-2zM412 44h2v2h-2zM404 46h8v2h-8zM404 48h2v2h-2zM408 48h2v2h-2zM404 50h2v2h-2zM410 50h2v2h-2zM404 52h2v2h-2zM412 52h2v2h-2zM416 40h2v2h-2zM424 40h2v2h-2zM416 42h2v2h-2zM422 42h2v2h-2zM416 44h2v2h-2zM420 44h2v2h-2zM416 46h4v2h-4zM416 48h2v2h-2zM420 48h2v2h-2zM416 50h2v2h-2zM422 50h2v2h-2zM416 52h2v2h-2zM424 52h2v2h-2zM440 40h2v2h-2zM448 40h2v2h-2zM440 42h2v2h-2zM448 42h2v2h-2zM440 44h2v2h-2zM448 44h2v2h-2zM440 46h10v2h-10zM440 48h2v2h-2zM448 48h2v2h-2zM440 50h2v2h-2zM448 50h2v2h-2zM440 52h2v2h-2zM448 52h2v2h-2zM454 40h6v2h-6zM452 42h2v2h-2zM460 42h2v2h-2zM452 44h2v2h-2zM460 44h2v2h-2zM452 46h2v2h-2zM460 46h2v2h-2zM452 48h2v2h-2zM460 48h2v2h-2zM452 50h2v2h-2zM460 50h2v2h-2zM454 52h6v2h-6zM464 40h2v2h-2zM464 42h2v2h-2zM464 44h2v2h-2zM464 46h2v2h-2zM464 48h2v2h-2zM464 50h2v2h-2zM464 52h10v2h-10zM476 40h10v2h-10zM476 42h2v2h-2zM476 44h2v2h-2zM476 46h8v2h-8zM476 48h2v2h-2zM476 50h2v2h-2zM476 52h10v2h-10z' fill='black'/%3E%3Cpath d='M372 96h10v2h-10zM376 98h2v2h-2zM376 100h2v2h-2zM376 102h2v2h-2zM376 104h2v2h-2zM376 106h2v2h-2zM376 108h2v2h-2zM384 96h2v2h-2zM392 96h2v2h-2zM384 98h2v2h-2zM392 98h2v2h-2zM384 100h2v2h-2zM392 100h2v2h-2zM384 102h10v2h-10zM384 104h2v2h-2zM392 104h2v2h-2zM384 106h2v2h-2zM392 106h2v2h-2zM384 108h2v2h-2zM392 108h2v2h-2zM396 96h10v2h-10zM396 98h2v2h-2zM396 100h2v2h-2zM396 102h8v2h-8zM396 104h2v2h-2zM396 106h2v2h-2zM396 108h10v2h-10zM422 96h6v2h-6zM420 98h2v2h-2zM428 98h2v2h-2zM420 100h2v2h-2zM420 102h2v2h-2zM424 102h6v2h-6zM420 104h2v2h-2zM428 104h2v2h-2zM420 106h2v2h-2zM428 106h2v2h-2zM422 108h8v2h-8zM432 96h8v2h-8zM432 98h2v2h-2zM440 98h2v2h-2zM432 100h2v2h-2zM440 100h2v2h-2zM432 102h8v2h-8zM432 104h2v2h-2zM436 104h2v2h-2zM432 106h2v2h-2zM438 106h2v2h-2zM432 108h2v2h-2zM440 108h2v2h-2zM446 96h6v2h-6zM448 98h2v2h-2zM448 100h2v2h-2zM448 102h2v2h-2zM448 104h2v2h-2zM448 106h2v2h-2zM446 108h6v2h-6zM456 96h10v2h-10zM456 98h2v2h-2zM456 100h2v2h-2zM456 102h8v2h-8zM456 104h2v2h-2zM456 106h2v2h-2zM456 108h10v2h-10zM468 96h10v2h-10zM468 98h2v2h-2zM468 100h2v2h-2zM468 102h8v2h-8zM468 104h2v2h-2zM468 106h2v2h-2zM468 108h2v2h-2zM494 96h6v2h-6zM492 98h2v2h-2zM500 98h2v2h-2zM492 100h2v2h-2zM500 100h2v2h-2zM492 102h2v2h-2zM500 102h2v2h-2zM492 104h2v2h-2zM500 104h2v2h-2zM492 106h2v2h-2zM500 106h2v2h-2zM494 108h6v2h-6zM504 96h2v2h-2zM512 96h2v2h-2zM504 98h4v2h-4zM512 98h2v2h-2zM504 100h4v2h-4zM512 100h2v2h-2zM504 102h2v2h-2zM508 102h2v2h-2zM512 102h2v2h-2zM504 104h2v2h-2zM510 104h4v2h-4zM504 106h2v2h-2zM510 106h4v2h-4zM504 108h2v2h-2zM512 108h2v2h-2zM516 96h10v2h-10zM516 98h2v2h-2zM516 100h2v2h-2zM516 102h8v2h-8zM516 104h2v2h-2zM516 106h2v2h-2zM516 108h10v2h-10z' fill='black'/%3E%3Cpath d='M394 176h8v2h-8zM392 178h2v2h-2zM392 180h2v2h-2zM394 182h6v2h-6zM400 184h2v2h-2zM400 186h2v2h-2zM392 188h8v2h-8zM404 176h8v2h-8zM404 178h2v2h-2zM412 178h2v2h-2zM404 180h2v2h-2zM412 180h2v2h-2zM404 182h8v2h-8zM404 184h2v2h-2zM404 186h2v2h-2zM404 188h2v2h-2zM418 176h6v2h-6zM416 178h2v2h-2zM424 178h2v2h-2zM416 180h2v2h-2zM424 180h2v2h-2zM416 182h10v2h-10zM416 184h2v2h-2zM424 184h2v2h-2zM416 186h2v2h-2zM424 186h2v2h-2zM416 188h2v2h-2zM424 188h2v2h-2zM428 176h8v2h-8zM428 178h2v2h-2zM436 178h2v2h-2zM428 180h2v2h-2zM436 180h2v2h-2zM428 182h8v2h-8zM428 184h2v2h-2zM432 184h2v2h-2zM428 186h2v2h-2zM434 186h2v2h-2zM428 188h2v2h-2zM436 188h2v2h-2zM440 176h10v2h-10zM440 178h2v2h-2zM440 180h2v2h-2zM440 182h8v2h-8zM440 184h2v2h-2zM440 186h2v2h-2zM440 188h10v2h-10z' fill='black'/%3E%3Cpath d='M74 142h10v2h-10zM74 144h2v2h-2zM74 146h2v2h-2zM74 148h8v2h-8zM74 150h2v2h-2zM74 152h2v2h-2zM74 154h10v2h-10zM86 142h2v2h-2zM86 144h2v2h-2zM86 146h2v2h-2zM86 148h2v2h-2zM86 150h2v2h-2zM86 152h2v2h-2zM86 154h10v2h-10zM98 142h8v2h-8zM98 144h2v2h-2zM106 144h2v2h-2zM98 146h2v2h-2zM106 146h2v2h-2zM98 148h8v2h-8zM98 150h2v2h-2zM106 150h2v2h-2zM98 152h2v2h-2zM106 152h2v2h-2zM98 154h8v2h-8zM112 142h6v2h-6zM110 144h2v2h-2zM118 144h2v2h-2zM110 146h2v2h-2zM118 146h2v2h-2zM110 148h2v2h-2zM118 148h2v2h-2zM110 150h2v2h-2zM118 150h2v2h-2zM110 152h2v2h-2zM118 152h2v2h-2zM112 154h6v2h-6zM122 142h2v2h-2zM130 142h2v2h-2zM122 144h2v2h-2zM130 144h2v2h-2zM122 146h2v2h-2zM130 146h2v2h-2zM122 148h2v2h-2zM126 148h2v2h-2zM130 148h2v2h-2zM122 150h2v2h-2zM126 150h2v2h-2zM130 150h2v2h-2zM122 152h4v2h-4zM128 152h4v2h-4zM122 154h2v2h-2zM130 154h2v2h-2z' fill='black'/%3E%3Cpath d='M36 196h8v2h-8zM34 198h2v2h-2zM34 200h2v2h-2zM36 202h6v2h-6zM42 204h2v2h-2zM42 206h2v2h-2zM34 208h8v2h-8zM46 196h10v2h-10zM46 198h2v2h-2zM46 200h2v2h-2zM46 202h8v2h-8zM46 204h2v2h-2zM46 206h2v2h-2zM46 208h10v2h-10zM60 196h6v2h-6zM58 198h2v2h-2zM66 198h2v2h-2zM58 200h2v2h-2zM58 202h2v2h-2zM58 204h2v2h-2zM58 206h2v2h-2zM66 206h2v2h-2zM60 208h6v2h-6zM72 196h6v2h-6zM70 198h2v2h-2zM78 198h2v2h-2zM70 200h2v2h-2zM78 200h2v2h-2zM70 202h2v2h-2zM78 202h2v2h-2zM70 204h2v2h-2zM78 204h2v2h-2zM70 206h2v2h-2zM78 206h2v2h-2zM72 208h6v2h-6zM82 196h2v2h-2zM90 196h2v2h-2zM82 198h4v2h-4zM90 198h2v2h-2zM82 200h4v2h-4zM90 200h2v2h-2zM82 202h2v2h-2zM86 202h2v2h-2zM90 202h2v2h-2zM82 204h2v2h-2zM88 204h4v2h-4zM82 206h2v2h-2zM88 206h4v2h-4zM82 208h2v2h-2zM90 208h2v2h-2zM94 196h6v2h-6zM94 198h2v2h-2zM100 198h2v2h-2zM94 200h2v2h-2zM102 200h2v2h-2zM94 202h2v2h-2zM102 202h2v2h-2zM94 204h2v2h-2zM102 204h2v2h-2zM94 206h2v2h-2zM100 206h2v2h-2zM94 208h6v2h-6zM118 196h10v2h-10zM118 198h2v2h-2zM118 200h2v2h-2zM118 202h8v2h-8zM118 204h2v2h-2zM118 206h2v2h-2zM118 208h10v2h-10zM130 196h2v2h-2zM130 198h2v2h-2zM130 200h2v2h-2zM130 202h2v2h-2zM130 204h2v2h-2zM130 206h2v2h-2zM130 208h10v2h-10zM142 196h8v2h-8zM142 198h2v2h-2zM150 198h2v2h-2zM142 200h2v2h-2zM150 200h2v2h-2zM142 202h8v2h-8zM142 204h2v2h-2zM150 204h2v2h-2zM142 206h2v2h-2zM150 206h2v2h-2zM142 208h8v2h-8zM156 196h6v2h-6zM154 198h2v2h-2zM162 198h2v2h-2zM154 200h2v2h-2zM162 200h2v2h-2zM154 202h2v2h-2zM162 202h2v2h-2zM154 204h2v2h-2zM162 204h2v2h-2zM154 206h2v2h-2zM162 206h2v2h-2zM156 208h6v2h-6zM166 196h2v2h-2zM174 196h2v2h-2zM166 198h2v2h-2zM174 198h2v2h-2zM166 200h2v2h-2zM174 200h2v2h-2zM166 202h2v2h-2zM170 202h2v2h-2zM174 202h2v2h-2zM166 204h2v2h-2zM170 204h2v2h-2zM174 204h2v2h-2zM166 206h4v2h-4zM172 206h4v2h-4zM166 208h2v2h-2zM174 208h2v2h-2z' fill='black'/%3E%3Cpath d='M84 258h2v2h-2zM84 260h2v2h-2zM84 262h2v2h-2zM84 264h2v2h-2zM84 266h2v2h-2zM84 268h2v2h-2zM84 270h10v2h-10zM96 258h10v2h-10zM96 260h2v2h-2zM96 262h2v2h-2zM96 264h8v2h-8zM96 266h2v2h-2zM96 268h2v2h-2zM96 270h10v2h-10zM108 258h10v2h-10zM108 260h2v2h-2zM108 262h2v2h-2zM108 264h8v2h-8zM108 266h2v2h-2zM108 268h2v2h-2zM108 270h2v2h-2zM120 258h10v2h-10zM124 260h2v2h-2zM124 262h2v2h-2zM124 264h2v2h-2zM124 266h2v2h-2zM124 268h2v2h-2zM124 270h2v2h-2zM144 258h2v2h-2zM152 258h2v2h-2zM144 260h2v2h-2zM150 260h2v2h-2zM144 262h2v2h-2zM148 262h2v2h-2zM144 264h4v2h-4zM144 266h2v2h-2zM148 266h2v2h-2zM144 268h2v2h-2zM150 268h2v2h-2zM144 270h2v2h-2zM152 270h2v2h-2zM156 258h2v2h-2zM164 258h2v2h-2zM156 260h4v2h-4zM164 260h2v2h-2zM156 262h4v2h-4zM164 262h2v2h-2zM156 264h2v2h-2zM160 264h2v2h-2zM164 264h2v2h-2zM156 266h2v2h-2zM162 266h4v2h-4zM156 268h2v2h-2zM162 268h4v2h-4zM156 270h2v2h-2zM164 270h2v2h-2zM168 258h10v2h-10zM168 260h2v2h-2zM168 262h2v2h-2zM168 264h8v2h-8zM168 266h2v2h-2zM168 268h2v2h-2zM168 270h10v2h-10zM180 258h10v2h-10zM180 260h2v2h-2zM180 262h2v2h-2zM180 264h8v2h-8zM180 266h2v2h-2zM180 268h2v2h-2zM180 270h10v2h-10z' fill='black'/%3E%3Cpath d='M332 300h6v2h-6zM330 302h2v2h-2zM338 302h2v2h-2zM330 304h2v2h-2zM338 304h2v2h-2zM330 306h2v2h-2zM338 306h2v2h-2zM330 308h2v2h-2zM338 308h2v2h-2zM330 310h2v2h-2zM338 310h2v2h-2zM332 312h6v2h-6zM342 300h10v2h-10zM346 302h2v2h-2zM346 304h2v2h-2zM346 306h2v2h-2zM346 308h2v2h-2zM346 310h2v2h-2zM346 312h2v2h-2zM354 300h2v2h-2zM362 300h2v2h-2zM354 302h2v2h-2zM362 302h2v2h-2zM354 304h2v2h-2zM362 304h2v2h-2zM354 306h10v2h-10zM354 308h2v2h-2zM362 308h2v2h-2zM354 310h2v2h-2zM362 310h2v2h-2zM354 312h2v2h-2zM362 312h2v2h-2zM366 300h10v2h-10zM366 302h2v2h-2zM366 304h2v2h-2zM366 306h8v2h-8zM366 308h2v2h-2zM366 310h2v2h-2zM366 312h10v2h-10zM378 300h8v2h-8zM378 302h2v2h-2zM386 302h2v2h-2zM378 304h2v2h-2zM386 304h2v2h-2zM378 306h8v2h-8zM378 308h2v2h-2zM382 308h2v2h-2zM378 310h2v2h-2zM384 310h2v2h-2zM378 312h2v2h-2zM386 312h2v2h-2zM402 300h2v2h-2zM402 302h2v2h-2zM402 304h2v2h-2zM402 306h2v2h-2zM402 308h2v2h-2zM402 310h2v2h-2zM402 312h10v2h-10zM414 300h10v2h-10zM414 302h2v2h-2zM414 304h2v2h-2zM414 306h8v2h-8zM414 308h2v2h-2zM414 310h2v2h-2zM414 312h10v2h-10zM426 300h10v2h-10zM426 302h2v2h-2zM426 304h2v2h-2zM426 306h8v2h-8zM426 308h2v2h-2zM426 310h2v2h-2zM426 312h2v2h-2zM438 300h10v2h-10zM442 302h2v2h-2zM442 304h2v2h-2zM442 306h2v2h-2zM442 308h2v2h-2zM442 310h2v2h-2zM442 312h2v2h-2zM462 300h2v2h-2zM470 300h2v2h-2zM462 302h2v2h-2zM468 302h2v2h-2zM462 304h2v2h-2zM466 304h2v2h-2zM462 306h4v2h-4zM462 308h2v2h-2zM466 308h2v2h-2zM462 310h2v2h-2zM468 310h2v2h-2zM462 312h2v2h-2zM470 312h2v2h-2zM474 300h2v2h-2zM482 300h2v2h-2zM474 302h4v2h-4zM482 302h2v2h-2zM474 304h4v2h-4zM482 304h2v2h-2zM474 306h2v2h-2zM478 306h2v2h-2zM482 306h2v2h-2zM474 308h2v2h-2zM480 308h4v2h-4zM474 310h2v2h-2zM480 310h4v2h-4zM474 312h2v2h-2zM482 312h2v2h-2zM486 300h10v2h-10zM486 302h2v2h-2zM486 304h2v2h-2zM486 306h8v2h-8zM486 308h2v2h-2zM486 310h2v2h-2zM486 312h10v2h-10zM498 300h10v2h-10zM498 302h2v2h-2zM498 304h2v2h-2zM498 306h8v2h-8zM498 308h2v2h-2zM498 310h2v2h-2zM498 312h10v2h-10z' fill='black'/%3E%3Cpath d='M16 12h10v2h-10zM16 14h2v2h-2zM16 16h2v2h-2zM16 18h8v2h-8zM16 20h2v2h-2zM16 22h2v2h-2zM16 24h2v2h-2zM30 12h6v2h-6zM32 14h2v2h-2zM32 16h2v2h-2zM32 18h2v2h-2zM32 20h2v2h-2zM32 22h2v2h-2zM30 24h6v2h-6zM42 12h6v2h-6zM40 14h2v2h-2zM48 14h2v2h-2zM40 16h2v2h-2zM40 18h2v2h-2zM44 18h6v2h-6zM40 20h2v2h-2zM48 20h2v2h-2zM40 22h2v2h-2zM48 22h2v2h-2zM42 24h8v2h-8zM68 12h2v2h-2zM66 14h4v2h-4zM68 16h2v2h-2zM68 18h2v2h-2zM68 20h2v2h-2zM68 22h2v2h-2zM66 24h6v2h-6zM78 22h4v2h-4zM78 24h4v2h-4zM102 12h6v2h-6zM100 14h2v2h-2zM108 14h2v2h-2zM100 16h2v2h-2zM108 16h2v2h-2zM100 18h10v2h-10zM100 20h2v2h-2zM108 20h2v2h-2zM100 22h2v2h-2zM108 22h2v2h-2zM100 24h2v2h-2zM108 24h2v2h-2zM124 12h2v2h-2zM132 12h2v2h-2zM124 14h2v2h-2zM132 14h2v2h-2zM124 16h2v2h-2zM132 16h2v2h-2zM124 18h10v2h-10zM124 20h2v2h-2zM132 20h2v2h-2zM124 22h2v2h-2zM132 22h2v2h-2zM124 24h2v2h-2zM132 24h2v2h-2zM136 12h2v2h-2zM144 12h2v2h-2zM136 14h2v2h-2zM144 14h2v2h-2zM136 16h2v2h-2zM144 16h2v2h-2zM136 18h2v2h-2zM144 18h2v2h-2zM136 20h2v2h-2zM144 20h2v2h-2zM136 22h2v2h-2zM144 22h2v2h-2zM138 24h6v2h-6zM148 12h2v2h-2zM156 12h2v2h-2zM148 14h4v2h-4zM154 14h4v2h-4zM148 16h2v2h-2zM152 16h2v2h-2zM156 16h2v2h-2zM148 18h2v2h-2zM152 18h2v2h-2zM156 18h2v2h-2zM148 20h2v2h-2zM156 20h2v2h-2zM148 22h2v2h-2zM156 22h2v2h-2zM148 24h2v2h-2zM156 24h2v2h-2zM162 12h6v2h-6zM160 14h2v2h-2zM168 14h2v2h-2zM160 16h2v2h-2zM168 16h2v2h-2zM160 18h10v2h-10zM160 20h2v2h-2zM168 20h2v2h-2zM160 22h2v2h-2zM168 22h2v2h-2zM160 24h2v2h-2zM168 24h2v2h-2zM172 12h2v2h-2zM180 12h2v2h-2zM172 14h4v2h-4zM180 14h2v2h-2zM172 16h4v2h-4zM180 16h2v2h-2zM172 18h2v2h-2zM176 18h2v2h-2zM180 18h2v2h-2zM172 20h2v2h-2zM178 20h4v2h-4zM172 22h2v2h-2zM178 22h4v2h-4zM172 24h2v2h-2zM180 24h2v2h-2z' fill='black'/%3E%3Cpath d='M16 30h6v2h-6zM16 32h2v2h-2zM22 32h2v2h-2zM16 34h2v2h-2zM24 34h2v2h-2zM16 36h2v2h-2zM24 36h2v2h-2zM16 38h2v2h-2zM24 38h2v2h-2zM16 40h2v2h-2zM22 40h2v2h-2zM16 42h6v2h-6zM28 30h8v2h-8zM28 32h2v2h-2zM36 32h2v2h-2zM28 34h2v2h-2zM36 34h2v2h-2zM28 36h8v2h-8zM28 38h2v2h-2zM32 38h2v2h-2zM28 40h2v2h-2zM34 40h2v2h-2zM28 42h2v2h-2zM36 42h2v2h-2zM42 30h6v2h-6zM40 32h2v2h-2zM48 32h2v2h-2zM40 34h2v2h-2zM48 34h2v2h-2zM40 36h10v2h-10zM40 38h2v2h-2zM48 38h2v2h-2zM40 40h2v2h-2zM48 40h2v2h-2zM40 42h2v2h-2zM48 42h2v2h-2zM52 30h2v2h-2zM60 30h2v2h-2zM52 32h2v2h-2zM60 32h2v2h-2zM52 34h2v2h-2zM60 34h2v2h-2zM52 36h2v2h-2zM56 36h2v2h-2zM60 36h2v2h-2zM52 38h2v2h-2zM56 38h2v2h-2zM60 38h2v2h-2zM52 40h4v2h-4zM58 40h4v2h-4zM52 42h2v2h-2zM60 42h2v2h-2zM64 30h2v2h-2zM72 30h2v2h-2zM64 32h4v2h-4zM72 32h2v2h-2zM64 34h4v2h-4zM72 34h2v2h-2zM64 36h2v2h-2zM68 36h2v2h-2zM72 36h2v2h-2zM64 38h2v2h-2zM70 38h4v2h-4zM64 40h2v2h-2zM70 40h4v2h-4zM64 42h2v2h-2zM72 42h2v2h-2zM90 30h6v2h-6zM88 32h2v2h-2zM96 32h2v2h-2zM88 34h2v2h-2zM88 36h2v2h-2zM88 38h2v2h-2zM88 40h2v2h-2zM96 40h2v2h-2zM90 42h6v2h-6zM102 30h6v2h-6zM100 32h2v2h-2zM108 32h2v2h-2zM100 34h2v2h-2zM108 34h2v2h-2zM100 36h2v2h-2zM108 36h2v2h-2zM100 38h2v2h-2zM108 38h2v2h-2zM100 40h2v2h-2zM108 40h2v2h-2zM102 42h6v2h-6zM112 30h8v2h-8zM112 32h2v2h-2zM120 32h2v2h-2zM112 34h2v2h-2zM120 34h2v2h-2zM112 36h8v2h-8zM112 38h2v2h-2zM116 38h2v2h-2zM112 40h2v2h-2zM118 40h2v2h-2zM112 42h2v2h-2zM120 42h2v2h-2zM124 30h8v2h-8zM124 32h2v2h-2zM132 32h2v2h-2zM124 34h2v2h-2zM132 34h2v2h-2zM124 36h8v2h-8zM124 38h2v2h-2zM128 38h2v2h-2zM124 40h2v2h-2zM130 40h2v2h-2zM124 42h2v2h-2zM132 42h2v2h-2zM136 30h10v2h-10zM136 32h2v2h-2zM136 34h2v2h-2zM136 36h8v2h-8zM136 38h2v2h-2zM136 40h2v2h-2zM136 42h10v2h-10zM150 30h6v2h-6zM148 32h2v2h-2zM156 32h2v2h-2zM148 34h2v2h-2zM148 36h2v2h-2zM148 38h2v2h-2zM148 40h2v2h-2zM156 40h2v2h-2zM150 42h6v2h-6zM160 30h10v2h-10zM164 32h2v2h-2zM164 34h2v2h-2zM164 36h2v2h-2zM164 38h2v2h-2zM164 40h2v2h-2zM164 42h2v2h-2zM172 30h2v2h-2zM172 32h2v2h-2zM172 34h2v2h-2zM172 36h2v2h-2zM172 38h2v2h-2zM172 40h2v2h-2zM172 42h10v2h-10zM184 30h2v2h-2zM192 30h2v2h-2zM184 32h2v2h-2zM192 32h2v2h-2zM186 34h2v2h-2zM190 34h2v2h-2zM188 36h2v2h-2zM188 38h2v2h-2zM188 40h2v2h-2zM188 42h2v2h-2z' fill='black'/%3E%3Cpath d='M14 48h184' stroke='black' stroke-width='2'/%3E%3C/svg%3E") /* art:mimic-anatomy */;
+  background-repeat: no-repeat;
+  /* Restated, not inherited. A borrowed theme may have put a `background`
+     SHORTHAND on this pseudo-element, and a shorthand it set stays as the colour
+     underneath whatever image is put on top - which prints as a solid black slab
+     with a drawing hidden inside it. */
+  background-color: #fff;
+  background-position: center top;
+  /* A drawn SVG may scale; it is drawn at the page's own width, so it does not
+     have to. Fixed, because a mislabelled elbow that has been squeezed is a
+     rendering fault rather than a mistake somebody made. */
+  background-size: 576px 352px;
+  position: static;
+  width: auto;
+  inset: auto;
+  border: 0;
+  transform: none;
+}
+
+/* ---------- the second barcode ----------
+   Beside the real one, just above the tear line so it does not leave with the
+   coupon. Genuine CODE39, drawn from the module string the way the page's own
+   barcode is, so a scanner really does read it - and what it reads is HELLO.
+   The one thing it brings every morning: it is small, and it is the only
+   mistake on the page that is also a greeting. */
+.coupon::before {
+  content: "";
+  display: block;
+  height: 54px;
+  /* Clear of the real barcode above it: two symbols touching is one symbol a
+     scanner refuses, and this one has to actually read. */
+  margin: 14px 0 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='54' viewBox='0 0 576 54'%3E%3Cg fill='black'%3E%3Crect x='66' y='0' width='4' height='34'/%3E%3Crect x='82' y='0' width='4' height='34'/%3E%3Crect x='90' y='0' width='4' height='34'/%3E%3Crect x='94' y='0' width='4' height='34'/%3E%3Crect x='98' y='0' width='4' height='34'/%3E%3Crect x='106' y='0' width='4' height='34'/%3E%3Crect x='110' y='0' width='4' height='34'/%3E%3Crect x='114' y='0' width='4' height='34'/%3E%3Crect x='122' y='0' width='4' height='34'/%3E%3Crect x='130' y='0' width='4' height='34'/%3E%3Crect x='134' y='0' width='4' height='34'/%3E%3Crect x='138' y='0' width='4' height='34'/%3E%3Crect x='146' y='0' width='4' height='34'/%3E%3Crect x='154' y='0' width='4' height='34'/%3E%3Crect x='170' y='0' width='4' height='34'/%3E%3Crect x='174' y='0' width='4' height='34'/%3E%3Crect x='178' y='0' width='4' height='34'/%3E%3Crect x='186' y='0' width='4' height='34'/%3E%3Crect x='194' y='0' width='4' height='34'/%3E%3Crect x='198' y='0' width='4' height='34'/%3E%3Crect x='202' y='0' width='4' height='34'/%3E%3Crect x='210' y='0' width='4' height='34'/%3E%3Crect x='218' y='0' width='4' height='34'/%3E%3Crect x='222' y='0' width='4' height='34'/%3E%3Crect x='226' y='0' width='4' height='34'/%3E%3Crect x='242' y='0' width='4' height='34'/%3E%3Crect x='250' y='0' width='4' height='34'/%3E%3Crect x='258' y='0' width='4' height='34'/%3E%3Crect x='266' y='0' width='4' height='34'/%3E%3Crect x='270' y='0' width='4' height='34'/%3E%3Crect x='274' y='0' width='4' height='34'/%3E%3Crect x='282' y='0' width='4' height='34'/%3E%3Crect x='290' y='0' width='4' height='34'/%3E%3Crect x='306' y='0' width='4' height='34'/%3E%3Crect x='310' y='0' width='4' height='34'/%3E%3Crect x='314' y='0' width='4' height='34'/%3E%3Crect x='322' y='0' width='4' height='34'/%3E%3Crect x='330' y='0' width='4' height='34'/%3E%3Crect x='334' y='0' width='4' height='34'/%3E%3Crect x='338' y='0' width='4' height='34'/%3E%3Crect x='346' y='0' width='4' height='34'/%3E%3Crect x='354' y='0' width='4' height='34'/%3E%3Crect x='370' y='0' width='4' height='34'/%3E%3Crect x='374' y='0' width='4' height='34'/%3E%3Crect x='378' y='0' width='4' height='34'/%3E%3Crect x='386' y='0' width='4' height='34'/%3E%3Crect x='390' y='0' width='4' height='34'/%3E%3Crect x='394' y='0' width='4' height='34'/%3E%3Crect x='402' y='0' width='4' height='34'/%3E%3Crect x='410' y='0' width='4' height='34'/%3E%3Crect x='414' y='0' width='4' height='34'/%3E%3Crect x='418' y='0' width='4' height='34'/%3E%3Crect x='426' y='0' width='4' height='34'/%3E%3Crect x='442' y='0' width='4' height='34'/%3E%3Crect x='450' y='0' width='4' height='34'/%3E%3Crect x='466' y='0' width='4' height='34'/%3E%3Crect x='474' y='0' width='4' height='34'/%3E%3Crect x='478' y='0' width='4' height='34'/%3E%3Crect x='482' y='0' width='4' height='34'/%3E%3Crect x='490' y='0' width='4' height='34'/%3E%3Crect x='494' y='0' width='4' height='34'/%3E%3Crect x='498' y='0' width='4' height='34'/%3E%3Crect x='506' y='0' width='4' height='34'/%3E%3C/g%3E%3Cpath d='M258 37h2v2h-2zM266 37h2v2h-2zM258 39h2v2h-2zM266 39h2v2h-2zM258 41h2v2h-2zM266 41h2v2h-2zM258 43h10v2h-10zM258 45h2v2h-2zM266 45h2v2h-2zM258 47h2v2h-2zM266 47h2v2h-2zM258 49h2v2h-2zM266 49h2v2h-2zM270 37h10v2h-10zM270 39h2v2h-2zM270 41h2v2h-2zM270 43h8v2h-8zM270 45h2v2h-2zM270 47h2v2h-2zM270 49h10v2h-10zM282 37h2v2h-2zM282 39h2v2h-2zM282 41h2v2h-2zM282 43h2v2h-2zM282 45h2v2h-2zM282 47h2v2h-2zM282 49h10v2h-10zM294 37h2v2h-2zM294 39h2v2h-2zM294 41h2v2h-2zM294 43h2v2h-2zM294 45h2v2h-2zM294 47h2v2h-2zM294 49h10v2h-10zM308 37h6v2h-6zM306 39h2v2h-2zM314 39h2v2h-2zM306 41h2v2h-2zM314 41h2v2h-2zM306 43h2v2h-2zM314 43h2v2h-2zM306 45h2v2h-2zM314 45h2v2h-2zM306 47h2v2h-2zM314 47h2v2h-2zM308 49h6v2h-6z' fill='black'/%3E%3C/svg%3E") /* art:mimic-hello */;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  background-position: center top;
+  background-size: 576px 54px;
+  position: static;
+  width: auto;
+  inset: auto;
+  border: 0;
+  transform: none;
+}
+
+/* ---------- repairs ----------
+   Wearing the Revolutionary, whose transmission prints in clear: `main.mimicry`
+   does not hand over [persona.cipher] and the Mimic has no key, so it has copied
+   the frame, the heading and the groups off a receipt it once saw and sent the
+   message in English underneath a panel that says ENCIPHERED. Said out loud so
+   it reads as a mistake somebody made rather than as a missing step. */
+.receipt:has(.masthead[data-wears="revolutionary"]) .mh-cipher::after {
+  content: "KEY: I DO NOT HAVE THE KEY. I HAVE THE SHAPE.";
+  display: block;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 2px dashed #000;
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  word-spacing: normal;
+}
+
+/* ---------- with nobody to copy ----------
+   data-wears is empty on a morning when the digest holds no one else, and then
+   this file is the entire stylesheet: no borrowed page, no borrowed faces, the
+   base template and a creature impersonating "a human" in general. This is the
+   only place the Mimic's own faces are ever used, and it goes worse, which is
+   the point. */
+.masthead[data-wears=""] {
+  padding: 10px 12px 12px;
+  border-bottom: 5px solid #000;
+}
+.masthead[data-wears=""] .wordmark {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) + 12px);
+  line-height: 1.1;
+}
+.masthead[data-wears=""] .mh-slip {
+  margin: 8px 0 0;
+  padding-left: 11px;
+  border-left: 3px solid #000;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+}
+.masthead[data-wears=""] .dateline {
+  margin-top: 6px;
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+.masthead[data-wears=""] ~ .sec .sec-head {
+  border-bottom: 3px solid #000;
+  padding-bottom: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

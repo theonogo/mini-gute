@@ -1,0 +1,435 @@
+/* Weights come from --bold, never a literal 700. IBM Plex Sans ships a real
+   700, so --bold is 700 here; the condensed display face is set at its 700
+   through --display-weight. See the font-synthesis note in the base stylesheet. */
+/* Accounts Receivable.
+ *
+ * A quarterly report nobody asked for, issued every morning by the Accounts
+ * Receivable department of a company whose only asset is the reader, and
+ * which is named after them (--reader-caps). The masthead is letterhead: a
+ * meaningless swoosh round a T, the company name over annual-report arcs, a
+ * double rule, the version (always FINAL, never final), a narrated ticker of
+ * the day's indicators ending CONFIDENTIAL, then
+ * today's investor-update headline and a KPI tile - both written fresh by the
+ * narrator ([persona.masthead]) - with a small chart that rotates by date
+ * (data-variant): seven good quarters and a bad one, a line that only goes
+ * down, a pie with a slice pulled out. The persona's name never prints.
+ *
+ * Invention is marked, loudly, because a report is the one document a reader
+ * trusts by default (CLAUDE.md invariant 8): the KPI and its chart are stamped
+ * UNAUDITED, and the real temperature chart is captioned as the one audited
+ * figure in the report. Everything else is house style - numbered sections on
+ * black tabs, brand-bar rules, an EXECUTIVE SUMMARY, KPI cards, tabular
+ * figures in the accent mono, an INVOICE with PAYMENT OVERDUE, forward-looking
+ * statements, and an expense claim form, stamped RECEIVED, for a coupon.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 8px; --sec-end: 12px; }
+
+body { line-height: 1.36; }
+
+.receipt { counter-reset: section; }
+
+/* ---------- masthead: letterhead, headline, the KPI tile ---------- */
+.masthead {
+  display: flex; flex-direction: column;
+  padding: 12px var(--pad) 12px;
+  border-bottom: 4px solid #000;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='60' viewBox='0 0 576 60'%3E%3Ccircle cx='596' cy='-50' r='60' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='596' cy='-50' r='74' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='596' cy='-50' r='88' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='596' cy='-50' r='102' fill='none' stroke='black' stroke-width='3'/%3E%3Ccircle cx='596' cy='-50' r='116' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='596' cy='-50' r='130' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='596' cy='-50' r='144' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='596' cy='-50' r='158' fill='none' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E") /* art:ar-swoosh */ right top / 576px 60px no-repeat;
+}
+.wordmark { display: none; }
+/* The letterhead: the company - never the persona - beside its mark. */
+.masthead::before {
+  content: var(--reader-caps) " HOLDINGS PLC";
+  order: 0;
+  display: block;
+  min-height: 46px;
+  padding: 3px 0 0 56px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cpath d='M9 30 C2 12 26 -2 40 12' fill='none' stroke='black' stroke-width='5' stroke-linecap='round'/%3E%3Cpath d='M37 16 C44 34 20 48 6 34' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M15 14 H31 M23 14 V34' stroke='black' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E") /* art:ar-logo */ left top / 46px 46px no-repeat;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.5);
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+.dateline {
+  order: 1;
+  display: flex; justify-content: space-between; gap: 8px;
+  margin: 8px 0 8px;
+  padding-top: 9px;
+  white-space: nowrap;
+  background:
+    linear-gradient(#000, #000) left top / 100% 4px no-repeat,
+    linear-gradient(#000, #000) left 6px / 100% 1px no-repeat;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.dateline::before { content: "Investor update"; font-weight: var(--accent-bold); }
+/* Every report is the final version, and none of them is. */
+.dateline::after { content: "v3 FINAL (2)"; }
+/* The ticker: today's indicators, half boardroom and half the reader's life, written
+   by the narrator, reversed out across the page and still confidential. */
+.mh-ticker {
+  order: 2;
+  display: block;
+  margin: 0 calc(-1 * var(--pad)) 10px;
+  padding: 3px var(--pad) 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  white-space: pre;
+  overflow: hidden;
+  text-align: center;
+  text-transform: uppercase;
+}
+.mh-ticker::after { content: "  /  CONFIDENTIAL"; white-space: pre; }
+/* Today's headline, as a press release would put it. */
+.mh-headline {
+  order: 3;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.35);
+  line-height: 1.08;
+  text-wrap: balance;
+  margin-bottom: 10px;
+}
+/* The KPI tile: an invented figure, a chart to match, and the stamp that says
+   neither is real. */
+.mh-metric {
+  order: 4;
+  position: relative;
+  min-height: 72px;
+  padding: 26px 186px 10px 12px;
+  border: 2px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  line-height: 1.12;
+}
+.mh-metric::before {
+  content: "KEY PERFORMANCE INDICATOR";
+  position: absolute; left: 12px; top: 6px;
+  font-family: var(--font-accent);
+  font-weight: 400;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.08em;
+}
+.mh-metric::after {
+  content: "UNAUDITED";
+  position: absolute; right: 10px; bottom: 8px;
+  width: 160px; height: 88px;
+  box-sizing: border-box;
+  padding-top: 70px;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.2em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='64' viewBox='0 0 160 64'%3E%3Cdefs%3E%3Cpattern id='h' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-1 1 l2 -2 M0 4 l4 -4 M3 5 l2 -2' stroke='black' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M4 60 H158' stroke='black' stroke-width='2'/%3E%3Crect x='8' y='42' width='14' height='18' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Crect x='29' y='36' width='14' height='24' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Crect x='50' y='38' width='14' height='22' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Crect x='71' y='29' width='14' height='31' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Crect x='92' y='22' width='14' height='38' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Crect x='113' y='14' width='14' height='46' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Crect x='134' y='48' width='14' height='12' fill='black' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") /* art:ar-bars */ center top / 160px 64px no-repeat;
+}
+.masthead[data-variant="1"] .mh-metric::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='64' viewBox='0 0 160 64'%3E%3Cpath d='M4 60 H158 M4 4 V60' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M6 16 H156' stroke='black' stroke-width='1' stroke-dasharray='1 4'/%3E%3Cpath d='M6 32 H156' stroke='black' stroke-width='1' stroke-dasharray='1 4'/%3E%3Cpath d='M6 48 H156' stroke='black' stroke-width='1' stroke-dasharray='1 4'/%3E%3Cpolyline points='6,20 28,14 50,24 72,18 94,34 116,30 138,50' fill='none' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M138 50 L152 58 L140 60 Z M138 50 L152 58' fill='black' stroke='black' stroke-width='3'/%3E%3C/svg%3E") /* art:ar-line */;
+}
+.masthead[data-variant="2"] .mh-metric::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='64' viewBox='0 0 160 64'%3E%3Cdefs%3E%3Cpattern id='h' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-1 1 l2 -2 M0 4 l4 -4 M3 5 l2 -2' stroke='black' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M50 32 L50.0 5.0 A27 27 0 0 1 70.7 49.4 Z' fill='white' stroke='black' stroke-width='2'/%3E%3Cpath d='M50 32 L70.7 49.4 A27 27 0 0 1 24.6 41.2 Z' fill='black' stroke='black' stroke-width='2'/%3E%3Cpath d='M44 28 L18.6 37.2 A27 27 0 0 1 44.0 1.0 Z' fill='url%28%23h%29' stroke='black' stroke-width='2'/%3E%3Crect x='96' y='14' width='10' height='10' fill='white' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M112 19 H150' stroke='black' stroke-width='2'/%3E%3Crect x='96' y='30' width='10' height='10' fill='black' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M112 35 H140' stroke='black' stroke-width='2'/%3E%3Crect x='96' y='46' width='10' height='10' fill='url%28%23h%29' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M112 51 H130' stroke='black' stroke-width='2'/%3E%3C/svg%3E") /* art:ar-pie */;
+}
+
+/* ---------- section breaks: a plain rule ---------- */
+.rule {
+  height: 6px;
+  margin: 6px 0;
+  background:
+    linear-gradient(#000, #000) left top / 84px 6px no-repeat,
+    linear-gradient(#000, #000) left 5px / 100% 1px no-repeat;
+}
+.rule + .rule { display: none; }
+
+/* ---------- headings: numbered report sections ---------- */
+section.sec { counter-increment: section; }
+.sec-head {
+  display: flex; align-items: baseline; gap: 10px;
+  padding-bottom: 3px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.08);
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.sec-head { align-items: center; }
+.sec-head::before {
+  content: counter(section) ".0";
+  flex: none;
+  padding: 1px 7px 2px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  letter-spacing: 0;
+}
+
+/* ---------- weather: the operating environment ---------- */
+.verdict {
+  margin: 2px var(--pad) 0 !important;
+  padding: 2px 0 2px 14px !important;
+  border-left: 6px solid #000;
+}
+.verdict::before {
+  content: "EXECUTIVE SUMMARY";
+  display: block;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.1em;
+}
+.temps {
+  border: 0;
+  column-gap: 10px;
+  margin: 8px var(--pad) 4px;
+}
+.temp-cell {
+  padding: 5px 10px 6px;
+  border: 2px solid #000;
+  border-top-width: 7px;
+}
+.temp-cell + .temp-cell { border-left: 2px solid #000; }
+.temp-label { font-family: var(--font-accent); font-weight: 400; letter-spacing: 0.1em; }
+.temp-value { font-family: var(--font-display); font-weight: var(--display-weight); }
+/* The one honest graph in the building, captioned as such under the chart. */
+.weather > .meta:last-child::before {
+  content: "Fig. 1 - Temperature and rain, 24h. Source: Open-Meteo. The only audited figure in this report.";
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  line-height: 1.25;
+}
+
+/* ---------- news: market signals, as a numbered table ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 8px;
+  padding: 4px 0 5px;
+  margin: 0 var(--pad);
+  padding-left: 0 !important; padding-right: 0 !important;
+  border-bottom: 1px solid #000;
+}
+.news-item:last-child { border-bottom: 0; }
+.news-n {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  padding-top: 2px;
+}
+.news-n::before { content: "0"; }
+
+/* ---------- itemization: the invoice ---------- */
+.itemization { padding-top: 4px; }
+.itemization::before {
+  content: "INVOICE";
+  display: flex; justify-content: space-between;
+  margin-bottom: 4px;
+  padding: 2px 0 3px;
+  border-bottom: 2px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  letter-spacing: 0.1em;
+}
+.itemization::after {
+  content: "Terms: net 30  /  payable by Friday";
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  white-space: pre;
+}
+.item-name { font-size: var(--size-small); }
+.item-tier { font-family: var(--font-accent); font-size: var(--size-tiny); }
+.item-price { font-family: var(--font-accent); }
+.leader {
+  background-image: repeating-linear-gradient(to right,
+      #000 0 1px, transparent 1px 5px);
+  background-size: 100% 1px;
+}
+.totals { padding-bottom: 4px; }
+.totals td { font-family: var(--font-display); }
+.totals td.r { font-family: var(--font-accent); }
+/* PAYMENT OVERDUE, as a warning label under the totals. */
+.totals::after {
+  content: "PAYMENT OVERDUE";
+  display: table;
+  margin: 8px 0 2px auto;
+  padding: 3px 12px 3px 34px;
+  border: 3px solid #000;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='18' viewBox='0 0 20 18'%3E%3Cpath d='M10 1 L19 17 H1 Z' fill='black'/%3E%3Cpath d='M10 6 V11' stroke='white' stroke-width='2.4'/%3E%3Ccircle cx='10' cy='14' r='1.3' fill='white'/%3E%3C/svg%3E") 8px center / 20px 18px no-repeat;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.1em;
+}
+
+/* ---------- legalese: analyst consensus ----------
+   Three invented houses rate the reader's stock, each on its own row: the rating knocked
+   out of a chip, the rationale, the house in brackets. The disclosure under
+   them is the one honest line on the page. */
+.legalese {
+  margin-top: 8px;
+  padding-top: 6px !important;
+  border-top: 1px solid #000;
+}
+.legalese::before {
+  content: "ANALYST CONSENSUS  /  " var(--reader-caps) ".L";
+  display: block;
+  margin-bottom: 5px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: 0.08em;
+}
+.legalese .ln {
+  display: grid; grid-template-columns: 58px 1fr; column-gap: 8px;
+  align-items: start;
+}
+.legalese .ln + .ln { margin-top: 5px; }
+.legalese .ln-label {
+  padding: 1px 0 2px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  letter-spacing: 0.06em;
+}
+.legalese .footnote {
+  margin-top: 6px;
+  font-family: var(--font-accent);
+}
+.legalese .footnote::before { content: "Disclosure: "; font-weight: var(--accent-bold); }
+
+/* ---------- the share price ----------
+   The reader's stock, every morning: the close (this receipt's own subtotal), the move
+   since the last receipt, and the mornings before it as a line. Real figures,
+   kept small - a ticker, not a feature. */
+.stock {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-top: 10px;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  border-top: 2px solid #000;
+  border-bottom: 1px solid #000;
+}
+.stock-figures { display: flex; flex-direction: column; }
+.stock-ticker {
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.1em;
+}
+.stock-close {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.6);
+  line-height: 1;
+}
+.stock-move { font-family: var(--font-accent); font-size: var(--size-tiny); }
+.stock-chart { text-align: right; }
+.stock-chart svg { display: block; margin-left: auto; }
+.stock-span {
+  margin-top: 2px;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+}
+
+/* ---------- footer ---------- */
+.serial { margin-top: 10px; }
+.serial .row { font-family: var(--font-accent); font-size: var(--size-tiny); }
+.serial::after {
+  content: "Page 1 of 1.";
+  display: block;
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid #000;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+}
+
+/* ---------- coupon: a form from HR & Finance ----------
+   A different internal form every morning (Python draws it): its number in
+   the bar with the receipt's as the reference, its title as the heading,
+   RECEIVED stamped crooked across it, and every one of them ESCALATED. */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+}
+.coupon-inner {
+  margin: 10px var(--pad) 8px;
+  padding: 10px 12px 10px !important;
+  border: 2px solid #000;
+}
+.coupon-inner::before {
+  content: attr(data-form) "  /  REF " attr(data-no);
+  white-space: pre;
+  display: block;
+  margin: -10px -12px 8px;
+  padding: 3px 12px 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.1em;
+}
+.coupon-inner { position: relative; }
+.coupon-head::after {
+  content: "RECEIVED";
+  position: absolute; right: 14px; top: -3px;
+  padding: 2px 8px;
+  border: 3px double #000;
+  background: #fff;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-small);
+  letter-spacing: 0.14em;
+  transform: rotate(-8deg);
+}
+.coupon-inner:not([data-form])::before { content: "EXPENSE CLAIM  /  FORM EX-11"; }
+.coupon-head {
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.coupon-inner .blk-label {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  margin-bottom: 3px;
+}
+.coupon-terms { margin-top: 5px; font-family: var(--font-accent); }
+.coupon-inner::after {
+  content: "[ ] APPROVED    [ ] REJECTED    [x] ESCALATED\A \A Authorised by: ______________________";
+  display: block;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid #000;
+  white-space: pre;
+  font-family: var(--font-mono);
+  font-size: var(--size-tiny);
+  line-height: 1.3;
+}

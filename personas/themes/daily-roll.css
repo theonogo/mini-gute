@@ -1,0 +1,428 @@
+/* Weights come from --bold, never a literal 700. Archivo Narrow ships a real
+   700 (--bold); Anton and Archivo Black have one weight each, and both of them
+   are already heavier than anything else on the page. See the font-synthesis
+   note in the base stylesheet. */
+/* The Daily Roll.
+ *
+ * A red-top front page on a till roll. The masthead is the paper's own -
+ * THE DAILY ROLL reversed out of a solid black slab, a price and issue bar,
+ * and a starburst flash that rotates by date (WORLD EXCLUSIVE!, FREE INSIDE!,
+ * PICTURES: PAGES 2-7). This is the one persona besides the diner whose name
+ * prints, for the same reason: a paper's masthead is the paper, not an
+ * introduction (SYSTEM.md 3.7).
+ *
+ * Under it the splash, written fresh by the narrator ([persona.masthead]): a
+ * strap line, an enormous stacked headline set as tight as Anton goes, and the
+ * campaign box - THE ROLL SAYS. Then the picture box, with a real photograph
+ * in it every morning and a caption that spins it.
+ *
+ * Below: headings as front-page decks, black bars for rules with CONTINUED ON
+ * PAGE 94 in them, the figures reversed out in slabs, a SHOCK POLL whose
+ * numbers are invented and marked so, the headlines set in the paper's type but
+ * never reworded, WHAT'S INSIDE for an itemization, and a YOU SAY box.
+ *
+ * Signature trick: one photograph - OUR MAN ON THE SCENE, taken from inside a
+ * hedge, at night, badly. The coupon sits inside a dashed scissor line.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 3px; --pad: 12px; --gap: 8px; --sec-end: 10px; }
+
+body { line-height: 1.22; }
+
+/* ---------- masthead: the front page ---------- */
+.masthead {
+  display: flex; flex-direction: column;
+  padding: 0 0 8px;
+}
+/* The paper's own name, reversed out of the slab. */
+.wordmark {
+  order: 0;
+  padding: 6px var(--pad) 8px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 2.5);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+/* Price, issue, date - the bar every paper runs under its name. */
+.dateline {
+  order: 1;
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px;
+  padding: 3px var(--pad) 4px;
+  border-bottom: 4px solid #000;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+/* Archivo Black runs wide: the bar is set a step down so three fields fit. */
+.dateline { font-size: calc(var(--size-tiny) * 0.82); }
+.dateline::before { content: "LATE EDITION"; }
+.dateline::after { content: "90p"; }
+
+/* The strap over the splash. */
+.mh-strap {
+  order: 2;
+  margin: 8px var(--pad) 0;
+  padding: 2px 6px 3px;
+  background: #000;
+  color: #fff;
+  align-self: flex-start;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+/* The splash. As big as the page allows, set as tight as the face goes. */
+.mh-splash {
+  order: 3;
+  position: relative;
+  margin: 2px var(--pad) 0;
+  padding-right: 120px;
+  min-height: 126px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 2.6);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+/* The flash, in the gutter the splash keeps clear for it. Short words, set
+   straight: a rotated line inside a starburst is unreadable at this size. */
+.mh-splash::after {
+  content: "FREE\A INSIDE";
+  position: absolute; right: 0; top: 2px;
+  width: 128px; height: 128px;
+  display: flex; align-items: center; justify-content: center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Cpolygon points='64.0,2.0 70.4,11.4 78.8,3.8 82.8,14.4 92.8,9.1 94.1,20.4 105.1,17.6 103.7,28.9 115.0,28.8 110.9,39.4 122.0,42.0 115.5,51.3 125.5,56.5 117.0,64.0 125.5,71.5 115.5,76.7 122.0,86.0 110.9,88.6 115.0,99.2 103.7,99.1 105.1,110.4 94.1,107.6 92.8,118.9 82.8,113.6 78.8,124.2 70.4,116.6 64.0,126.0 57.6,116.6 49.2,124.2 45.2,113.6 35.2,118.9 33.9,107.6 22.9,110.4 24.3,99.1 13.0,99.2 17.1,88.6 6.0,86.0 12.5,76.7 2.5,71.5 11.0,64.0 2.5,56.5 12.5,51.3 6.0,42.0 17.1,39.4 13.0,28.8 24.3,28.9 22.9,17.6 33.9,20.4 35.2,9.1 45.2,14.4 49.2,3.8 57.6,11.4' fill='black'/%3E%3Ccircle cx='64' cy='64' r='50' fill='black'/%3E%3C/svg%3E") /* art:ds-flash */ center / 128px 128px no-repeat;
+  color: #fff;
+  white-space: pre;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: calc(var(--size-tiny) * 0.82);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+.masthead[data-variant="1"] .mh-splash::after { content: "WORLD\A EXCLUSIVE"; }
+.masthead[data-variant="2"] .mh-splash::after { content: "PICTURES\A PAGES 2-7"; }
+
+/* The Roll's campaign this week, run as a strip across the page. */
+.mh-campaign {
+  order: 4;
+  display: flex; align-items: stretch;
+  margin: 10px 0 0;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.05);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  padding: 6px var(--pad) 7px 0;
+}
+.mh-campaign::before {
+  content: "THE ROLL SAYS";
+  flex: none;
+  display: flex; align-items: center;
+  margin-right: 10px;
+  padding: 0 10px;
+  background: #fff;
+  color: #000;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  max-width: 116px;
+}
+
+/* The picture. A real one every morning - Wikimedia Commons' picture of the
+   day, dithered in main.with_picture at exactly the box's inner width - in a
+   ruled box with the credit a paper prints, and under it the narrator's
+   caption: true about what is in the photograph, a tabloid about everything
+   else. With no picture (offline, nothing cached) neither prints. */
+.mh-picture {
+  order: 5;
+  align-self: center;              /* the box is the picture's size: an upright
+                                      photograph is inset, not floated in white */
+  margin: 10px var(--pad) 0;
+  border: 3px solid #000;
+}
+.mh-picture-credit {
+  /* Takes the picture's width rather than setting it: a long credit would
+     otherwise widen an inset portrait's box back out to the page. */
+  width: 0; min-width: 100%; box-sizing: border-box;
+  padding: 2px 6px 1px;
+  border-top: 3px solid #000;
+  text-align: right;
+  font-family: var(--font-accent);
+  font-size: calc(var(--size-tiny) * 0.66);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.mh-caption {
+  order: 6;
+  margin: 5px var(--pad) 0;
+  padding-left: 9px;
+  border-left: 6px solid #000;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  line-height: 1.12;
+  text-transform: uppercase;
+}
+
+/* ---------- section breaks: black bars, and the page furniture ---------- */
+.rule {
+  height: 10px;
+  margin: 8px 0 6px;
+  background: #000;
+}
+.rule:nth-of-type(3n) { height: auto; background: none; }
+.rule:nth-of-type(3n)::before {
+  content: "";
+  display: block;
+  height: 10px;
+  background: #000;
+}
+.rule:nth-of-type(3n)::after {
+  content: "CONTINUED ON PAGE 94";
+  display: block;
+  margin-top: 3px;
+  text-align: right;
+  padding-right: var(--pad);
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+.rule + .rule { display: none; }
+
+/* ---------- headings: every section gets a front page ---------- */
+.sec-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.5);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.slot:nth-of-type(2n) .sec-head {
+  background: #000;
+  color: #fff;
+  padding: 3px var(--pad) 5px;
+  margin-left: 0; margin-right: 0;
+}
+
+/* ---------- weather: the bombshell, with a poll nobody ran ---------- */
+.temps {
+  border: 0;
+  column-gap: 8px;
+  margin: 8px var(--pad) 4px;
+}
+.temp-cell {
+  padding: 2px 10px 4px;
+  background: #000;
+  color: #fff;
+}
+.temp-cell + .temp-cell { border-left: 0; }
+.temp-label { font-family: var(--font-accent); letter-spacing: 0.06em; }
+.temp-value {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+}
+/* The SHOCK POLL. The bars are invented, and say so (CLAUDE.md invariant 8). */
+.weather::after {
+  content: "ROLL POLL OF READERS WE MADE UP*  \00B7  *NOT A REAL POLL";
+  display: block;
+  margin: 10px var(--pad) 0;
+  padding-top: 140px;
+  border-top: 3px solid #000;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='132' viewBox='0 0 520 132'%3E%3Cdefs%3E%3Cpattern id='h' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Cpath d='M-1 1 l2 -2 M0 4 l4 -4 M3 5 l2 -2' stroke='black' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Cpath d='M40 114 H512' stroke='black' stroke-width='3'/%3E%3Crect x='40' y='6' width='368' height='19' fill='black' stroke='black' stroke-width='2'/%3E%3Crect x='8' y='6' width='24' height='19' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M13 16 L18 21 L27 10' fill='none' stroke='black' stroke-width='3'/%3E%3Crect x='40' y='33' width='220' height='19' fill='url%28%23h%29' stroke='black' stroke-width='2'/%3E%3Crect x='8' y='33' width='24' height='19' fill='none' stroke='black' stroke-width='2'/%3E%3Crect x='40' y='60' width='124' height='19' fill='url%28%23h%29' stroke='black' stroke-width='2'/%3E%3Crect x='8' y='60' width='24' height='19' fill='none' stroke='black' stroke-width='2'/%3E%3Crect x='40' y='87' width='24' height='19' fill='url%28%23h%29' stroke='black' stroke-width='2'/%3E%3Crect x='8' y='87' width='24' height='19' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") /* art:ds-poll */ center top 6px / 520px 132px no-repeat;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- news: set in the paper's type, never reworded ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 6px;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 0.92);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.news-n {
+  align-self: start;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  padding: 2px 0 3px;
+}
+
+/* ---------- itemization: what's inside ---------- */
+.itemization::before {
+  content: "WHAT'S INSIDE";
+  display: block;
+  margin-bottom: 4px;
+  padding: 3px 8px 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.1);
+  letter-spacing: 0.04em;
+}
+.item-name {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  text-transform: uppercase;
+  font-size: var(--size-small);
+}
+.item-tier { font-family: var(--font-accent); font-size: var(--size-tiny); text-transform: uppercase; }
+.totals td { font-family: var(--font-display); font-weight: var(--display-weight); }
+
+/* ---------- legalese: corrections and clarifications ----------
+   The only small print a tabloid really prints, and printed as grudgingly: two
+   corrections to its own coverage, and the smallest of all - about the Roll -
+   set at the smallest size the page allows. */
+.legalese {
+  margin: 10px var(--pad) 0;
+  padding: 6px 10px 7px !important;
+  border: 3px solid #000;
+  text-transform: uppercase;
+}
+.legalese::before {
+  content: "CORRECTIONS & CLARIFICATIONS";
+  display: block;
+  margin: -6px -10px 6px;
+  padding: 3px 10px 4px;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.05);
+  letter-spacing: 0.02em;
+}
+.legalese .ln + .ln { margin-top: 5px; padding-top: 5px; border-top: 1px solid #000; }
+.legalese .footnote {
+  margin-top: 6px;
+  font-size: calc(var(--size-tiny) * 0.62);
+  line-height: 1.2;
+}
+.legalese::after {
+  content: "THE ROLL IS A MEMBER OF NOTHING";
+  display: block;
+  margin-top: 5px;
+  text-align: right;
+  font-family: var(--font-accent);
+  font-size: calc(var(--size-tiny) * 0.66);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- footer: our man on the scene, and what you say ---------- */
+.serial { margin-top: 12px; }
+/* The letters page. The paper cannot take a photograph - a drawn one only ever
+   looks drawn - so the page prints what a tabloid prints instead: a reader,
+   furious about something small. Eight of them, rotated by tonight's moon
+   (data-moon), which is the one hook on the masthead with eight values. */
+.serial::before {
+  content: "\201CI HAVE WRITTEN TO THIS PAPER EVERY DAY SINCE MARCH. NOT ONE REPLY. KEEP UP THE GOOD WORK.\201D  \2014  B., BY POST";
+  display: block;
+  margin: 0 var(--pad) 12px;
+  padding: 40px 12px 10px;
+  border: 3px solid #000;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Cpolygon points='17.0,1.0 21.1,11.3 32.2,12.1 23.7,19.2 26.4,29.9 17.0,24.0 7.6,29.9 10.3,19.2 1.8,12.1 12.9,11.3' fill='black'/%3E%3C/svg%3E") /* art:ds-star */ left 12px top 8px / 34px 34px no-repeat;
+  font-size: var(--size-small);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.serial::before::first-line { font-weight: var(--bold); }
+.receipt:has(.masthead[data-moon="1"]) .serial::before {
+  content: "\201CTHE 07:41 WAS CANCELLED AGAIN. I HAVE BEGUN WALKING. I AM 46.\201D  \2014  A READER, STANDING";
+}
+.receipt:has(.masthead[data-moon="2"]) .serial::before {
+  content: "\201CYOUR PAPER SAID IT WOULD RAIN AND IT DID. UNCANNY. I HAVE CANCELLED MY OTHER PAPERS.\201D  \2014  M., DELIGHTED";
+}
+.receipt:has(.masthead[data-moon="3"]) .serial::before {
+  content: "\201CMY NEIGHBOUR PUTS HIS BINS OUT ON THE WRONG NIGHT AND THE WHOLE STREET FOLLOWS HIM LIKE SHEEP.\201D  \2014  NAME AND ADDRESS SUPPLIED";
+}
+.receipt:has(.masthead[data-moon="4"]) .serial::before {
+  content: "\201CRE: YOUR CAMPAIGN. I AGREE, THOUGH NOT FOR YOUR REASONS, WHICH ARE POOR.\201D  \2014  D., RETIRED";
+}
+.receipt:has(.masthead[data-moon="5"]) .serial::before {
+  content: "\201CI READ THIS PAPER IN ONE MINUTE AND THEN HAD NOTHING. PLEASE PRINT MORE OF IT.\201D  \2014  A SUBSCRIBER";
+}
+.receipt:has(.masthead[data-moon="6"]) .serial::before {
+  content: "\201CWHY IS THERE NEVER ANY GOOD NEWS? I DO NOT COUNT THE WEATHER AS NEWS AND NEITHER SHOULD YOU.\201D  \2014  P., FURIOUS, AS USUAL";
+}
+.receipt:has(.masthead[data-moon="7"]) .serial::before {
+  content: "\201CI WAS PROMISED A FREE GIFT INSIDE. THERE IS NO INSIDE. I AM TAKING THIS FURTHER.\201D  \2014  H., BY EMAIL, IN CAPITALS";
+}
+
+.serial .row { font-size: var(--size-tiny); font-family: var(--font-accent); }
+.serial::after {
+  content: "WIN £5 FOR YOUR LETTER · WRITE TO THE ROLL, ANY BIN";
+  display: block;
+  margin: 6px var(--pad) 0;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- coupon: cut out and keep ---------- */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 3px dashed #000;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+  letter-spacing: 0.04em;
+}
+.coupon-inner {
+  margin: 10px var(--pad) 8px;
+  padding: 10px 12px 12px !important;
+  border: 4px dashed #000;
+  text-align: center;
+}
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: calc(var(--size-body) * 1.6);
+  line-height: 0.95;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.coupon-body { font-size: var(--size-small); }
+.coupon-terms {
+  margin-top: 6px;
+  font-family: var(--font-accent);
+  text-transform: uppercase;
+}
+.coupon-inner::after {
+  content: "CUT ALONG THE LINE. THE ROLL ACCEPTS NO RESPONSIBILITY FOR SCISSORS.";
+  display: block;
+  margin-top: 8px;
+  padding-top: 5px;
+  border-top: 2px solid #000;
+  font-family: var(--font-accent);
+  font-size: var(--size-tiny);
+  line-height: 1.2;
+  text-transform: uppercase;
+}

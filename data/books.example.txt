@@ -1,0 +1,12 @@
+# Your read list - the pool for slot 25, book quote.
+# Copy to data/books.txt (gitignored) and replace these with your own.
+#
+# One book per line as:  Title — Author
+# Paste straight from a Goodreads "read" shelf. Lines starting with # are
+# ignored, as are blank lines. An author with more books on the list is drawn
+# more often, but by the square root of their count, not in proportion.
+
+Frankenstein — Mary Shelley
+The Left Hand of Darkness — Ursula K. Le Guin
+A Wizard of Earthsea — Ursula K. Le Guin
+Dune — Frank Herbert

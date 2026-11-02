@@ -1,0 +1,9 @@
+# tags: schematic, grid
+   +---[ 470R ]---+---||---+
+   |              |  10uF  |
+  ===            _|_       |
+  BATT           \ /  LED  |
+  ===            ---       |
+   |              |        |
+   +--------------+--------+
+        NOMINAL. DO NOT ADJUST.

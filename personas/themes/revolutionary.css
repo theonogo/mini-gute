@@ -1,0 +1,516 @@
+/* Weights come from --bold, never a literal 700. Courier Prime ships a real
+   700, so the redaction bars, the stencilled headings and every reversed-out
+   strip on this page are weight as well as ink. Saira Stencil One and Rock Salt
+   ship a 400 alone and are never asked for more. See the font-synthesis note in
+   the base stylesheet. */
+/* The Revolutionary.
+ *
+ * Intercepted material from a basement that is on no map. The head of the page
+ * is the station - RADIO NIGHTJAR stencilled over a transmission strip carrying
+ * the real date as a time group - then her call to the sleeper, then the
+ * transmission itself: enciphered for real by cipher.py, with the key printed
+ * underneath it as a frequency and, under that, the explanation she could not
+ * resist giving, which defeats the cipher entirely. The plaintext is upside down
+ * in the answers footer, because every puzzle on this machine answers itself the
+ * same day.
+ *
+ * A string runs down the whole left edge with a pin at every section heading, so
+ * the conspiracy literally connects the receipt. Headings are stencilled and the
+ * rest of their line is eaten by a redaction bar. Bands of drawn static divide
+ * the transmissions. Slogans go in the margin at an angle, in her own hand,
+ * because she wrote them on a wall.
+ *
+ * The persona's name never prints. RADIO NIGHTJAR is the station, not the woman.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 15px; --gap: 7px; --sec-end: 11px; }
+
+body { line-height: 1.34; }
+
+/* ---------- the string ----------
+   One line down the whole page with a pin at every heading. It is absolutely
+   positioned against .receipt, which the base stylesheet makes a positioning
+   context for exactly this sort of thing, so it costs no paper of its own. */
+.receipt::before {
+  content: "";
+  position: absolute;
+  /* Moved in to 4px when the head was tightened: the header's own boxes now
+     start at 10px, and a string at 6 was touching them. At the page threshold
+     a 1px white gap between two blacks closes up and the two read as one. */
+  left: 4px; top: 0; bottom: 0;
+  width: 3px;
+  background: #000;
+}
+.sec, .itemization, .totals { position: relative; }
+.sec-head::before, .itemization::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 0.32em;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: inset 0 0 0 3px #fff;
+}
+.itemization::before { top: 6px; }
+/* The barcode needs its quiet zone back, or the string reads as a bar. */
+.serial { position: relative; background: #fff; }
+
+/* ---------- masthead: the set, the station, the transcript ----------
+   The top of this receipt has one job before any of the words are read: say
+   RADIO. So it is a set - an intercept header with a control number, a tuning
+   dial with the needle parked on her frequency, the station name stencilled,
+   the signal report in Q-codes, and the line that says what this piece of paper
+   actually is, which is somebody else's transcript of a broadcast nobody was
+   supposed to hear. Only then does she speak. */
+.masthead {
+  display: flex; flex-direction: column;
+  padding: 0 0 10px;
+  /* Everything in the head sits on this, not on --pad. The strip at the top is
+     full bleed, and a pad-width of white underneath a full-bleed bar reads as a
+     mistake rather than as a margin. */
+  --head-in: 10px;
+}
+
+/* The intercept header. attr() reads the data the template hangs on the
+   masthead: the receipt number is the control number, and the date is the
+   time group. CSS cannot compute either, which is why they are attributes. */
+.masthead::before {
+  /* 52 characters at the tiny size, which is what fits between the paper's
+     own edges at this face. `white-space: pre` does not wrap, it overflows,
+     so anything added here has to be counted rather than eyeballed. */
+  content: "INTERCEPT " attr(data-no) " \00B7 " attr(data-dd) attr(data-mm)
+           "07Z \00B7 PRIORITY FLASH \00B7 EYES ONLY";
+  order: 0;
+  padding: 4px var(--pad) 5px;
+  background: #000; color: #fff;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.01em;
+  white-space: pre;
+}
+
+/* The dial. Drawn, because it is the one part of the head that is not
+   language - the page should read as a radio before a word of it is read. */
+.masthead::after {
+  content: "";
+  order: 1;
+  display: block;
+  height: 74px;
+  margin: 8px var(--head-in) 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='548' height='74' viewBox='0 0 548 74'%3E%3Crect x='1.5' y='1.5' width='452' height='71' fill='none' stroke='black' stroke-width='3'/%3E%3Cpath d='M18 46H454' stroke='black' stroke-width='2'/%3E%3Cpath d='M26 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M20 52h1v1h-1zM19 53h2v1h-2zM18 54h1v1h-1zM20 54h1v1h-1zM17 55h1v1h-1zM20 55h1v1h-1zM17 56h5v1h-5zM20 57h1v1h-1zM20 58h1v1h-1zM24 57h2v1h-2zM24 58h2v1h-2zM30 52h3v1h-3zM29 53h1v1h-1zM33 53h1v1h-1zM29 54h1v1h-1zM32 54h2v1h-2zM29 55h1v1h-1zM31 55h1v1h-1zM33 55h1v1h-1zM29 56h2v1h-2zM33 56h1v1h-1zM29 57h1v1h-1zM33 57h1v1h-1zM30 58h3v1h-3z' fill='black'/%3E%3Cpath d='M38 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M50 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M62 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M74 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M86 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M98 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M110 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M122 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M134 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M146 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M139 52h2v1h-2zM138 53h1v1h-1zM137 54h1v1h-1zM137 55h4v1h-4zM137 56h1v1h-1zM141 56h1v1h-1zM137 57h1v1h-1zM141 57h1v1h-1zM138 58h3v1h-3zM144 57h2v1h-2zM144 58h2v1h-2zM150 52h3v1h-3zM149 53h1v1h-1zM153 53h1v1h-1zM149 54h1v1h-1zM152 54h2v1h-2zM149 55h1v1h-1zM151 55h1v1h-1zM153 55h1v1h-1zM149 56h2v1h-2zM153 56h1v1h-1zM149 57h1v1h-1zM153 57h1v1h-1zM150 58h3v1h-3z' fill='black'/%3E%3Cpath d='M158 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M170 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M182 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M194 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M206 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M218 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M230 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M242 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M254 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M266 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M258 52h3v1h-3zM257 53h1v1h-1zM261 53h1v1h-1zM257 54h1v1h-1zM261 54h1v1h-1zM258 55h3v1h-3zM257 56h1v1h-1zM261 56h1v1h-1zM257 57h1v1h-1zM261 57h1v1h-1zM258 58h3v1h-3zM264 57h2v1h-2zM264 58h2v1h-2zM270 52h3v1h-3zM269 53h1v1h-1zM273 53h1v1h-1zM269 54h1v1h-1zM272 54h2v1h-2zM269 55h1v1h-1zM271 55h1v1h-1zM273 55h1v1h-1zM269 56h2v1h-2zM273 56h1v1h-1zM269 57h1v1h-1zM273 57h1v1h-1zM270 58h3v1h-3z' fill='black'/%3E%3Cpath d='M278 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M290 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M302 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M314 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M326 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M338 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M350 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M362 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M374 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M386 46V30' stroke='black' stroke-width='3'/%3E%3Cpath d='M376 52h1v1h-1zM375 53h2v1h-2zM376 54h1v1h-1zM376 55h1v1h-1zM376 56h1v1h-1zM376 57h1v1h-1zM375 58h3v1h-3zM381 52h3v1h-3zM380 53h1v1h-1zM384 53h1v1h-1zM380 54h1v1h-1zM383 54h2v1h-2zM380 55h1v1h-1zM382 55h1v1h-1zM384 55h1v1h-1zM380 56h2v1h-2zM384 56h1v1h-1zM380 57h1v1h-1zM384 57h1v1h-1zM381 58h3v1h-3zM387 57h2v1h-2zM387 58h2v1h-2zM393 52h3v1h-3zM392 53h1v1h-1zM396 53h1v1h-1zM392 54h1v1h-1zM395 54h2v1h-2zM392 55h1v1h-1zM394 55h1v1h-1zM396 55h1v1h-1zM392 56h2v1h-2zM396 56h1v1h-1zM392 57h1v1h-1zM396 57h1v1h-1zM393 58h3v1h-3z' fill='black'/%3E%3Cpath d='M398 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M410 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M422 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M434 46V38' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M446 46V30' stroke='black' stroke-width='3'/%3E%3Crect x='24' y='8' width='22' height='14' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M29 12h1v1h-1zM29 13h1v1h-1zM29 14h1v1h-1zM29 15h1v1h-1zM29 16h1v1h-1zM29 17h1v1h-1zM29 18h5v1h-5zM35 12h1v1h-1zM39 12h1v1h-1zM35 13h1v1h-1zM39 13h1v1h-1zM35 14h1v1h-1zM39 14h1v1h-1zM35 15h1v1h-1zM37 15h1v1h-1zM39 15h1v1h-1zM35 16h1v1h-1zM37 16h1v1h-1zM39 16h1v1h-1zM35 17h2v1h-2zM38 17h2v1h-2zM35 18h1v1h-1zM39 18h1v1h-1z' fill='black'/%3E%3Crect x='96' y='8' width='22' height='14' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M101 12h1v1h-1zM105 12h1v1h-1zM101 13h2v1h-2zM104 13h2v1h-2zM101 14h1v1h-1zM103 14h1v1h-1zM105 14h1v1h-1zM101 15h1v1h-1zM103 15h1v1h-1zM105 15h1v1h-1zM101 16h1v1h-1zM105 16h1v1h-1zM101 17h1v1h-1zM105 17h1v1h-1zM101 18h1v1h-1zM105 18h1v1h-1zM107 12h1v1h-1zM111 12h1v1h-1zM107 13h1v1h-1zM111 13h1v1h-1zM107 14h1v1h-1zM111 14h1v1h-1zM107 15h1v1h-1zM109 15h1v1h-1zM111 15h1v1h-1zM107 16h1v1h-1zM109 16h1v1h-1zM111 16h1v1h-1zM107 17h2v1h-2zM110 17h2v1h-2zM107 18h1v1h-1zM111 18h1v1h-1z' fill='black'/%3E%3Crect x='200' y='8' width='22' height='14' fill='black' stroke='black' stroke-width='2'/%3E%3Cpath d='M206 12h4v1h-4zM205 13h1v1h-1zM205 14h1v1h-1zM206 15h3v1h-3zM209 16h1v1h-1zM209 17h1v1h-1zM205 18h4v1h-4zM211 12h1v1h-1zM215 12h1v1h-1zM211 13h1v1h-1zM215 13h1v1h-1zM211 14h1v1h-1zM215 14h1v1h-1zM211 15h1v1h-1zM213 15h1v1h-1zM215 15h1v1h-1zM211 16h1v1h-1zM213 16h1v1h-1zM215 16h1v1h-1zM211 17h2v1h-2zM214 17h2v1h-2zM211 18h1v1h-1zM215 18h1v1h-1z' fill='white'/%3E%3Crect x='330' y='8' width='28' height='14' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M335 12h1v1h-1zM339 12h1v1h-1zM335 13h1v1h-1zM339 13h1v1h-1zM335 14h1v1h-1zM339 14h1v1h-1zM335 15h1v1h-1zM339 15h1v1h-1zM335 16h1v1h-1zM339 16h1v1h-1zM336 17h1v1h-1zM338 17h1v1h-1zM337 18h1v1h-1zM341 12h1v1h-1zM345 12h1v1h-1zM341 13h1v1h-1zM345 13h1v1h-1zM341 14h1v1h-1zM345 14h1v1h-1zM341 15h5v1h-5zM341 16h1v1h-1zM345 16h1v1h-1zM341 17h1v1h-1zM345 17h1v1h-1zM341 18h1v1h-1zM345 18h1v1h-1zM347 12h5v1h-5zM347 13h1v1h-1zM347 14h1v1h-1zM347 15h4v1h-4zM347 16h1v1h-1zM347 17h1v1h-1zM347 18h1v1h-1z' fill='black'/%3E%3Cpath d='M160 4V60' stroke='black' stroke-width='3'/%3E%3Cpath d='M151 4h18l-9 12Z' fill='black'/%3E%3Crect x='460' y='1.5' width='88' height='71' fill='none' stroke='black' stroke-width='3'/%3E%3Crect x='470' y='42' width='11' height='10' fill='black' stroke='black' stroke-width='2'/%3E%3Crect x='485' y='33' width='11' height='19' fill='black' stroke='black' stroke-width='2'/%3E%3Crect x='500' y='24' width='11' height='28' fill='black' stroke='black' stroke-width='2'/%3E%3Crect x='515' y='15' width='11' height='37' fill='black' stroke='black' stroke-width='2'/%3E%3Crect x='530' y='6' width='11' height='46' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M473 58h4v1h-4zM472 59h1v1h-1zM472 60h1v1h-1zM473 61h3v1h-3zM476 62h1v1h-1zM476 63h1v1h-1zM472 64h4v1h-4zM479 58h3v1h-3zM480 59h1v1h-1zM480 60h1v1h-1zM480 61h1v1h-1zM480 62h1v1h-1zM480 63h1v1h-1zM479 64h3v1h-3zM485 58h3v1h-3zM484 59h1v1h-1zM488 59h1v1h-1zM484 60h1v1h-1zM484 61h1v1h-1zM486 61h3v1h-3zM484 62h1v1h-1zM488 62h1v1h-1zM484 63h1v1h-1zM488 63h1v1h-1zM485 64h4v1h-4zM499 58h1v1h-1zM498 59h2v1h-2zM497 60h1v1h-1zM499 60h1v1h-1zM496 61h1v1h-1zM499 61h1v1h-1zM496 62h5v1h-5zM499 63h1v1h-1zM499 64h1v1h-1zM506 58h1v1h-1zM506 59h1v1h-1zM505 60h1v1h-1zM504 61h1v1h-1zM503 62h1v1h-1zM502 63h1v1h-1zM502 64h1v1h-1zM508 58h5v1h-5zM508 59h1v1h-1zM508 60h4v1h-4zM512 61h1v1h-1zM512 62h1v1h-1zM508 63h1v1h-1zM512 63h1v1h-1zM509 64h3v1h-3z' fill='black'/%3E%3C/svg%3E") /* art:nj-dial */;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 556px 74px;
+}
+
+/* The station, stencilled. The element carries the persona's display name, which
+   never prints on this machine - it is zeroed and the station is set in its
+   place, so RADIO NIGHTJAR is the name of a transmitter and not an introduction.
+   Cut through by the stencil's own bridges: the face has them, so nothing here
+   has to fake it. */
+.wordmark {
+  order: 2;
+  font-size: 0;
+  margin: 8px var(--head-in) 0;
+  border-bottom: 3px solid #000;
+  padding-bottom: 4px;
+}
+.wordmark::before {
+  content: "RADIO NIGHTJAR";
+  display: block;
+  font-family: var(--font-display);
+  font-size: calc(var(--size-body) + 15px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+/* The signal report, in the Q-codes an operator would actually write down.
+   Turned by tonight's moon, so a reader who sees this page twice finds the
+   conditions have changed. */
+.wordmark::after {
+  display: block;
+  margin-top: 5px;
+  font-size: var(--size-tiny);
+  font-weight: var(--bold);
+  letter-spacing: 0.02em;
+  white-space: pre;
+}
+.masthead[data-moon="0"] .wordmark::after { content: "QSA 5 \00B7 QRK 4 \00B7 QRM NIL \00B7 TAPE 04/A"; }
+.masthead[data-moon="1"] .wordmark::after { content: "QSA 4 \00B7 QRK 3 \00B7 QRM MODERATE \00B7 TAPE 04/B"; }
+.masthead[data-moon="2"] .wordmark::after { content: "QSA 3 \00B7 QRK 3 \00B7 SECOND CARRIER \00B7 TAPE 05/A"; }
+.masthead[data-moon="3"] .wordmark::after { content: "QSA 5 \00B7 QRK 5 \00B7 SHE IS CLOSE TONIGHT \00B7 TAPE 05/B"; }
+.masthead[data-moon="4"] .wordmark::after { content: "QSA 2 \00B7 QRK 2 \00B7 QSB DEEP \00B7 TAPE 06/A"; }
+.masthead[data-moon="5"] .wordmark::after { content: "QSA 4 \00B7 QRK 4 \00B7 QRT AT 07:04 \00B7 TAPE 06/B"; }
+.masthead[data-moon="6"] .wordmark::after { content: "QSA 3 \00B7 QRK 4 \00B7 JAMMING SUSPECTED \00B7 TAPE 07/A"; }
+.masthead[data-moon="7"] .wordmark::after { content: "QSA 5 \00B7 QRK 4 \00B7 DRIFT \00B1200 C/S \00B7 TAPE 07/B"; }
+
+.mh-callsign {
+  order: 3;
+  margin: 9px var(--head-in) 0;
+  padding-left: 10px;
+  border-left: 5px solid #000;
+  font-weight: var(--bold);
+  font-size: var(--size-small);
+  line-height: 1.3;
+}
+
+.dateline {
+  order: 4;
+  margin: 9px var(--head-in) 0;
+  display: flex; align-items: center; gap: 9px;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* Whatever else was on the dateline's line has been taken out. */
+.dateline::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 11px;
+  background: #000;
+}
+
+/* ---------- the enciphered transmission ----------
+   Set in the mono face rather than the body's Courier: the groups have to
+   column up, and --font-mono is embedded on every page whatever the persona is
+   wearing. The three ciphers want three different settings, so the panel reads
+   the day's variant - the same number cipher.py picks the cipher by. */
+.mh-cipher {
+  order: 5;
+  position: relative;
+  margin: 13px var(--head-in) 0;
+  padding: 26px 12px 12px;
+  border: 3px solid #000;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--size-small);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  word-spacing: 0.4em;
+  text-align: center;
+}
+/* A numbers night runs to a hundred figures and has to wrap inside the frame
+   rather than off the paper, so it loses the tracking and drops a size. */
+.masthead[data-variant="1"] .mh-cipher {
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+  word-spacing: normal;
+  line-height: 1.7;
+}
+/* The fence is a drawing, not a sentence: the letters stand in their own
+   columns and the reader takes them down the page. So it keeps its spaces, is
+   not re-wrapped, and is centred by centring its BOX - centring the text would
+   centre each rail separately and shatter the zigzag (CLAUDE.md, fixed-pitch
+   content). */
+.masthead[data-variant="2"] .mh-cipher {
+  white-space: pre;
+  overflow-x: hidden;
+  font-size: var(--size-tiny);
+  letter-spacing: 0;
+  word-spacing: normal;
+  line-height: 1.45;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+}
+.mh-cipher::before {
+  content: "TRANSMISSION  \00B7  ENCIPHERED  \00B7  COPY ONCE";
+  position: absolute; left: -3px; right: -3px; top: -3px;
+  padding: 3px 10px 4px;
+  background: #000; color: #fff;
+  font-family: var(--font);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.03em;
+  white-space: pre;
+  text-align: left;
+}
+
+/* The key, printed on the same piece of paper as the thing it unlocks. */
+.mh-cipher-key {
+  order: 6;
+  margin: 0 var(--head-in);
+  padding: 4px var(--pad) 5px;
+  background: #000; color: #fff;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* And then she explains it, which is the whole problem with her. */
+.mh-cipher-note {
+  order: 7;
+  margin: 7px var(--head-in) 0 calc(var(--head-in) + 16px);
+  padding-left: 12px;
+  border-left: 2px dashed #000;
+  font-size: var(--size-tiny);
+  line-height: 1.35;
+}
+.mh-cipher-note::before {
+  content: "SHE ADDS: ";
+  font-weight: var(--bold);
+}
+
+/* The wall behind the transmitter. Rock Salt is a hand, not a face - it stays
+   at tiny, where its strokes still close up at the page threshold. */
+.mh-slogan {
+  order: 8;
+  align-self: flex-start;
+  margin: 13px 0 0 calc(var(--head-in) + 4px);
+  padding: 3px 9px;
+  border: 2px solid #000;
+  transform: rotate(-1.6deg);
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+  line-height: 1.5;
+}
+
+/* ---------- headings: stencilled, and the rest of the line taken out ------ */
+.sec-head {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-display);
+  font-size: var(--size-small);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.sec-head::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 18px;
+  height: 13px;
+  background: #000;
+}
+
+/* ---------- rules: bands of static ----------
+   Every third one. All of them would be a page of noise, and noise everywhere
+   is noise nowhere - these have to read as the gap between two transmissions. */
+.rule { height: var(--rule); }
+.rule:nth-of-type(3n+1) {
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='16' viewBox='0 0 576 16'%3E%3Cg fill='black'%3E%3Crect x='0' y='5' width='3' height='9'/%3E%3Crect x='4' y='1' width='1' height='13'/%3E%3Crect x='8' y='4' width='1' height='9'/%3E%3Crect x='11' y='12' width='2' height='2'/%3E%3Crect x='14' y='6' width='2' height='6'/%3E%3Crect x='19' y='7' width='2' height='6'/%3E%3Crect x='22' y='4' width='1' height='9'/%3E%3Crect x='24' y='2' width='1' height='3'/%3E%3Crect x='26' y='0' width='2' height='16'/%3E%3Crect x='29' y='0' width='2' height='13'/%3E%3Crect x='33' y='4' width='2' height='9'/%3E%3Crect x='36' y='4' width='2' height='4'/%3E%3Crect x='39' y='4' width='1' height='6'/%3E%3Crect x='42' y='0' width='1' height='13'/%3E%3Crect x='48' y='3' width='2' height='4'/%3E%3Crect x='52' y='10' width='1' height='2'/%3E%3Crect x='58' y='6' width='3' height='6'/%3E%3Crect x='64' y='9' width='1' height='6'/%3E%3Crect x='67' y='7' width='2' height='3'/%3E%3Crect x='70' y='7' width='2' height='2'/%3E%3Crect x='75' y='8' width='3' height='4'/%3E%3Crect x='78' y='3' width='1' height='13'/%3E%3Crect x='82' y='10' width='1' height='6'/%3E%3Crect x='85' y='12' width='1' height='2'/%3E%3Crect x='87' y='1' width='2' height='13'/%3E%3Crect x='89' y='10' width='2' height='2'/%3E%3Crect x='94' y='0' width='1' height='16'/%3E%3Crect x='98' y='0' width='1' height='4'/%3E%3Crect x='101' y='4' width='1' height='9'/%3E%3Crect x='102' y='2' width='3' height='9'/%3E%3Crect x='106' y='4' width='2' height='2'/%3E%3Crect x='111' y='1' width='1' height='2'/%3E%3Crect x='114' y='5' width='2' height='3'/%3E%3Crect x='119' y='12' width='1' height='2'/%3E%3Crect x='121' y='1' width='1' height='3'/%3E%3Crect x='125' y='1' width='3' height='13'/%3E%3Crect x='130' y='6' width='2' height='9'/%3E%3Crect x='134' y='5' width='2' height='4'/%3E%3Crect x='137' y='0' width='2' height='16'/%3E%3Crect x='142' y='7' width='1' height='4'/%3E%3Crect x='145' y='4' width='3' height='4'/%3E%3Crect x='149' y='6' width='3' height='9'/%3E%3Crect x='153' y='11' width='1' height='4'/%3E%3Crect x='154' y='2' width='1' height='13'/%3E%3Crect x='157' y='7' width='1' height='3'/%3E%3Crect x='160' y='10' width='1' height='6'/%3E%3Crect x='166' y='1' width='2' height='9'/%3E%3Crect x='170' y='7' width='2' height='3'/%3E%3Crect x='174' y='1' width='2' height='9'/%3E%3Crect x='176' y='6' width='1' height='3'/%3E%3Crect x='179' y='4' width='2' height='2'/%3E%3Crect x='186' y='5' width='1' height='6'/%3E%3Crect x='192' y='4' width='2' height='9'/%3E%3Crect x='197' y='2' width='3' height='9'/%3E%3Crect x='201' y='9' width='1' height='4'/%3E%3Crect x='203' y='0' width='1' height='3'/%3E%3Crect x='209' y='3' width='1' height='13'/%3E%3Crect x='211' y='14' width='2' height='2'/%3E%3Crect x='214' y='8' width='1' height='6'/%3E%3Crect x='217' y='0' width='1' height='4'/%3E%3Crect x='220' y='3' width='2' height='13'/%3E%3Crect x='223' y='0' width='1' height='16'/%3E%3Crect x='226' y='0' width='1' height='16'/%3E%3Crect x='228' y='9' width='2' height='4'/%3E%3Crect x='231' y='11' width='1' height='2'/%3E%3Crect x='233' y='8' width='3' height='3'/%3E%3Crect x='241' y='0' width='2' height='13'/%3E%3Crect x='244' y='3' width='1' height='13'/%3E%3Crect x='245' y='7' width='1' height='4'/%3E%3Crect x='248' y='4' width='3' height='2'/%3E%3Crect x='253' y='4' width='3' height='2'/%3E%3Crect x='257' y='8' width='1' height='3'/%3E%3Crect x='260' y='8' width='2' height='6'/%3E%3Crect x='262' y='8' width='3' height='6'/%3E%3Crect x='267' y='1' width='1' height='6'/%3E%3Crect x='268' y='9' width='1' height='6'/%3E%3Crect x='270' y='0' width='1' height='16'/%3E%3Crect x='272' y='5' width='1' height='2'/%3E%3Crect x='273' y='5' width='1' height='9'/%3E%3Crect x='274' y='7' width='2' height='6'/%3E%3Crect x='281' y='3' width='2' height='13'/%3E%3Crect x='285' y='4' width='2' height='3'/%3E%3Crect x='289' y='2' width='3' height='13'/%3E%3Crect x='295' y='2' width='2' height='13'/%3E%3Crect x='299' y='0' width='1' height='16'/%3E%3Crect x='303' y='0' width='2' height='16'/%3E%3Crect x='307' y='2' width='1' height='13'/%3E%3Crect x='310' y='0' width='1' height='16'/%3E%3Crect x='312' y='0' width='2' height='2'/%3E%3Crect x='315' y='9' width='1' height='6'/%3E%3Crect x='318' y='3' width='2' height='2'/%3E%3Crect x='321' y='0' width='2' height='16'/%3E%3Crect x='326' y='10' width='2' height='6'/%3E%3Crect x='333' y='11' width='2' height='2'/%3E%3Crect x='335' y='0' width='1' height='13'/%3E%3Crect x='338' y='5' width='1' height='9'/%3E%3Crect x='341' y='0' width='1' height='16'/%3E%3Crect x='343' y='9' width='2' height='2'/%3E%3Crect x='347' y='3' width='3' height='9'/%3E%3Crect x='352' y='0' width='2' height='13'/%3E%3Crect x='355' y='0' width='1' height='13'/%3E%3Crect x='358' y='0' width='1' height='16'/%3E%3Crect x='359' y='3' width='1' height='13'/%3E%3Crect x='362' y='12' width='2' height='4'/%3E%3Crect x='367' y='0' width='1' height='13'/%3E%3Crect x='371' y='5' width='1' height='6'/%3E%3Crect x='374' y='8' width='2' height='3'/%3E%3Crect x='378' y='3' width='1' height='3'/%3E%3Crect x='380' y='9' width='3' height='4'/%3E%3Crect x='386' y='0' width='1' height='16'/%3E%3Crect x='388' y='14' width='1' height='2'/%3E%3Crect x='392' y='4' width='3' height='3'/%3E%3Crect x='396' y='13' width='1' height='3'/%3E%3Crect x='398' y='0' width='2' height='9'/%3E%3Crect x='401' y='8' width='2' height='6'/%3E%3Crect x='404' y='0' width='1' height='13'/%3E%3Crect x='407' y='0' width='1' height='16'/%3E%3Crect x='413' y='5' width='2' height='6'/%3E%3Crect x='417' y='5' width='1' height='6'/%3E%3Crect x='421' y='7' width='1' height='9'/%3E%3Crect x='423' y='3' width='2' height='3'/%3E%3Crect x='427' y='0' width='1' height='16'/%3E%3Crect x='428' y='0' width='2' height='13'/%3E%3Crect x='432' y='2' width='1' height='13'/%3E%3Crect x='434' y='4' width='1' height='9'/%3E%3Crect x='437' y='1' width='2' height='2'/%3E%3Crect x='440' y='4' width='1' height='6'/%3E%3Crect x='443' y='8' width='1' height='2'/%3E%3Crect x='445' y='10' width='1' height='3'/%3E%3Crect x='448' y='0' width='1' height='16'/%3E%3Crect x='451' y='0' width='3' height='16'/%3E%3Crect x='454' y='12' width='3' height='4'/%3E%3Crect x='460' y='4' width='2' height='4'/%3E%3Crect x='464' y='5' width='3' height='3'/%3E%3Crect x='467' y='9' width='1' height='2'/%3E%3Crect x='469' y='7' width='1' height='9'/%3E%3Crect x='472' y='0' width='2' height='13'/%3E%3Crect x='474' y='2' width='1' height='4'/%3E%3Crect x='477' y='12' width='3' height='2'/%3E%3Crect x='482' y='3' width='1' height='9'/%3E%3Crect x='488' y='6' width='2' height='2'/%3E%3Crect x='491' y='3' width='2' height='3'/%3E%3Crect x='495' y='3' width='1' height='13'/%3E%3Crect x='497' y='0' width='1' height='4'/%3E%3Crect x='499' y='6' width='1' height='2'/%3E%3Crect x='502' y='2' width='2' height='4'/%3E%3Crect x='506' y='2' width='2' height='3'/%3E%3Crect x='513' y='8' width='2' height='6'/%3E%3Crect x='520' y='0' width='2' height='16'/%3E%3Crect x='523' y='0' width='2' height='9'/%3E%3Crect x='527' y='2' width='1' height='13'/%3E%3Crect x='533' y='10' width='2' height='3'/%3E%3Crect x='535' y='10' width='3' height='6'/%3E%3Crect x='543' y='2' width='2' height='9'/%3E%3Crect x='550' y='6' width='3' height='9'/%3E%3Crect x='558' y='0' width='1' height='16'/%3E%3Crect x='561' y='10' width='2' height='6'/%3E%3Crect x='566' y='6' width='1' height='9'/%3E%3Crect x='570' y='0' width='1' height='16'/%3E%3Crect x='571' y='1' width='1' height='13'/%3E%3Crect x='572' y='7' width='1' height='3'/%3E%3Crect x='573' y='3' width='2' height='13'/%3E%3C/g%3E%3C/svg%3E") /* art:nj-static */;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+}
+
+/* ---------- weather: intelligence, reported exactly ---------- */
+.weather .verdict {
+  margin-top: 5px;
+  font-size: var(--size-body);
+  line-height: 1.38;
+}
+.temps { border-width: 4px; }
+.temp-label { font-family: var(--font-display); letter-spacing: 0.1em; }
+/* Rain is cover, and she says so on a wet morning. data-wet is the one thing
+   on this page the weather gets to change. */
+.masthead[data-wet="1"] ~ .weather::after {
+  content: "PRECIPITATION CONFIRMED \00B7 GOOD COVER \00B7 USE IT";
+  display: block;
+  margin-top: 8px;
+  padding: 4px var(--pad) 5px;
+  background: #000; color: #fff;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* ---------- news: intercepts ---------- */
+.news-item {
+  display: flex; gap: 10px;
+  margin-top: 7px;
+  line-height: 1.32;
+}
+/* A stamped reference, not a bullet: these came off somebody else's wire. */
+.news-n {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  padding: 1px 6px 2px;
+  border: 2px solid #000;
+  font-family: var(--font-display);
+  font-size: var(--size-tiny);
+}
+.news-n::before { content: "INT-"; }
+/* The headlines themselves are never redacted and never restyled into
+   cover-ups. They are the one part of the page that is somebody else's fact
+   (CLAUDE.md invariant 8), and she reports intelligence exactly. */
+
+/* ---------- slots ---------- */
+.slot-body { line-height: 1.38; }
+.slot-fine {
+  margin-top: 6px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: var(--size-tiny);
+}
+
+/* ---------- the censored page ----------
+   A whole paragraph blacked out above the itemization. It said nothing: that
+   is the joke, and it is also the only place on the receipt where a redaction
+   costs the reader nothing, which is why it is the only place there is one. */
+.itemization::after {
+  content: "";
+  display: block;
+  height: 104px;
+  margin: 0 0 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='548' height='104' viewBox='0 0 548 104'%3E%3Cg fill='black'%3E%3Crect x='0' y='4' width='55' height='13'/%3E%3Crect x='62' y='4' width='45' height='13'/%3E%3Crect x='115' y='4' width='28' height='13'/%3E%3Crect x='151' y='4' width='40' height='13'/%3E%3Crect x='198' y='4' width='85' height='13'/%3E%3Crect x='290' y='4' width='68' height='13'/%3E%3Crect x='365' y='4' width='33' height='13'/%3E%3Crect x='407' y='4' width='84' height='13'/%3E%3Crect x='498' y='4' width='50' height='13'/%3E%3Crect x='0' y='24' width='64' height='13'/%3E%3Crect x='72' y='24' width='87' height='13'/%3E%3Crect x='168' y='24' width='63' height='13'/%3E%3Crect x='238' y='24' width='94' height='13'/%3E%3Crect x='340' y='24' width='51' height='13'/%3E%3Crect x='399' y='24' width='39' height='13'/%3E%3Crect x='449' y='24' width='85' height='13'/%3E%3Crect x='0' y='44' width='34' height='13'/%3E%3Crect x='45' y='44' width='85' height='13'/%3E%3Crect x='138' y='44' width='69' height='13'/%3E%3Crect x='218' y='44' width='68' height='13'/%3E%3Crect x='293' y='44' width='72' height='13'/%3E%3Crect x='372' y='44' width='39' height='13'/%3E%3Crect x='419' y='44' width='39' height='13'/%3E%3Crect x='466' y='44' width='50' height='13'/%3E%3Crect x='525' y='44' width='23' height='13'/%3E%3Crect x='0' y='64' width='70' height='13'/%3E%3Crect x='81' y='64' width='39' height='13'/%3E%3Crect x='128' y='64' width='85' height='13'/%3E%3Crect x='224' y='64' width='56' height='13'/%3E%3Crect x='287' y='64' width='58' height='13'/%3E%3Crect x='354' y='64' width='85' height='13'/%3E%3Crect x='450' y='64' width='52' height='13'/%3E%3Crect x='513' y='64' width='35' height='13'/%3E%3Crect x='0' y='84' width='30' height='13'/%3E%3Crect x='41' y='84' width='28' height='13'/%3E%3Crect x='78' y='84' width='49' height='13'/%3E%3Crect x='135' y='84' width='56' height='13'/%3E%3Crect x='198' y='84' width='37' height='13'/%3E%3Crect x='243' y='84' width='39' height='13'/%3E%3C/g%3E%3C/svg%3E") /* art:nj-redacted */;
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 100% 104px;
+}
+.itemization { display: flex; flex-direction: column; }
+.itemization .item { order: 0; }
+.itemization::after { order: 1; }
+
+.item-name { font-size: var(--size-small); }
+.item-tier { font-family: var(--font-display); }
+
+/* ---------- totals, and the scrawl beside them ----------
+   Eight of them, turned by tonight's moon - the one masthead hook with eight
+   values, and the only way a stylesheet gets a different line out of the same
+   page eight days running. */
+.totals { padding-bottom: 6px; }
+.totals::after {
+  display: block;
+  width: max-content; max-width: 100%;
+  margin: 10px 0 0 auto;
+  padding: 3px 8px;
+  border: 2px solid #000;
+  transform: rotate(1.4deg);
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  font-size: var(--size-tiny);
+}
+.masthead[data-moon="0"] ~ .totals::after { content: "they are listening"; }
+.masthead[data-moon="1"] ~ .totals::after { content: "burn after reading"; }
+.masthead[data-moon="2"] ~ .totals::after { content: "not one of us yet"; }
+.masthead[data-moon="3"] ~ .totals::after { content: "the day is coming"; }
+.masthead[data-moon="4"] ~ .totals::after { content: "count the doors"; }
+.masthead[data-moon="5"] ~ .totals::after { content: "i am still here"; }
+.masthead[data-moon="6"] ~ .totals::after { content: "this is the third version"; }
+.masthead[data-moon="7"] ~ .totals::after { content: "tell nobody. tell everybody"; }
+
+/* ---------- the close-down ---------- */
+.legalese {
+  position: relative;
+  margin-top: 10px;
+  padding-top: 28px;
+  border-top: 3px solid #000;
+  line-height: 1.42;
+}
+.legalese::before {
+  content: "TRANSMISSION ENDS \00B7 CLOSE-DOWN PROTOCOL";
+  position: absolute; left: 0; right: 0; top: 0;
+  padding: 3px var(--pad) 4px;
+  background: #000; color: #fff;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.03em;
+}
+.legalese .footnote {
+  margin-top: 7px;
+  padding-left: 12px;
+  border-left: 2px dashed #000;
+  font-family: var(--font-accent);
+  font-weight: var(--accent-bold);
+  line-height: 1.55;
+}
+
+/* ---------- the decrypt ----------
+   Upside down at the foot, like every other answer on this machine. */
+.answers { border-top: 3px solid #000; padding-top: 9px; }
+.answer-label {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: 0.04em;
+}
+.answer-body { font-weight: var(--bold); letter-spacing: 0.04em; }
+
+/* ---------- serial ---------- */
+.serial .row {
+  font-family: var(--font-display);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- the coupon: forged papers ----------
+   The sleeper's cover for the day, typed onto a stolen form: each field a
+   ruled row with its label stencilled in a column, the cover name (which
+   Python drew) typed heaviest, the thumb and a stamp that did not take. */
+.tear {
+  border-top-width: 3px;
+  padding-top: 6px;
+  text-align: center;
+  font-size: var(--size-tiny);
+  letter-spacing: 0.05em;
+}
+.coupon-inner {
+  position: relative;
+  margin: 9px 8px 0;
+  padding: 13px 15px 15px;
+  border: 3px solid #000;
+  /* The thumb, and a stamp that did not take. The stamp sits over the corner
+     of the frame on purpose: a stamp that respects the box was never pressed
+     by a person in a hurry. */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='116' height='148' viewBox='0 0 116 148'%3E%3Cg fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M55.2 83.1A6.0 8.0 0 0 1 57.0 68.1'/%3E%3Cpath d='M63.4 72.6A6.0 8.0 0 0 1 55.2 83.1'/%3E%3Cpath d='M62.7 63.4A10.6 14.0 0 0 1 57.1 89.9'/%3E%3Cpath d='M50.2 85.5A10.6 14.0 0 0 1 62.7 63.4'/%3E%3Cpath d='M43.0 79.0A15.2 20.0 0 0 1 71.6 67.2'/%3E%3Cpath d='M73.0 79.1A15.2 20.0 0 0 1 43.0 79.0'/%3E%3Cpath d='M42.8 59.3A19.8 26.0 0 0 1 77.5 80.4'/%3E%3Cpath d='M64.6 100.5A19.8 26.0 0 0 1 42.8 59.3'/%3E%3Cpath d='M41.4 52.6A24.4 32.0 0 0 1 79.4 91.3'/%3E%3Cpath d='M68.1 105.1A24.4 32.0 0 0 1 41.4 52.6'/%3E%3Cpath d='M75.2 45.4A29.0 38.0 0 0 1 54.1 113.7'/%3E%3Cpath d='M31.7 92.0A29.0 38.0 0 0 1 75.2 45.4'/%3E%3Cpath d='M90.4 64.3A33.6 44.0 0 0 1 29.1 98.4'/%3E%3Cpath d='M24.4 76.2A33.6 44.0 0 0 1 90.4 64.3'/%3E%3Cpath d='M72.8 29.9A38.2 50.0 0 0 1 55.6 125.9'/%3E%3Cpath d='M32.4 113.1A38.2 50.0 0 0 1 72.8 29.9'/%3E%3Cpath d='M79.9 27.9A42.8 56.0 0 0 1 56.5 132.0'/%3E%3Cpath d='M21.0 104.3A42.8 56.0 0 0 1 79.9 27.9'/%3E%3Cpath d='M37.4 131.9A47.4 62.0 0 0 1 63.1 14.4'/%3E%3Cpath d='M91.7 32.4A47.4 62.0 0 0 1 37.4 131.9'/%3E%3Cpath d='M67.3 9.1A52.0 68.0 0 0 1 63.9 143.6'/%3E%3Cpath d='M34.3 136.5A52.0 68.0 0 0 1 67.3 9.1'/%3E%3Cpath d='M53 82q5 -12 10 -2q4 8 -6 9q-11 1 -9 -12q2 -12 15 -9'/%3E%3C/g%3E%3C/svg%3E") /* art:nj-thumb */,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='178' height='178' viewBox='0 0 178 178'%3E%3Cg fill='black'%3E%3Ccircle cx='89' cy='89' r='80' fill='none' stroke='black' stroke-width='6'/%3E%3Ccircle cx='89' cy='89' r='69' fill='none' stroke='black' stroke-width='2.5'/%3E%3Cpath d='M35 53h2v2h-2zM43 53h2v2h-2zM35 55h4v2h-4zM43 55h2v2h-2zM35 57h4v2h-4zM43 57h2v2h-2zM35 59h2v2h-2zM39 59h2v2h-2zM43 59h2v2h-2zM35 61h2v2h-2zM41 61h4v2h-4zM35 63h2v2h-2zM41 63h4v2h-4zM35 65h2v2h-2zM43 65h2v2h-2zM49 53h6v2h-6zM47 55h2v2h-2zM55 55h2v2h-2zM47 57h2v2h-2zM55 57h2v2h-2zM47 59h2v2h-2zM55 59h2v2h-2zM47 61h2v2h-2zM55 61h2v2h-2zM47 63h2v2h-2zM55 63h2v2h-2zM49 65h6v2h-6zM59 53h10v2h-10zM63 55h2v2h-2zM63 57h2v2h-2zM63 59h2v2h-2zM63 61h2v2h-2zM63 63h2v2h-2zM63 65h2v2h-2zM83 53h2v2h-2zM91 53h2v2h-2zM83 55h2v2h-2zM91 55h2v2h-2zM83 57h2v2h-2zM91 57h2v2h-2zM83 59h2v2h-2zM91 59h2v2h-2zM83 61h2v2h-2zM91 61h2v2h-2zM85 63h2v2h-2zM89 63h2v2h-2zM87 65h2v2h-2zM97 53h6v2h-6zM95 55h2v2h-2zM103 55h2v2h-2zM95 57h2v2h-2zM103 57h2v2h-2zM95 59h10v2h-10zM95 61h2v2h-2zM103 61h2v2h-2zM95 63h2v2h-2zM103 63h2v2h-2zM95 65h2v2h-2zM103 65h2v2h-2zM107 53h2v2h-2zM107 55h2v2h-2zM107 57h2v2h-2zM107 59h2v2h-2zM107 61h2v2h-2zM107 63h2v2h-2zM107 65h10v2h-10zM121 53h6v2h-6zM123 55h2v2h-2zM123 57h2v2h-2zM123 59h2v2h-2zM123 61h2v2h-2zM123 63h2v2h-2zM121 65h6v2h-6zM131 53h6v2h-6zM131 55h2v2h-2zM137 55h2v2h-2zM131 57h2v2h-2zM139 57h2v2h-2zM131 59h2v2h-2zM139 59h2v2h-2zM131 61h2v2h-2zM139 61h2v2h-2zM131 63h2v2h-2zM137 63h2v2h-2zM131 65h6v2h-6z' fill='black'/%3E%3Cpath d='M29 73h10v2h-10zM29 75h2v2h-2zM29 77h2v2h-2zM29 79h8v2h-8zM29 81h2v2h-2zM29 83h2v2h-2zM29 85h2v2h-2zM43 73h6v2h-6zM41 75h2v2h-2zM49 75h2v2h-2zM41 77h2v2h-2zM49 77h2v2h-2zM41 79h2v2h-2zM49 79h2v2h-2zM41 81h2v2h-2zM49 81h2v2h-2zM41 83h2v2h-2zM49 83h2v2h-2zM43 85h6v2h-6zM53 73h8v2h-8zM53 75h2v2h-2zM61 75h2v2h-2zM53 77h2v2h-2zM61 77h2v2h-2zM53 79h8v2h-8zM53 81h2v2h-2zM57 81h2v2h-2zM53 83h2v2h-2zM59 83h2v2h-2zM53 85h2v2h-2zM61 85h2v2h-2zM77 73h10v2h-10zM81 75h2v2h-2zM81 77h2v2h-2zM81 79h2v2h-2zM81 81h2v2h-2zM81 83h2v2h-2zM81 85h2v2h-2zM89 73h8v2h-8zM89 75h2v2h-2zM97 75h2v2h-2zM89 77h2v2h-2zM97 77h2v2h-2zM89 79h8v2h-8zM89 81h2v2h-2zM93 81h2v2h-2zM89 83h2v2h-2zM95 83h2v2h-2zM89 85h2v2h-2zM97 85h2v2h-2zM103 73h6v2h-6zM101 75h2v2h-2zM109 75h2v2h-2zM101 77h2v2h-2zM109 77h2v2h-2zM101 79h10v2h-10zM101 81h2v2h-2zM109 81h2v2h-2zM101 83h2v2h-2zM109 83h2v2h-2zM101 85h2v2h-2zM109 85h2v2h-2zM113 73h2v2h-2zM121 73h2v2h-2zM113 75h2v2h-2zM121 75h2v2h-2zM113 77h2v2h-2zM121 77h2v2h-2zM113 79h2v2h-2zM121 79h2v2h-2zM113 81h2v2h-2zM121 81h2v2h-2zM115 83h2v2h-2zM119 83h2v2h-2zM117 85h2v2h-2zM125 73h10v2h-10zM125 75h2v2h-2zM125 77h2v2h-2zM125 79h8v2h-8zM125 81h2v2h-2zM125 83h2v2h-2zM125 85h10v2h-10zM137 73h2v2h-2zM137 75h2v2h-2zM137 77h2v2h-2zM137 79h2v2h-2zM137 81h2v2h-2zM137 83h2v2h-2zM137 85h10v2h-10z' fill='black'/%3E%3Crect x='23' y='91' width='132' height='18'/%3E%3Cpath d='M29 93h2v2h-2zM37 93h2v2h-2zM29 95h2v2h-2zM37 95h2v2h-2zM29 97h2v2h-2zM37 97h2v2h-2zM29 99h2v2h-2zM37 99h2v2h-2zM29 101h2v2h-2zM37 101h2v2h-2zM29 103h2v2h-2zM37 103h2v2h-2zM31 105h6v2h-6zM43 93h8v2h-8zM41 95h2v2h-2zM41 97h2v2h-2zM43 99h6v2h-6zM49 101h2v2h-2zM49 103h2v2h-2zM41 105h8v2h-8zM53 93h10v2h-10zM53 95h2v2h-2zM53 97h2v2h-2zM53 99h8v2h-8zM53 101h2v2h-2zM53 103h2v2h-2zM53 105h10v2h-10zM79 93h6v2h-6zM77 95h2v2h-2zM85 95h2v2h-2zM77 97h2v2h-2zM85 97h2v2h-2zM77 99h10v2h-10zM77 101h2v2h-2zM85 101h2v2h-2zM77 103h2v2h-2zM85 103h2v2h-2zM77 105h2v2h-2zM85 105h2v2h-2zM89 93h2v2h-2zM97 93h2v2h-2zM89 95h4v2h-4zM97 95h2v2h-2zM89 97h4v2h-4zM97 97h2v2h-2zM89 99h2v2h-2zM93 99h2v2h-2zM97 99h2v2h-2zM89 101h2v2h-2zM95 101h4v2h-4zM89 103h2v2h-2zM95 103h4v2h-4zM89 105h2v2h-2zM97 105h2v2h-2zM101 93h2v2h-2zM109 93h2v2h-2zM101 95h2v2h-2zM109 95h2v2h-2zM103 97h2v2h-2zM107 97h2v2h-2zM105 99h2v2h-2zM105 101h2v2h-2zM105 103h2v2h-2zM105 105h2v2h-2zM113 93h2v2h-2zM121 93h2v2h-2zM113 95h2v2h-2zM121 95h2v2h-2zM113 97h2v2h-2zM121 97h2v2h-2zM113 99h2v2h-2zM117 99h2v2h-2zM121 99h2v2h-2zM113 101h2v2h-2zM117 101h2v2h-2zM121 101h2v2h-2zM113 103h4v2h-4zM119 103h4v2h-4zM113 105h2v2h-2zM121 105h2v2h-2zM127 93h6v2h-6zM125 95h2v2h-2zM133 95h2v2h-2zM125 97h2v2h-2zM133 97h2v2h-2zM125 99h10v2h-10zM125 101h2v2h-2zM133 101h2v2h-2zM125 103h2v2h-2zM133 103h2v2h-2zM125 105h2v2h-2zM133 105h2v2h-2zM137 93h2v2h-2zM145 93h2v2h-2zM137 95h2v2h-2zM145 95h2v2h-2zM139 97h2v2h-2zM143 97h2v2h-2zM141 99h2v2h-2zM141 101h2v2h-2zM141 103h2v2h-2zM141 105h2v2h-2z' fill='white'/%3E%3Cpath d='M71 119h2v2h-2zM69 121h4v2h-4zM67 123h2v2h-2zM71 123h2v2h-2zM65 125h2v2h-2zM71 125h2v2h-2zM65 127h10v2h-10zM71 129h2v2h-2zM71 131h2v2h-2zM83 119h2v2h-2zM81 121h4v2h-4zM79 123h2v2h-2zM83 123h2v2h-2zM77 125h2v2h-2zM83 125h2v2h-2zM77 127h10v2h-10zM83 129h2v2h-2zM83 131h2v2h-2zM89 125h10v2h-10zM101 119h2v2h-2zM109 119h2v2h-2zM101 121h2v2h-2zM107 121h2v2h-2zM101 123h2v2h-2zM105 123h2v2h-2zM101 125h4v2h-4zM101 127h2v2h-2zM105 127h2v2h-2zM101 129h2v2h-2zM107 129h2v2h-2zM101 131h2v2h-2zM109 131h2v2h-2z' fill='black'/%3E%3C/g%3E%3Crect x='8' y='105' width='37' height='10' fill='white'/%3E%3Crect x='23' y='28' width='21' height='9' fill='white'/%3E%3Crect x='67' y='140' width='27' height='7' fill='white'/%3E%3Crect x='40' y='13' width='17' height='11' fill='white'/%3E%3Crect x='59' y='152' width='34' height='6' fill='white'/%3E%3Crect x='10' y='152' width='16' height='10' fill='white'/%3E%3Crect x='102' y='26' width='34' height='9' fill='white'/%3E%3Crect x='107' y='144' width='35' height='4' fill='white'/%3E%3Crect x='120' y='22' width='17' height='9' fill='white'/%3E%3Crect x='2' y='92' width='17' height='8' fill='white'/%3E%3C/svg%3E") /* art:nj-stamp */;
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 14px top 10px, right -22px bottom -20px;
+  background-size: 76px 97px, 132px 132px;
+}
+.coupon-head {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: calc(var(--size-body) + 2px);
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  max-width: 74%;
+}
+.coupon-head::after {
+  content: "";
+  display: block;
+  height: 3px;
+  margin: 7px 0 9px;
+  background: #000;
+}
+.coupon-body {
+  max-width: 76%;
+  font-size: var(--size-small);
+  line-height: 1.42;
+}
+.coupon-body .ln {
+  display: grid; grid-template-columns: 118px 1fr; column-gap: 8px;
+  padding: 4px 0 3px;
+  border-bottom: 1px solid #000;
+}
+.coupon-body .ln + .ln { margin-top: 0; }
+.coupon-body .ln:first-child { border-top: 1px solid #000; }
+.coupon-body .ln-label {
+  padding-top: 2px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+.coupon-body .ln[data-k="name"] .ln-text {
+  font-weight: var(--bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.coupon-terms {
+  margin-top: 10px;
+  padding-top: 7px;
+  border-top: 2px dashed #000;
+  max-width: 76%;
+  line-height: 1.4;
+}
+.coupon-terms::before {
+  content: "IF I DO NOT TRANSMIT: ";
+  font-weight: var(--bold);
+}

@@ -1,0 +1,382 @@
+/* Weights come from --bold, never a literal 700. Space Grotesk and Orbitron
+   ship real 700s (--bold, --display-weight); Major Mono Display has one weight
+   and is used small, for labels. See the font-synthesis note in the base
+   stylesheet. */
+/* The Time Traveller.
+ *
+ * A receipt from a couple of centuries ahead, graciously downgraded to run on
+ * paper. The masthead is the compatibility notice - RENDERED FOR 1-BIT LEGACY
+ * MEDIUM - over a framed panel carrying today's narrated aside (the thing he
+ * mentions about later and does not finish) and the line about what did not
+ * survive the downgrade. The persona's name never prints: the interface does not
+ * introduce itself, it just starts.
+ *
+ * Everything sits in thin frames with corner brackets, like a hologram
+ * interface with the hologram missing, and the air goes into the frames rather
+ * than between the sections - paper costs, even in the future. Headings are
+ * wide-tracked geometric caps with an interface label opposite. The weather
+ * sits over a timeline on which today is a tick near the start. On every
+ * receipt, a box printed in a colour you have not discovered yet: an empty
+ * frame labelled [COLOUR NOT SUPPORTED].
+ *
+ * Signature trick: the footer is a line of glyphs from later - drawn, because no
+ * font we have contains them - with the real barcode filed underneath, LEGACY.
+ * The coupon carries a grid that is very clearly not a QR code.
+ *
+ * Generated art is marked art:name and drawn by tools/themeart.py.
+ */
+
+:root { --rule: 2px; --pad: 14px; --gap: 6px; --sec-end: 8px; }
+
+body { line-height: 1.36; }
+
+/* The corner brackets every panel on this page wears. */
+.masthead, .weather, .news, .slot, .itemization, .legalese, .coupon-inner {
+  background-image:
+    linear-gradient(#000, #000), linear-gradient(#000, #000),
+    linear-gradient(#000, #000), linear-gradient(#000, #000),
+    linear-gradient(#000, #000), linear-gradient(#000, #000),
+    linear-gradient(#000, #000), linear-gradient(#000, #000);
+  background-size: 14px 2px, 2px 14px, 14px 2px, 2px 14px,
+                   14px 2px, 2px 14px, 14px 2px, 2px 14px;
+  background-position:
+    left top, left top, right top, right top,
+    left bottom, left bottom, right bottom, right bottom;
+  background-repeat: no-repeat;
+}
+
+/* ---------- masthead: the arrival, and the Guide on this year ---------- */
+.masthead {
+  display: flex; flex-direction: column;
+  margin: 4px 8px 0;
+  padding: 10px 12px 12px;
+}
+.wordmark { display: none; }
+/* The arrival strip. */
+.masthead::before {
+  content: "ARRIVAL LOGGED  \00B7  LOCAL 07:00  \00B7  DRIFT \00B1 3 DAYS";
+  order: 0;
+  display: block;
+  margin: -10px -12px 10px;
+  padding: 4px 12px 5px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  text-align: center;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+/* The Guide's entry on this year, out of his pocket reference. */
+.mh-guide {
+  order: 1;
+  padding: 24px 12px 12px;
+  border: 2px solid #000;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+.mh-guide::before {
+  content: "THE GUIDE  \00B7  SOL III  \00B7  THIS YEAR";
+  position: absolute; left: -2px; top: -2px;
+  padding: 2px 10px 3px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+/* What he says back to it. */
+.mh-remark {
+  order: 2;
+  margin: 8px 0 0 10px;
+  padding-left: 16px;
+  border-left: 3px solid #000;
+  font-size: var(--size-body);
+  line-height: 1.3;
+}
+/* What the Authority took out of today's page to prevent a paradox, filed the
+   way a censor files it: the office and the case on the bar (the case number is
+   the date and the receipt, so it is never the same case twice), the one line
+   they wrote about it, and WITHHELD struck across the corner. Nothing on it is
+   decoration: every piece is part of the notice. */
+.mh-downgrade {
+  order: 3;
+  position: relative;
+  margin-top: 12px;
+  padding: 30px 12px 44px 12px;
+  border: 2px solid #000;
+  font-size: var(--size-small);
+  line-height: 1.3;
+}
+.mh-downgrade::before {
+  content: "TEMPORAL AUTHORITY  \00B7  WITHHELD  \00B7  CASE " attr(data-dd) attr(data-mm) "-" attr(data-no);
+  position: absolute; left: 0; right: 0; top: 0;
+  padding: 3px 10px 4px;
+  background: #000;
+  color: #fff;
+  white-space: pre;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.02em;
+}
+/* The stamp, struck over the panel's corner by somebody who does this all day. */
+.mh-downgrade::after {
+  content: "WITHHELD";
+  position: absolute; right: 10px; bottom: 7px;
+  padding: 1px 8px 0;
+  border: 3px solid #000;
+  background: #fff;
+  font-weight: var(--bold);
+  font-size: var(--size-small);
+  letter-spacing: 0.12em;
+  transform: rotate(-7deg);
+}
+
+.dateline {
+  order: 4;
+  margin-top: 10px;
+  display: flex; justify-content: space-between; gap: 8px;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+.dateline::before { content: "LOCAL DATE"; }
+.dateline::after { content: "1-BIT LEGACY"; }
+
+/* ---------- the colour you have not discovered yet ---------- */
+.masthead::after {
+  content: "[ COLOUR NOT SUPPORTED ]";
+  order: 4;
+  display: flex; align-items: center; justify-content: center;
+  height: 64px;
+  margin: 12px 0 0;
+  border: 2px dashed #000;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+  letter-spacing: 0.08em;
+}
+
+/* ---------- section breaks: a hairline of ticks ---------- */
+.rule {
+  height: 2px;
+  margin: 8px var(--pad) 4px;
+  background: repeating-linear-gradient(90deg, #000 0 2px, transparent 2px 9px);
+}
+.rule + .rule { display: none; }
+
+/* ---------- sections: panels in the interface ---------- */
+.weather, .news, .slot, .itemization, .legalese {
+  margin: 6px 8px;
+  padding: 10px 10px 8px !important;
+}
+.weather > .pad, .news > .pad, .slot > .pad { padding-left: 4px; padding-right: 4px; }
+.sec-head {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-small);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+/* The small labels take the body's 700: Major Mono Display and Orbitron are
+   both too fine to survive 15px on this paper, and nothing may be synthesised. */
+.sec-head::after {
+  content: "legacy feed";
+  margin-left: auto;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.slot:nth-of-type(3n) .sec-head::after { content: "archived"; }
+.slot:nth-of-type(4n) .sec-head::after { content: "still true"; }
+
+/* ---------- weather: your little weather, on the whole timeline ---------- */
+.temps {
+  border: 0;
+  column-gap: 8px;
+  margin: 8px 0 4px;
+}
+.temp-cell { padding: 4px 10px 5px; border: 2px solid #000; }
+.temp-cell + .temp-cell { border-left: 2px solid #000; }
+.temp-label {
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.temp-value { font-family: var(--font-display); font-weight: var(--display-weight); }
+/* Not the accent face: see the note on figures above. */
+.weather .meta, .item-price, .totals td { font-family: var(--font); }
+.weather::after {
+  content: "you are here. it keeps going.";
+  display: block;
+  margin-top: 8px;
+  padding-top: 52px;
+  text-align: center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='46' viewBox='0 0 520 46'%3E%3Cpath d='M6 24 H514' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M506 18 L514 24 L506 30' fill='none' stroke='black' stroke-width='2.4'/%3E%3Cpath d='M26 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M45 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M64 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M84 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M104 15 V24' stroke='black' stroke-width='2'/%3E%3Cpath d='M123 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M142 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M162 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M182 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M201 15 V24' stroke='black' stroke-width='2'/%3E%3Cpath d='M220 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M240 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M260 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M279 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M298 15 V24' stroke='black' stroke-width='2'/%3E%3Cpath d='M318 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M338 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M357 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M376 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M396 15 V24' stroke='black' stroke-width='2'/%3E%3Cpath d='M416 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M435 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M454 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M474 19 V24' stroke='black' stroke-width='1.2'/%3E%3Cpath d='M494 15 V24' stroke='black' stroke-width='2'/%3E%3Cpath d='M64 6 V24' stroke='black' stroke-width='3'/%3E%3Ccircle cx='64' cy='6' r='4' fill='black'/%3E%3Cpath d='M64 30 V40' stroke='black' stroke-width='1.6' stroke-dasharray='3 3'/%3E%3C/svg%3E") /* art:tt-timeline */ center top / 520px 46px no-repeat;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- news: current events, historical ---------- */
+.news-item {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  column-gap: 8px;
+  margin-bottom: 5px;
+  font-size: var(--size-small);
+}
+.news-n { font-size: 0; }
+.news-n::before {
+  content: "ARCHIVE/" counter(list-item, decimal-leading-zero);
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+}
+.news { counter-reset: list-item; }
+.news-item { counter-increment: list-item; }
+
+/* ---------- itemization: the manifest ---------- */
+.itemization::before {
+  content: "MANIFEST  \00B7  THIS UNIT OF TIME";
+  display: block;
+  margin-bottom: 6px;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+}
+.item-name { font-size: var(--size-small); }
+.item-tier { font-weight: var(--bold); font-size: var(--size-tiny); text-transform: uppercase; }
+.item-price { font-family: var(--font-display); font-weight: var(--display-weight); }
+.leader {
+  background-image: repeating-linear-gradient(to right,
+      #000 0 2px, transparent 2px 8px);
+}
+.totals td { font-family: var(--font-display); font-weight: var(--display-weight); }
+.totals::after {
+  content: "prices shown in your money, which we found charming";
+  display: block;
+  margin-top: 6px;
+  text-align: right;
+  font-size: var(--size-tiny);
+}
+
+/* ---------- legalese: the terms of his visit ----------
+   One term of the cultural exchange he did not read the brief for (drawn by
+   Python, printed as the term), his report on how it is going in the voice of
+   his remark up top, and the Exchange Office's flat ruling on it. */
+.legalese { font-size: var(--size-small); }
+.legalese::before {
+  content: "CULTURAL EXCHANGE  \00B7  TERMS OF VISIT";
+  display: block;
+  margin-bottom: 5px;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.06em;
+}
+.legalese .blk-label {
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+.legalese .footnote {
+  display: table;
+  margin: 8px 0 0 auto;
+  padding: 2px 8px 3px;
+  border: 2px solid #000;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+.legalese .footnote::before { content: "EXCHANGE OFFICE:  "; white-space: pre; }
+
+/* ---------- footer: a line from later, with a translation ---------- */
+.serial { margin-top: 14px; }
+.serial::before {
+  content: "TRANSLATED FOR YOU:  SAME TIME TOMORROW, PROBABLY";
+  display: block;
+  margin: 0 8px 6px;
+  padding-top: 40px;
+  text-align: center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='576' height='34' viewBox='0 0 576 34'%3E%3Cpath d='M10 7 H19 M14 7 V27 M10 27 H19 M23 7 V27 M32 7 V27 M23 17 H32' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M48 7 V27 M57 7 V27 M48 17 H57 M61 7 H70 M65 7 V27 M61 27 H70 M74 27 V7 M74 7 L83 15 M87 27 L92 7 L97 27 M89 19 H95' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M112 27 V7 M112 7 L121 15 M125 7 H134 M129 7 V27 M125 27 H134 M138 11 Q143 3 148 11 M143 11 V27 M160 7 H151 V16 H159 M151 27 H160' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='160' cy='31' r='1.8' fill='black'/%3E%3Cpath d='M176 11 Q181 3 186 11 M181 11 V27 M189 7 V27 M198 7 V27 M189 17 H198 M202 7 H211 M206 7 V27 M202 27 H211' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M227 27 V7 M227 7 L236 15 M240 27 L245 7 L250 27 M242 19 H248 M253 7 V27 M262 7 V27 M253 17 H262 M275 7 H266 V16 H274 M266 27 H275' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='275' cy='31' r='1.8' fill='black'/%3E%3Cpath d='M291 27 L296 7 L301 27 M293 19 H299 M304 7 V27 M313 7 V27 M304 17 H313' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M329 7 V27 M338 7 V27 M329 17 H338 M342 11 Q347 3 352 11 M347 11 V27 M355 7 V27 M364 7 V27 M355 17 H364 M368 7 H377 M372 7 V27 M368 27 H377' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M402 7 H393 V16 H401 M393 27 H402 M406 27 V7 M406 7 L415 15 M428 7 H419 V16 H427 M419 27 H428 M441 7 H432 V16 H440 M432 27 H441' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M457 7 V27 M466 7 V27 M457 17 H466 M479 7 H470 V16 H478 M470 27 H479 M483 27 L488 7 L493 27 M485 19 H491 M496 7 H505 M500 7 V27 M496 27 H505' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M530 7 H521 V16 H529 M521 27 H530 M534 27 L539 7 L544 27 M536 19 H542' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='543' cy='31' r='1.8' fill='black'/%3E%3C/svg%3E") /* art:tt-glyphs */ center top / 560px 34px no-repeat;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  letter-spacing: 0.04em;
+}
+.serial .row {
+  font-size: var(--size-tiny);
+  font-weight: var(--bold);
+  margin-bottom: 2px;
+}
+.serial .row::before { content: "LEGACY  \00B7  "; }
+.serial::after {
+  content: "this document will be funny in about ninety years";
+  display: block;
+  margin: 6px 8px 0;
+  text-align: center;
+  font-size: var(--size-tiny);
+}
+
+/* ---------- coupon: a paper coupon, how quaint ---------- */
+.tear {
+  margin-top: 14px;
+  padding-top: 4px;
+  border-top: 2px dashed #000;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--size-small);
+}
+.coupon-inner {
+  position: relative;
+  margin: 10px 8px 8px;
+  padding: 12px 12px 12px 140px !important;
+  min-height: 130px;
+}
+/* The grid that is very clearly not a QR code. */
+.coupon-inner::before {
+  content: "";
+  position: absolute; left: 14px; top: 14px;
+  width: 118px; height: 118px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='118' height='118' viewBox='0 0 118 118'%3E%3Crect width='118' height='118' fill='white'/%3E%3Crect x='14' y='4' width='10' height='10' fill='black'/%3E%3Crect x='24' y='4' width='10' height='10' fill='black'/%3E%3Crect x='44' y='4' width='10' height='10' fill='black'/%3E%3Crect x='84' y='4' width='10' height='10' fill='black'/%3E%3Crect x='14' y='14' width='10' height='10' fill='black'/%3E%3Crect x='34' y='14' width='10' height='10' fill='black'/%3E%3Crect x='74' y='14' width='10' height='10' fill='black'/%3E%3Crect x='84' y='14' width='10' height='10' fill='black'/%3E%3Crect x='94' y='14' width='10' height='10' fill='black'/%3E%3Crect x='14' y='24' width='10' height='10' fill='black'/%3E%3Crect x='24' y='24' width='10' height='10' fill='black'/%3E%3Crect x='34' y='24' width='10' height='10' fill='black'/%3E%3Crect x='44' y='24' width='10' height='10' fill='black'/%3E%3Crect x='84' y='24' width='10' height='10' fill='black'/%3E%3Crect x='34' y='34' width='10' height='10' fill='black'/%3E%3Crect x='54' y='34' width='10' height='10' fill='black'/%3E%3Crect x='84' y='34' width='10' height='10' fill='black'/%3E%3Crect x='14' y='44' width='10' height='10' fill='black'/%3E%3Crect x='34' y='44' width='10' height='10' fill='black'/%3E%3Crect x='94' y='44' width='10' height='10' fill='black'/%3E%3Crect x='24' y='54' width='10' height='10' fill='black'/%3E%3Crect x='44' y='54' width='10' height='10' fill='black'/%3E%3Crect x='64' y='54' width='10' height='10' fill='black'/%3E%3Crect x='74' y='54' width='10' height='10' fill='black'/%3E%3Crect x='94' y='54' width='10' height='10' fill='black'/%3E%3Crect x='24' y='64' width='10' height='10' fill='black'/%3E%3Crect x='54' y='64' width='10' height='10' fill='black'/%3E%3Crect x='64' y='64' width='10' height='10' fill='black'/%3E%3Crect x='74' y='64' width='10' height='10' fill='black'/%3E%3Crect x='24' y='74' width='10' height='10' fill='black'/%3E%3Crect x='64' y='74' width='10' height='10' fill='black'/%3E%3Crect x='74' y='74' width='10' height='10' fill='black'/%3E%3Crect x='84' y='74' width='10' height='10' fill='black'/%3E%3Crect x='104' y='74' width='10' height='10' fill='black'/%3E%3Crect x='4' y='84' width='10' height='10' fill='black'/%3E%3Crect x='34' y='84' width='10' height='10' fill='black'/%3E%3Crect x='44' y='84' width='10' height='10' fill='black'/%3E%3Crect x='64' y='84' width='10' height='10' fill='black'/%3E%3Crect x='74' y='84' width='10' height='10' fill='black'/%3E%3Crect x='84' y='84' width='10' height='10' fill='black'/%3E%3Crect x='104' y='84' width='10' height='10' fill='black'/%3E%3Crect x='14' y='94' width='10' height='10' fill='black'/%3E%3Crect x='64' y='94' width='10' height='10' fill='black'/%3E%3Crect x='84' y='94' width='10' height='10' fill='black'/%3E%3Crect x='104' y='94' width='10' height='10' fill='black'/%3E%3Crect x='4' y='104' width='10' height='10' fill='black'/%3E%3Crect x='24' y='104' width='10' height='10' fill='black'/%3E%3Crect x='44' y='104' width='10' height='10' fill='black'/%3E%3Crect x='54' y='104' width='10' height='10' fill='black'/%3E%3Crect x='64' y='104' width='10' height='10' fill='black'/%3E%3Crect x='74' y='104' width='10' height='10' fill='black'/%3E%3Crect x='4' y='4' width='30' height='30' fill='black'/%3E%3Crect x='10' y='10' width='18' height='18' fill='white'/%3E%3Crect x='15' y='15' width='8' height='8' fill='black'/%3E%3Crect x='84' y='4' width='30' height='30' fill='black'/%3E%3Crect x='90' y='10' width='18' height='18' fill='white'/%3E%3Crect x='95' y='15' width='8' height='8' fill='black'/%3E%3Crect x='4' y='84' width='30' height='30' fill='black'/%3E%3Crect x='10' y='90' width='18' height='18' fill='white'/%3E%3Crect x='15' y='95' width='8' height='8' fill='black'/%3E%3Cg transform='translate%2884 88%29 rotate%2814%29'%3E%3Crect x='4' y='4' width='20' height='20' fill='black'/%3E%3Crect x='10' y='10' width='8' height='8' fill='white'/%3E%3Crect x='15' y='15' width='-2' height='-2' fill='black'/%3E%3C/g%3E%3C/svg%3E") /* art:tt-code */ center / 118px 118px no-repeat;
+}
+/* The coupon's face is the thing drawn for today, in the body face's 700
+   because it carries figures; the footer says which kind it is (data-kind). */
+.coupon-head {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--size-tiny);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.coupon-inner .blk-label {
+  font-size: calc(var(--size-body) * 1.1);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  margin-bottom: 5px;
+}
+.coupon-body { font-size: var(--size-small); }
+.coupon-terms { margin-top: 5px; font-size: var(--size-tiny); }
+.coupon-inner[data-kind="vintage"]::after {
+  content: "VINTAGE  \00B7  DISCONTINUED IN YOUR FUTURE  \00B7  USE IT TODAY";
+}
+.coupon-inner[data-kind="prerelease"]::after {
+  content: "PRE-RELEASE  \00B7  NOT YET INVENTED  \00B7  KEEP IT";
+}
+.coupon-inner::after {
+  content: "REDEEMABLE ON PRESENTATION, LATER  \00B7  KEEP IT";
+  display: block;
+  margin-top: 8px;
+  padding-top: 4px;
+  border-top: 2px solid #000;
+  font-weight: var(--bold);
+  font-size: var(--size-tiny);
+  line-height: 1.3;
+}
